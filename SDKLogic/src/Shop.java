@@ -4,7 +4,7 @@ public class Shop {
     private String serialNumber;
     private String name;
     private Map<String, SelledItemInStore> ItemsSerialIDMap;
-    private List listOfOrders;
+    private List<Order> listOfOrders;
     private int PPK;
     private Location locationOfShop;
 
@@ -33,7 +33,8 @@ public class Shop {
         return ItemsSerialIDMap.containsKey(serialNumber) ;
     }
 
-    private int calcProfitOfDelivers()
+    //TODO
+    public int calcProfitOfDelivers()
     {
         return 1;
     }
@@ -59,6 +60,11 @@ public class Shop {
     public Location getLocationOfShop()
     {
         return locationOfShop;
+    }
+
+    public List<Order> getListOfOrders()
+    {
+        return listOfOrders;
     }
 
 }

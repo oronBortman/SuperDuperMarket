@@ -8,33 +8,56 @@ public class Order {
     private boolean orderApprovedByCustomer;
     private Map<String, OrderedItem> orderedItems;
 
-    private int calcSumAmountOfItemsType()
+    public Date getDate()
+    {
+        return date;
+    }
+
+    public Shop getShop()
+    {
+        return shopUsed;
+    }
+
+    //TODO
+    public int calcSumAmountOfItemsType()
     {
         return 1;
     }
 
-    private int calcSumOfItems()
+    //TODO
+    public int calcSumOfItems()
     {
         return 1;
     }
 
-    private int calcDeliveryPrice()
+    //TODO
+    public int calcDeliveryPrice()
     {
         return 1;
     }
 
-    private int calcTotalPriceOfOrder()
+    //TODO
+    public int calcTotalPriceOfOrder()
     {
         return 1;
     }
 
-    private int calcAmoutOfCertainItem(OrderedItem item)
+    //TODO
+    public int calcTotalPriceOfItems()
     {
         return 1;
     }
 
-    private int calcSumOfPriceOfCertainItem(OrderedItem item)
+    //TODO
+    public int calcAmoutOfCertainItem(OrderedItem item)
     {
         return 1;
     }
+
+    //TODO
+    public int calcSumOfPriceOfCertainItem(OrderedItem item)
+    {
+        return 1;
+    }
+
 }
