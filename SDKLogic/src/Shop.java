@@ -10,7 +10,7 @@ public class Shop {
 
     Shop(String serialNumber, String name, int PPK, Location locationOfShop)
     {
-        ItemsSerialIDMap = new HashMap<String, SelledItemInStore>;
+        ItemsSerialIDMap = new HashMap<String, SelledItemInStore>();
         this.serialNumber = serialNumber;
         this.name = name;
         this.PPK = PPK;
