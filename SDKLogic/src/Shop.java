@@ -1,20 +1,20 @@
 import java.util.*;
 
 public class Shop {
-    private String serialNumber;
+    private Integer serialNumber;
     private String name;
-    private Map<String, SelledItemInStore> ItemsSerialIDMap;
+    private Map<Integer, SelledItemInStore> ItemsSerialIDMap;
     private List<Order> listOfOrders;
     private int PPK;
-    private Location locationOfShop;
+    private SDKLocation SDKLocationOfShop;
 
-    Shop(String serialNumber, String name, int PPK, Location locationOfShop)
+    Shop(Integer serialNumber, String name, int PPK, SDKLocation SDKLocationOfShop)
     {
-        ItemsSerialIDMap = new HashMap<String, SelledItemInStore>();
+        ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
         this.serialNumber = serialNumber;
         this.name = name;
         this.PPK = PPK;
-        this.locationOfShop = locationOfShop;
+        this.SDKLocationOfShop = SDKLocationOfShop;
     }
 
     private void addItemToShop(SelledItemInStore selledItemInStore)
@@ -22,9 +22,9 @@ public class Shop {
         ItemsSerialIDMap.put(selledItemInStore.getSerialNumber(), selledItemInStore);
     }
 
-    public Set<String> getSetOfItemsSerialID()
+    public Set<Integer> getSetOfItemsSerialID()
     {
-        return GeneralMethods.<String, SelledItemInStore>getSetOfDictionary(ItemsSerialIDMap);
+        return GeneralMethods.<Integer, SelledItemInStore>getSetOfDictionary(ItemsSerialIDMap);
 
     }
 
@@ -44,12 +44,12 @@ public class Shop {
         return name;
     }
 
-    public SelledItemInStore getItemySerialID(String serialID)
+    public SelledItemInStore getItemySerialID(Integer serialID)
     {
         return ItemsSerialIDMap.get(serialID);
     }
 
-    public String getSerialNumber() {
+    public Integer getSerialNumber() {
         return this.serialNumber;
     }
 
@@ -57,9 +57,9 @@ public class Shop {
         return this.PPK;
     }
 
-    public Location getLocationOfShop()
+    public SDKLocation getLocationOfShop()
     {
-        return locationOfShop;
+        return SDKLocationOfShop;
     }
 
     public List<Order> getListOfOrders()

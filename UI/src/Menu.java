@@ -1,6 +1,12 @@
-import java.util.List;
-import java.util.Scanner;
-import java.util.Set;
+import jaxb.schema.generated.SDMItem;
+
+import javax.xml.bind.JAXBContext;
+import javax.xml.bind.JAXBException;
+import javax.xml.bind.Marshaller;
+import javax.xml.bind.Unmarshaller;
+import java.io.File;
+import java.io.InputStream;
+import java.util.*;
 
 public class Menu {
 
@@ -69,11 +75,93 @@ public class Menu {
     SDKBase base = new SDKBase();
 
     private void readFromXMLFile() {
+        boolean errorInShops = readShopsFromXMLFile();
+        boolean errorInItems = readItemsFromXMLFile();
+        if(errorInShops == false)
+        {
+            errorInItems = readItemsFromXMLFile();
+        }
+
+
+    }
+    private boolean readShopsFromXMLFile() {
+
         System.out.println("read from XML file");
+
+        List<Shop> listOfShops = HandleJAXB.readStoresFromXml("ex1-small.xml");
+
+        Map<Integer, Shop> storesSerialIDMap = new HashMap<Integer, Shop>();
+        Map<SDKLocation, Shop> storesLocationMap = new HashMap<SDKLocation, Shop>();
+
+
+        boolean duplicateSerialIdOfShopFound = base.setStoresSerialIDMapParameterOfMethodFromList(listOfShops, storesSerialIDMap);
+        boolean duplicateLocationOfShopFound = base.setStoresLocationMapParameterOfMethodFromList(listOfShops, storesLocationMap);
+
+        if(duplicateSerialIdOfShopFound)
+        {
+            System.out.println("Found shops with same Serial ID! Please fix your xml file and try again");
+        }
+        else if(duplicateLocationOfShopFound)
+        {
+            System.out.println("Found shops with same location. Please fix your xml file and try again");
+        }
+        else
+        {
+            base.setStoresSerialIDMap(storesSerialIDMap);
+            base.setStoresLocationMap(storesLocationMap);
+        }
+        return duplicateSerialIdOfShopFound && duplicateLocationOfShopFound;
     }
 
-    //TODO
+    private boolean readItemsFromXMLFile() {
+        System.out.println("read from XML file");
+
+        List<SDKItem> listOfItems = HandleJAXB.readItemsFromXml("ex1-small.xml");
+
+        Map<Integer, SDKItem> itemsSerialIDMap = new HashMap<Integer, SDKItem>();
+
+        boolean duplicateSerialIdOfItemFound = base.setItemsSerialIDMapParameterOfMethodFromList(listOfItems, itemsSerialIDMap);
+
+        if (duplicateSerialIdOfItemFound) {
+            System.out.println("Found items with same Serial ID!! Please fix your xml file and try again");
+        } else {
+            base.setOfItemsSerialID(itemsSerialIDMap);
+        }
+        return duplicateSerialIdOfItemFound;
+    }
+
+
+
+
+        //TODO
     //To use after user added all his items to the order
+
+    /*private static void fromObjectToXmlFile() {
+
+        System.out.println("\nFrom Object to File");
+
+        Customer customer = new Customer();
+        customer.setId(100);
+        customer.setName("Menash");
+        customer.setAge(29);
+        System.out.println("Object toString: " + customer.toString());
+        System.out.println("Object as XML:");
+        try {
+
+            File file = new File(FILE_NAME);
+            JAXBContext jaxbContext = JAXBContext.newInstance(Customer.class);
+            Marshaller jaxbMarshaller = jaxbContext.createMarshaller();
+
+            // output pretty printed
+            jaxbMarshaller.setProperty(Marshaller.JAXB_FORMATTED_OUTPUT, true);
+
+            jaxbMarshaller.marshal(customer, file);
+            jaxbMarshaller.marshal(customer, System.out);
+
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        }
+    }*/
 
     private void showItemsDetailsOfOrder()
     {
@@ -82,9 +170,9 @@ public class Menu {
 
     private void showStoreDetails() {
         System.out.println("show shop details");
-        Set<String> setOfShopSerial = base.getSetOfStoresSerialID();
+        Set<Integer> setOfShopSerial = base.getSetOfStoresSerialID();
         Shop shop;
-        for(String shopSerialID : setOfShopSerial)
+        for(Integer shopSerialID : setOfShopSerial)
         {
             shop = base.getStoreBySerialID(shopSerialID);
 
@@ -99,13 +187,13 @@ public class Menu {
 
     }
 
-    private void showSelledItemsDetailsOfStore(String storeSerialID) {
+    private void showSelledItemsDetailsOfStore(Integer storeSerialID) {
         Shop shop = base.getStoreBySerialID(storeSerialID);
-        Set<String> setOfItemsSerialID = shop.getSetOfItemsSerialID();
+        Set<Integer> setOfItemsSerialID = shop.getSetOfItemsSerialID();
         SelledItemInStore item;
 
 
-        for(String itemSerialID : setOfItemsSerialID)
+        for(Integer itemSerialID : setOfItemsSerialID)
         {
             item = shop.getItemySerialID(itemSerialID);
 
@@ -121,7 +209,7 @@ public class Menu {
         }
     }
 
-    private void showOrdersDetailsOfStore(String storeSerialID) {
+    private void showOrdersDetailsOfStore(Integer storeSerialID) {
         Shop shop = base.getStoreBySerialID(storeSerialID);
         List<Order> listOfOrdersInStore = shop.getListOfOrders();
         if(listOfOrdersInStore.isEmpty() == false)
@@ -143,10 +231,10 @@ public class Menu {
 
     }
     private void showSytemItemDetails() {
-        Set<String> setOfItemsSerialID = base.getSetOfItemsSerialID();
+        Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         SDKItem item;
 
-        for (String itemSerialID : setOfItemsSerialID) {
+        for (Integer itemSerialID : setOfItemsSerialID) {
             item = base.getItemySerialID(itemSerialID);
             System.out.println("1.Serial IDL" + itemSerialID);
             System.out.println("2.Name:" + item.getName());
@@ -157,10 +245,10 @@ public class Menu {
         }
     }
     private void orderAndBuy() {
-        Set<String> setOfItemsSerialID = base.getSetOfItemsSerialID();
+        Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         SDKItem item;
 
-        for (String itemSerialID : setOfItemsSerialID) {
+        for (Integer itemSerialID : setOfItemsSerialID) {
             item = base.getItemySerialID(itemSerialID);
             System.out.println("1.Serial IDL" + itemSerialID);
             System.out.println("2.Name:" + item.getName());
@@ -256,6 +344,7 @@ public class Menu {
         switch(option)
         {
             case READ_FROM_XML_FILE:
+                //TODO
                 readFromXMLFile();
                 break;
             case SHOW_STORE_DETAILS:
@@ -275,4 +364,6 @@ public class Menu {
                 break;
         }
     }
+
+
 }
