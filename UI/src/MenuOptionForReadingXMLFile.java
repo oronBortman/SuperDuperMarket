@@ -1,72 +1,84 @@
-import java.util.Map;
+import javax.xml.bind.JAXBException;
 
 public class MenuOptionForReadingXMLFile {
-    private SDKBase base;
-    private HandleJAXB handleJAXB;
+    private Logic base;
 
-    public MenuOptionForReadingXMLFile(SDKBase base)
+    public MenuOptionForReadingXMLFile(Logic base)
     {
         this.base = base;
-        this.handleJAXB = new HandleJAXB();
     }
 
-    public void readFromXMLFile() {
-        boolean errorInShops = readShopsFromXMLFile();
-        boolean errorInItems;
-        if(errorInShops == false)
+    public void readFromXMLFile() throws SerialIDNotExistException, JAXBException, duplicateSerialIDException {
+        try
         {
-            errorInItems = readItemsFromXMLFile();
-            if(errorInItems == false)
-            {
-                handleJAXB.addItemsToStoresFromXml("ex1-small.xml", base.getStoresSerialIDMap(),base.getItemsSerialIDMap());
-            }
+            readShopsFromXMLFile();
+            readItemsFromXMLFile();
+            base.addItemsToStoresFromXml("ex1-small.xml");
+        }
+        catch(SerialIDNotExistException e) {
+            System.out.println("An item with serial id " + e.getSerialId() + " that you tried to add to the store " + e.getName() + " doesn't exist in Super Duper Market.");
+            System.out.println("Please fix your xml file and try again");
+        }
+
+        catch(duplicateSerialIDException e)
+        {
+            System.out.println("The serial id " + e.getSerialId() + " already define in the store");
+            System.out.println("Please fix your xml file and try again");
+
+        }
+        catch(Exception e)
+        {
+
         }
 
 
+
     }
-    private boolean readShopsFromXMLFile() {
+    private void readShopsFromXMLFile() {
 
         System.out.println("read from XML file");
 
-        boolean error;
-        Map<Integer, Shop>  storesSerialIDMap = handleJAXB.createStoresSerialIDMapFromXml("ex1-small.xml");
-        error=false;
-        if(storesSerialIDMap != null)
+        try
         {
-            base.setStoresSerialIDMap(storesSerialIDMap);
-            Map<SDKLocation, Shop>  storesLocationMap = handleJAXB.createStoresLocationMapFromXml("ex1-small.xml");
-            if(storesLocationMap == null)
-            {
-                error=true;
-            }
-            else
-            {
-                base.setStoresLocationMap(storesLocationMap);
-            }
+            base.createStoresSerialIDMapFromXml("ex1-small.xml");
+            base.createStoresLocationMapFromXml("ex1-small.xml");
         }
-        else
+        catch (duplicateSerialIDException e)
         {
-            error=true;
+            System.out.println("The serial ID " + e.getSerialId() + " of the store " + e.getName() + " is not unique.");
+            System.out.println("Please fix your xml file and try again");
         }
-        return error;
+        catch( invalidCoordinateXException e)
+        {
+            System.out.println("The coordinate X with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
+            System.out.println("Please fix your xml file and try again");
+        }
+        catch( invalidCoordinateYException e)
+        {
+            System.out.println("The coordinate Y with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
+            System.out.println("Please fix your xml file and try again");
+        }
+        catch(Exception e)
+        {
+
+        }
     }
 
-    private boolean readItemsFromXMLFile() {
+    private void readItemsFromXMLFile() {
         System.out.println("read from XML file");
-
-        Map<Integer, SDKItem> itemsSerialIDMap = handleJAXB.createItemsSerialIDMapFromXml("ex1-small.xml");
-
-        boolean error;
-
-        if (itemsSerialIDMap != null) {
-            base.setOfItemsSerialID(itemsSerialIDMap);
-            error=false;
-        }
-        else
+        try
         {
-            error=true;
+            base.createItemsSerialIDMapFromXml("ex1-small.xml");
         }
-        return error;
+        catch (duplicateSerialIDException e)
+        {
+            System.out.println("The serial ID " + e.getSerialId() + " of the store " + e.getName()   + " is not unique");
+            System.out.println("Please fix your xml file and try again");
+        }
+        catch (Exception e)
+        {
+
+        }
     }
 
 }

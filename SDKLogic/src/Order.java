@@ -4,7 +4,7 @@ import java.util.Map;
 public class Order {
     private String serialNumber;
     private Date date;
-    private Shop shopUsed;
+    private Store storeUsed;
     private boolean orderApprovedByCustomer;
     private Map<String, OrderedItem> orderedItems;
 
@@ -13,9 +13,9 @@ public class Order {
         return date;
     }
 
-    public Shop getShop()
+    public Store getShop()
     {
-        return shopUsed;
+        return storeUsed;
     }
 
     //TODO

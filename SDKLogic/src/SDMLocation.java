@@ -1,17 +1,17 @@
 import jaxb.schema.generated.Location;
 import java.util.Objects;
 
-public class SDKLocation {
+public class SDMLocation {
     private int x;
     private int y;
 
-    public SDKLocation(int coordinateX, int coordinateY) {
+    public SDMLocation(int coordinateX, int coordinateY) {
         this.x = coordinateX;
         this.y = coordinateY;
     }
 
 
-    public SDKLocation(Location location)
+    public SDMLocation(Location location)
     {
         x = location.getX();
         y = location.getY();
@@ -21,7 +21,7 @@ public class SDKLocation {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        SDKLocation that = (SDKLocation) o;
+        SDMLocation that = (SDMLocation) o;
         return x == that.x &&
                 y == that.y;
     }

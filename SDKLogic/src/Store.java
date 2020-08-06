@@ -2,31 +2,31 @@ import jaxb.schema.generated.SDMStore;
 
 import java.util.*;
 
-public class Shop {
+public class Store {
     private Integer serialNumber;
     private String name;
     private Map<Integer, SelledItemInStore> ItemsSerialIDMap;
     private List<Order> listOfOrders;
     private int PPK;
-    private SDKLocation SDKLocationOfShop;
+    private SDMLocation SDMLocationOfShop;
 
-    Shop(Integer serialNumber, String name, int PPK, SDKLocation SDKLocationOfShop)
+    Store(Integer serialNumber, String name, int PPK, SDMLocation SDMLocationOfShop)
     {
         ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
         this.serialNumber = serialNumber;
         this.name = name;
         this.PPK = PPK;
-        this.SDKLocationOfShop = SDKLocationOfShop;
+        this.SDMLocationOfShop = SDMLocationOfShop;
     }
 
-    public Shop(SDMStore shop)
+    public Store(SDMStore shop)
     {
         ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
         this.serialNumber = shop.getId();
         this.name = shop.getName();
         this.PPK = shop.getDeliveryPpk();
-        SDKLocation location = new SDKLocation(shop.getLocation());
-        this.SDKLocationOfShop = location;
+        SDMLocation location = new SDMLocation(shop.getLocation());
+        this.SDMLocationOfShop = location;
 
     }
 
@@ -70,9 +70,9 @@ public class Shop {
         return this.PPK;
     }
 
-    public SDKLocation getLocationOfShop()
+    public SDMLocation getLocationOfShop()
     {
-        return SDKLocationOfShop;
+        return SDMLocationOfShop;
     }
 
     public List<Order> getListOfOrders()

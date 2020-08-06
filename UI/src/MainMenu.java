@@ -68,11 +68,11 @@ public class MainMenu {
     MenuOptionForReadingXMLFile menuOptionForReadingXMLFile;
     MenuOptionForOrderAndBuy menuOptionForOrderAndBuy;
 
-    SDKBase base;
+    Logic base;
 
     public MainMenu()
     {
-        SDKBase base = new SDKBase();
+        Logic base = new Logic();
         menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile(base);
         menuOptionForOrderAndBuy = new MenuOptionForOrderAndBuy(base);
         detailsPrinter = new DetailsPrinter(base);
@@ -131,7 +131,14 @@ public class MainMenu {
         {
             case READ_FROM_XML_FILE:
                 //TODO
-                menuOptionForReadingXMLFile.readFromXMLFile();
+                try
+                {
+                    menuOptionForReadingXMLFile.readFromXMLFile();
+                }
+                catch(Exception e)
+                {
+                    System.out.println("General Error");
+                }
                 break;
             case SHOW_STORE_DETAILS:
                 detailsPrinter.showStoreDetails(true, true);

@@ -3,10 +3,10 @@ import java.util.Set;
 
 public class MenuOptionForOrderAndBuy {
 
-    private SDKBase base;
+    private Logic base;
     private DetailsPrinter detailsPrinter;
 
-    public MenuOptionForOrderAndBuy(SDKBase base) {
+    public MenuOptionForOrderAndBuy(Logic base) {
         this.base = base;
         detailsPrinter = new DetailsPrinter(base);
     }
@@ -22,7 +22,7 @@ public class MenuOptionForOrderAndBuy {
         do {
             detailsPrinter.showItemsInSystemAndPricesOfStore(inputSerialIdOfShop);
             int inputSerialIdOfItem = inputItemSerialId(inputSerialIdOfShop);
-            SDKItem.TypeOfMeasure typeOfMeasure = base.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();
+            Item.TypeOfMeasure typeOfMeasure = base.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();
             switch (typeOfMeasure) {
                 case Quantity:
                     int quantityOfItem = inputQuantityOfItemToBuy(inputSerialIdOfItem);
@@ -79,7 +79,7 @@ public class MenuOptionForOrderAndBuy {
         Scanner sc = new Scanner(System.in);  // Create a Scanner object
         boolean goodChoice = false;
         int inputOfItemSerialId = 0;
-        Shop store = base.getStoreBySerialID(storeSerialID);
+        Store store = base.getStoreBySerialID(storeSerialID);
 
         do {
             detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialID);
@@ -155,7 +155,7 @@ public class MenuOptionForOrderAndBuy {
 
                 inputOfCoordinate = sc.nextInt();
 
-                if (SDKLocation.checkIfLocationCoordinatesIsValid(inputOfCoordinate)) {
+                if (SDMLocation.checkIfLocationCoordinatesIsValid(inputOfCoordinate)) {
                     goodChoice = true;
                 }
                 else
@@ -172,11 +172,11 @@ public class MenuOptionForOrderAndBuy {
         return inputOfCoordinate;
     }
 
-    public SDKLocation inputField()
+    public SDMLocation inputField()
     {
         int cooridnateX = inputCoordinate("x");
         int cooridnateY = inputCoordinate("y");
-        return new SDKLocation(cooridnateX, cooridnateY);
+        return new SDMLocation(cooridnateX, cooridnateY);
     }
 
 

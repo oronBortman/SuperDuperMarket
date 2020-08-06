@@ -1,4 +1,4 @@
-public class SelledItemInStore extends SDKItem{
+public class SelledItemInStore extends Item {
     private int pricePerUnit;
 
     SelledItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int pricePerUnit) {
