@@ -12,10 +12,14 @@ public class MenuOptionForReadingXMLFile {
 
     public void readFromXMLFile() {
         boolean errorInShops = readShopsFromXMLFile();
-        boolean errorInItems = readItemsFromXMLFile();
+        boolean errorInItems;
         if(errorInShops == false)
         {
             errorInItems = readItemsFromXMLFile();
+            if(errorInItems == false)
+            {
+                HandleJAXB.createSellsFromXml("ex1-small.xml", base.getStoresSerialIDMap(),base.getItemsSerialIDMap());
+            }
         }
 
 
@@ -24,46 +28,45 @@ public class MenuOptionForReadingXMLFile {
 
         System.out.println("read from XML file");
 
-        List<Shop> listOfShops = HandleJAXB.readStoresFromXml("ex1-small.xml");
-
-        Map<Integer, Shop> storesSerialIDMap = new HashMap<Integer, Shop>();
-        Map<SDKLocation, Shop> storesLocationMap = new HashMap<SDKLocation, Shop>();
-
-
-        boolean duplicateSerialIdOfShopFound = base.setStoresSerialIDMapParameterOfMethodFromList(listOfShops, storesSerialIDMap);
-        boolean duplicateLocationOfShopFound = base.setStoresLocationMapParameterOfMethodFromList(listOfShops, storesLocationMap);
-
-        if(duplicateSerialIdOfShopFound)
+        boolean error;
+        Map<Integer, Shop>  storesSerialIDMap = HandleJAXB.createStoresSerialIDMapFromXml("ex1-small.xml");
+        error=false;
+        if(storesSerialIDMap != null)
         {
-            System.out.println("Found shops with same Serial ID! Please fix your xml file and try again");
-        }
-        else if(duplicateLocationOfShopFound)
-        {
-            System.out.println("Found shops with same location. Please fix your xml file and try again");
+            base.setStoresSerialIDMap(storesSerialIDMap);
+            Map<SDKLocation, Shop>  storesLocationMap = HandleJAXB.createStoresLocationMapFromXml("ex1-small.xml");
+            if(storesLocationMap == null)
+            {
+                error=true;
+            }
+            else
+            {
+                base.setStoresLocationMap(storesLocationMap);
+            }
         }
         else
         {
-            base.setStoresSerialIDMap(storesSerialIDMap);
-            base.setStoresLocationMap(storesLocationMap);
+            error=true;
         }
-        return duplicateSerialIdOfShopFound && duplicateLocationOfShopFound;
+        return error;
     }
 
     private boolean readItemsFromXMLFile() {
         System.out.println("read from XML file");
 
-        List<SDKItem> listOfItems = HandleJAXB.readItemsFromXml("ex1-small.xml");
+        Map<Integer, SDKItem> itemsSerialIDMap = HandleJAXB.createItemsSerialIDMapFromXml("ex1-small.xml");
 
-        Map<Integer, SDKItem> itemsSerialIDMap = new HashMap<Integer, SDKItem>();
+        boolean error;
 
-        boolean duplicateSerialIdOfItemFound = base.setItemsSerialIDMapParameterOfMethodFromList(listOfItems, itemsSerialIDMap);
-
-        if (duplicateSerialIdOfItemFound) {
-            System.out.println("Found items with same Serial ID!! Please fix your xml file and try again");
-        } else {
+        if (itemsSerialIDMap != null) {
             base.setOfItemsSerialID(itemsSerialIDMap);
+            error=false;
         }
-        return duplicateSerialIdOfItemFound;
+        else
+        {
+            error=true;
+        }
+        return error;
     }
 
 }

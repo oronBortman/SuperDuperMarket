@@ -66,6 +66,20 @@ public class Shop {
     {
         return listOfOrders;
     }
+    public boolean checkIfItemIdExists(int itemSerialNumber)
+    {
+        return ItemsSerialIDMap.containsKey(itemSerialNumber);
+    }
+
+    public void addItemToItemSSerialIDMap(SelledItemInStore item)
+    {
+        ItemsSerialIDMap.put(item.getSerialNumber(), item);
+    }
+
+    public Map<Integer, SelledItemInStore> getStoresSerialIDMap()
+    {
+        return ItemsSerialIDMap;
+    }
 
 }
 

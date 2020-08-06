@@ -64,9 +64,14 @@ public class SDKItem {
         return this.serialNumber;
     }
 
-    public String getTypeOfMeasure()
+    public String getTypeOfMeasureStr()
     {
         return typeToMeasureBy.getMeaning();
+    }
+
+    public TypeOfMeasure getTypeOfMeasure()
+    {
+        return typeToMeasureBy;
     }
 
 }

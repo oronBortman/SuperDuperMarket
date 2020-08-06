@@ -25,6 +25,14 @@ public class SDKBase {
     {
         return ordersSerialIDMap.get(orderSerialID);
     }
+    public Map<Integer, Shop> getStoresSerialIDMap()
+    {
+        return storesSerialIDMap;
+    }
+    public Map<Integer, SDKItem> getItemsSerialIDMap()
+    {
+        return itemsSerialIDMap;
+    }
 
     public Set<Integer> getSetOfStoresSerialID()
     {
@@ -96,49 +104,10 @@ public class SDKBase {
         itemsSerialIDMap = itemsSerialIdMap;
     }
 
-    public boolean setItemsSerialIDMapParameterOfMethodFromList(List<SDKItem> listOfItems, Map<Integer, SDKItem> itemsSerialIDMap)
+    public boolean checkIfItemIdExists(int itemSerialID)
     {
-        boolean duplicateSerialIDOfItem=false;
-        for(SDKItem item : listOfItems)
-        {
-            if(itemsSerialIDMap.containsKey(item.getSerialNumber()))
-            {
-                duplicateSerialIDOfItem=true;
-            }
-            //Check if id already exists
-            itemsSerialIDMap.put(item.getSerialNumber(), item);
-        }
-        return duplicateSerialIDOfItem;
+        return itemsSerialIDMap.containsKey(itemSerialID);
     }
 
-    public boolean setStoresSerialIDMapParameterOfMethodFromList(List<Shop> listOfShops, Map<Integer, Shop> storesSerialIDMap)
-    {
-        boolean duplicateSerialIDOfStore=false;
-        for(Shop shop : listOfShops)
-        {
-            if(storesSerialIDMap.containsKey(shop.getSerialNumber()))
-            {
-                duplicateSerialIDOfStore=true;
-            }
-            //Check if id already exists
-            storesSerialIDMap.put(shop.getSerialNumber(), shop);
-        }
-        return duplicateSerialIDOfStore;
-    }
-
-    public boolean setStoresLocationMapParameterOfMethodFromList(List<Shop> listOfShops, Map<SDKLocation, Shop> storesLocationMap)
-    {
-        boolean duplicateLocationOfStore=false;
-        for(Shop shop : listOfShops)
-        {
-            if(storesLocationMap.containsKey(shop.getLocationOfShop()))
-            {
-                duplicateLocationOfStore=true;
-            }
-            //Check if id already exists
-            storesLocationMap.put(shop.getLocationOfShop(), shop);
-        }
-        return duplicateLocationOfStore;
-    }
 
 }

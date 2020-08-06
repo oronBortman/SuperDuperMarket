@@ -8,7 +8,7 @@ import java.io.File;
 import java.io.InputStream;
 import java.util.*;
 
-public class Menu {
+public class MainMenu {
 
     enum mainMenuOptions
     {
@@ -77,7 +77,7 @@ public class Menu {
 
     SDKBase base;
 
-    public Menu()
+    public MainMenu()
     {
         SDKBase base = new SDKBase();
         menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile(base);

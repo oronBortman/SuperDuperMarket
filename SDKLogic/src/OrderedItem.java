@@ -1,5 +1,5 @@
 public class OrderedItem extends SelledItemInStore{
-    private int amountOfItemO1rdered;
+    private int amountOfItemOrdered;
     private int TotalCostOfItemOrdered;
 
 

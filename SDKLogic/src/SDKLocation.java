@@ -34,4 +34,9 @@ public class SDKLocation {
     public int getY(){
         return this.y;
     }
+
+    public static boolean checkIfLocationCoordinatesIsValid(int coord)
+    {
+        return ((coord >= 1 && coord <= 50));
+    }
 }

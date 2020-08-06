@@ -19,9 +19,10 @@ public class DetailsPrinter {
 
             System.out.println("Serial number of Store: " + shopSerialID);
             System.out.println("Name of Store:" + shop.getName());
-            System.out.println("List of items the Store sells:" + shop.getName());
+            System.out.println("List of items the Store sells:");
             showSelledItemsDetailsOfStore(shopSerialID);
-            showOrdersDetailsOfStore(shopSerialID);
+            //TODO:
+           // showOrdersDetailsOfStore(shopSerialID);
             System.out.println("PPK: " + shop.getPPK());
             System.out.println("Total payment of delivers till now:" + shop.calcProfitOfDelivers());
         }
@@ -33,18 +34,18 @@ public class DetailsPrinter {
         Set<Integer> setOfItemsSerialID = shop.getSetOfItemsSerialID();
         SelledItemInStore item;
 
-
         for(Integer itemSerialID : setOfItemsSerialID)
         {
             item = shop.getItemySerialID(itemSerialID);
 
-            System.out.println("a. Serial IDL" + itemSerialID);
-            System.out.println("a. Name:" + item.getName());
-            System.out.println("Type of buying:" + item.getTypeOfMeasure());
-            System.out.println("Price per unit:" + item.getPricePerUnit());
+            System.out.println("a.Serial ID:" + itemSerialID);
+            System.out.println("b.Name:" + item.getName());
+            System.out.println("c.Type of buying:" + item.getTypeOfMeasureStr());
+            System.out.println("d.Price per unit:" + item.getPricePerUnit());
             //TODO
-            System.out.println("Total items that sold in store");
+            System.out.println("e.Total items that sold in store");
             System.out.print("Orders that was done from this store:");
+            System.out.println("\n");
             //If there orders
 
         }
@@ -77,12 +78,13 @@ public class DetailsPrinter {
 
         for (Integer itemSerialID : setOfItemsSerialID) {
             item = base.getItemySerialID(itemSerialID);
-            System.out.println("1.Serial IDL" + itemSerialID);
+            System.out.println("1.Serial ID: " + itemSerialID);
             System.out.println("2.Name:" + item.getName());
-            System.out.println("3.Type of buying:" + item.getTypeOfMeasure());
+            System.out.println("3.Type of buying:" + item.getTypeOfMeasureStr());
             System.out.println("4.How many shops selles the item: " + base.getHowManyShopsSellesAnItem(itemSerialID));
             System.out.println("5.Average price of item in Super Duper Market: " + base.getAvgPriceOfItemInSDK(itemSerialID));
             System.out.println("6.How many times the the item has been soled in Super Duper Market: " + base.getHowManyTimesTheItemSoled(itemSerialID));
+            System.out.println("\n");
         }
     }
 
