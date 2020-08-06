@@ -1,3 +1,5 @@
+import jaxb.schema.generated.SDMStore;
+
 import java.util.*;
 
 public class Shop {
@@ -15,6 +17,15 @@ public class Shop {
         this.name = name;
         this.PPK = PPK;
         this.SDKLocationOfShop = SDKLocationOfShop;
+    }
+
+    public Shop(SDMStore shop)
+    {
+        int shopID = shop.getId();
+        String shopName = shop.getName();
+        int shopPpk = shop.getDeliveryPpk();
+        SDKLocation location = new SDKLocation(shop.getLocation());
+
     }
 
     private void addItemToShop(SelledItemInStore selledItemInStore)

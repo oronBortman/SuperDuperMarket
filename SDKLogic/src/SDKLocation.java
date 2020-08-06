@@ -1,3 +1,4 @@
+import jaxb.schema.generated.Location;
 import java.util.Objects;
 
 public class SDKLocation {
@@ -7,6 +8,13 @@ public class SDKLocation {
     public SDKLocation(int coordinateX, int coordinateY) {
         this.x = coordinateX;
         this.y = coordinateY;
+    }
+
+
+    public SDKLocation(Location location)
+    {
+        x = location.getX();
+        y = location.getY();
     }
 
     @Override

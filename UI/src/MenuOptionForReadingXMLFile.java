@@ -1,13 +1,13 @@
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 public class MenuOptionForReadingXMLFile {
     private SDKBase base;
+    private HandleJAXB handleJAXB;
 
     public MenuOptionForReadingXMLFile(SDKBase base)
     {
         this.base = base;
+        this.handleJAXB = new HandleJAXB();
     }
 
     public void readFromXMLFile() {
@@ -18,7 +18,7 @@ public class MenuOptionForReadingXMLFile {
             errorInItems = readItemsFromXMLFile();
             if(errorInItems == false)
             {
-                HandleJAXB.createSellsFromXml("ex1-small.xml", base.getStoresSerialIDMap(),base.getItemsSerialIDMap());
+                handleJAXB.addItemsToStoresFromXml("ex1-small.xml", base.getStoresSerialIDMap(),base.getItemsSerialIDMap());
             }
         }
 
@@ -29,12 +29,12 @@ public class MenuOptionForReadingXMLFile {
         System.out.println("read from XML file");
 
         boolean error;
-        Map<Integer, Shop>  storesSerialIDMap = HandleJAXB.createStoresSerialIDMapFromXml("ex1-small.xml");
+        Map<Integer, Shop>  storesSerialIDMap = handleJAXB.createStoresSerialIDMapFromXml("ex1-small.xml");
         error=false;
         if(storesSerialIDMap != null)
         {
             base.setStoresSerialIDMap(storesSerialIDMap);
-            Map<SDKLocation, Shop>  storesLocationMap = HandleJAXB.createStoresLocationMapFromXml("ex1-small.xml");
+            Map<SDKLocation, Shop>  storesLocationMap = handleJAXB.createStoresLocationMapFromXml("ex1-small.xml");
             if(storesLocationMap == null)
             {
                 error=true;
@@ -54,7 +54,7 @@ public class MenuOptionForReadingXMLFile {
     private boolean readItemsFromXMLFile() {
         System.out.println("read from XML file");
 
-        Map<Integer, SDKItem> itemsSerialIDMap = HandleJAXB.createItemsSerialIDMapFromXml("ex1-small.xml");
+        Map<Integer, SDKItem> itemsSerialIDMap = handleJAXB.createItemsSerialIDMapFromXml("ex1-small.xml");
 
         boolean error;
 

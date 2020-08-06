@@ -1,3 +1,5 @@
+import jaxb.schema.generated.SDMItem;
+
 public class SDKItem {
     private Integer serialNumber;
     private String name;
@@ -18,6 +20,7 @@ public class SDKItem {
                 this.val=val;
             }
         };
+
 
         TypeOfMeasure(String meaning)
         {
@@ -53,6 +56,14 @@ public class SDKItem {
         this.serialNumber = serialNumber;
         this.name = name;
         this.typeToMeasureBy = itemPurchaseCategory;
+    }
+
+    public SDKItem(SDMItem item)
+    {
+        int itemID = item.getId();
+        String itemName = item.getName();
+        String itemPurchaseCategoryStr = item.getPurchaseCategory();
+        SDKItem.TypeOfMeasure itemPurchaseCategory = SDKItem.TypeOfMeasure.convertStringToEnum(itemPurchaseCategoryStr);
     }
     public String getName()
     {
