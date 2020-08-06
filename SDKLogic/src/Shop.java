@@ -21,10 +21,12 @@ public class Shop {
 
     public Shop(SDMStore shop)
     {
-        int shopID = shop.getId();
-        String shopName = shop.getName();
-        int shopPpk = shop.getDeliveryPpk();
+        ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
+        this.serialNumber = shop.getId();
+        this.name = shop.getName();
+        this.PPK = shop.getDeliveryPpk();
         SDKLocation location = new SDKLocation(shop.getLocation());
+        this.SDKLocationOfShop = location;
 
     }
 
@@ -86,6 +88,8 @@ public class Shop {
     {
         ItemsSerialIDMap.put(item.getSerialNumber(), item);
     }
+
+
 
     public Map<Integer, SelledItemInStore> getStoresSerialIDMap()
     {

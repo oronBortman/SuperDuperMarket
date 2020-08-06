@@ -38,6 +38,7 @@
 			<delivery-ppk>20</delivery-ppk>
 			<location x="5" y="4"/>
 			<SDM-prices>
+				<SDM-sell item-id="1" price="30"/>
 				<SDM-sell item-id="2" price="20"/>
 				<SDM-sell item-id="3" price="10"/>
 				<SDM-sell item-id="4" price="50"/>

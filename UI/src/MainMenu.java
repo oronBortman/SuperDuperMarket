@@ -1,11 +1,3 @@
-import jaxb.schema.generated.SDMItem;
-
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-import javax.xml.bind.Marshaller;
-import javax.xml.bind.Unmarshaller;
-import java.io.File;
-import java.io.InputStream;
 import java.util.*;
 
 public class MainMenu {
@@ -71,6 +63,7 @@ public class MainMenu {
             return optionNum == choiceNum;
         }
     }
+
     DetailsPrinter detailsPrinter;
     MenuOptionForReadingXMLFile menuOptionForReadingXMLFile;
     MenuOptionForOrderAndBuy menuOptionForOrderAndBuy;
@@ -141,7 +134,7 @@ public class MainMenu {
                 menuOptionForReadingXMLFile.readFromXMLFile();
                 break;
             case SHOW_STORE_DETAILS:
-                detailsPrinter.showStoreDetails();
+                detailsPrinter.showStoreDetails(true, true);
                 break;
             case SHOW_SYSTEM_ITEM_DETAILS:
                 detailsPrinter.showSytemItemDetails();

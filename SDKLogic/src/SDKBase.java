@@ -15,8 +15,8 @@ public class SDKBase {
         //TODO
         //Check if it's the right place to allocate the new order
         storesLocationMap = new HashMap<SDKLocation, Shop>();
-        Map<Integer, Shop> storesSerialIDMap;
-        Map<Integer, SDKItem> itemsSerialIDMap;
+        Map<Integer, Shop> storesSerialIDMap = new HashMap<Integer, Shop>();
+        Map<Integer, SDKItem> itemsSerialIDMap = new HashMap<Integer, SDKItem>();
         Map<Integer, Order> ordersSerialIDMap = new HashMap<Integer, Order>();
         currentOrderSerialIDInSDK = 1;
     }
@@ -73,16 +73,43 @@ public class SDKBase {
         //Check if it's right to create new order after closing the one before
     }
 
-    //TODO
     public int getHowManyShopsSellesAnItem(Integer itemID)
     {
-        return 1;
+        int howMuchShopsSellsTheItem=0;
+        for(Map.Entry<Integer, Shop> entry: storesSerialIDMap.entrySet())
+        {
+            Shop shop = entry.getValue();
+            if(shop.checkIfItemIdExists(itemID))
+            {
+                howMuchShopsSellsTheItem++;
+            }
+        }
+        return howMuchShopsSellsTheItem;
     }
-    //TODO
+
+    public int sumAllPricesOfItemInShops(Integer itemID)
+    {
+        int sumOfAllPricesOfItemInShops=0;
+        for(Map.Entry<Integer, Shop> entry: storesSerialIDMap.entrySet())
+        {
+            Shop shop = entry.getValue();
+            if(shop.checkIfItemIdExists(itemID))
+            {
+                sumOfAllPricesOfItemInShops+=shop.getItemySerialID(itemID).getPricePerUnit();
+            }
+        }
+        return sumOfAllPricesOfItemInShops;
+    }
+
     public int getAvgPriceOfItemInSDK(Integer itemID)
     {
-        return 1;
+        int sumOfAllPricesOfItemInShops = sumAllPricesOfItemInShops(itemID);
+        int howMuchShopsSellsTheItem = getHowManyShopsSellesAnItem(itemID);
+        int aveargePriceOfItemInSDK = sumOfAllPricesOfItemInShops /  howMuchShopsSellsTheItem;
+        return aveargePriceOfItemInSDK;
+
     }
+
 
     //TODO
     public int getHowManyTimesTheItemSoled(Integer itemID)
@@ -107,6 +134,10 @@ public class SDKBase {
     public boolean checkIfItemIdExists(int itemSerialID)
     {
         return itemsSerialIDMap.containsKey(itemSerialID);
+    }
+    public boolean checkIfStoreExists(int storeSerialID)
+    {
+        return storesSerialIDMap.containsKey(storeSerialID);
     }
 
 

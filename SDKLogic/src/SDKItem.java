@@ -6,21 +6,8 @@ public class SDKItem {
     TypeOfMeasure typeToMeasureBy;
 
     public enum TypeOfMeasure{
-        Quantity("Quantity") {
-            int val;
-            public void setVal(int val)
-            {
-                this.val=val;
-            }
-        },
-        Weight("Weight") {
-            float val;
-            public void setVal(float val)
-            {
-                this.val=val;
-            }
-        };
-
+        Quantity("Quantity"),
+        Weight("Weight");
 
         TypeOfMeasure(String meaning)
         {
@@ -60,10 +47,11 @@ public class SDKItem {
 
     public SDKItem(SDMItem item)
     {
-        int itemID = item.getId();
-        String itemName = item.getName();
+        this.serialNumber = item.getId();
+        this.name = item.getName();
         String itemPurchaseCategoryStr = item.getPurchaseCategory();
         SDKItem.TypeOfMeasure itemPurchaseCategory = SDKItem.TypeOfMeasure.convertStringToEnum(itemPurchaseCategoryStr);
+        this.typeToMeasureBy = itemPurchaseCategory;
     }
     public String getName()
     {

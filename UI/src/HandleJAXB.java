@@ -92,7 +92,6 @@ public class HandleJAXB {
         Map<Integer, SDKItem> itemSerialIDMap = new HashMap<Integer, SDKItem>();
         boolean duplicateSerialIDOfItem=false;
         try {
-            //    Shop(String serialNumber, String name, int PPK, Location locationOfShop)
             SuperDuperMarketDescriptor descriptor = HandleJAXB.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
             SDMItems items = descriptor.getSDMItems();
             List<SDMItem> listOfItems = items.getSDMItem();
@@ -162,7 +161,7 @@ public class HandleJAXB {
                         String itemNameInSDK = itemInSDK.getName();
                         SDKItem.TypeOfMeasure itemMeasureTypeInSDK = itemInSDK.getTypeOfMeasure();
 
-                        SelledItemInStore selledItemInStore = new SelledItemInStore(itemSerialID, itemNameInSDK, itemMeasureTypeInSDK);
+                        SelledItemInStore selledItemInStore = new SelledItemInStore(itemSerialID, itemNameInSDK, itemMeasureTypeInSDK, itemPrice);
                         storesSerialIDMap.get(shopSerialID).addItemToItemSSerialIDMap(selledItemInStore);
                     }
                 }

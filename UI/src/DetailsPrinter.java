@@ -9,7 +9,7 @@ public class DetailsPrinter {
         this.base = base;
     }
 
-    public void showStoreDetails() {
+   /* public void showStoreWithSellsItemsDetails() {
         System.out.println("show shop details");
         Set<Integer> setOfShopSerial = base.getSetOfStoresSerialID();
         Shop shop;
@@ -24,12 +24,37 @@ public class DetailsPrinter {
             //TODO:
            // showOrdersDetailsOfStore(shopSerialID);
             System.out.println("PPK: " + shop.getPPK());
-            System.out.println("Total payment of delivers till now:" + shop.calcProfitOfDelivers());
+        }
+
+    }*/
+
+    public void showStoreDetails(boolean showItemsInStore, boolean showOrderDetailsOfStore) {
+        System.out.println("show shop general details");
+        Set<Integer> setOfShopSerial = base.getSetOfStoresSerialID();
+        Shop shop;
+        for(Integer shopSerialID : setOfShopSerial)
+        {
+            shop = base.getStoreBySerialID(shopSerialID);
+
+            System.out.println("Serial number of Store: " + shopSerialID);
+            System.out.println("Name of Store:" + shop.getName());
+            System.out.println("List of items the Store sells:");
+            System.out.println("PPK: " + shop.getPPK());
+            if(showItemsInStore)
+            {
+                showSelledItemsDetailsOfStore(shopSerialID, true, true);
+            }
+            if(showOrderDetailsOfStore)
+            {
+                //TODO complete showOrders
+                //showOrdersDetailsOfStore(shopSerialID);
+                System.out.println("Total payment of delivers till now:" + shop.calcProfitOfDelivers());
+            }
         }
 
     }
 
-    public void showSelledItemsDetailsOfStore(Integer storeSerialID) {
+    public void showSelledItemsDetailsOfStore(Integer storeSerialID, boolean showItemsSoldDetails, boolean showOrdersDetails) {
         Shop shop = base.getStoreBySerialID(storeSerialID);
         Set<Integer> setOfItemsSerialID = shop.getSetOfItemsSerialID();
         SelledItemInStore item;
@@ -42,15 +67,43 @@ public class DetailsPrinter {
             System.out.println("b.Name:" + item.getName());
             System.out.println("c.Type of buying:" + item.getTypeOfMeasureStr());
             System.out.println("d.Price per unit:" + item.getPricePerUnit());
-            //TODO
-            System.out.println("e.Total items that sold in store");
-            System.out.print("Orders that was done from this store:");
-            System.out.println("\n");
-            //If there orders
+            if(showItemsSoldDetails)
+            {
+                System.out.println("e.Total items that sold in store " + base.getHowManyTimesTheItemSoled(itemSerialID));
+            }
+            if(showOrdersDetails)
+            {
+                System.out.print("Orders that was done from this store:");
 
+            }
+            System.out.println("\n");
         }
     }
 
+    public void showItemsInSystemAndPricesOfStore(Integer storeSerialID) {
+        Shop shop = base.getStoreBySerialID(storeSerialID);
+        Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
+
+        for(Integer itemSerialID : setOfItemsSerialID)
+        {
+            SDKItem itemInSystem = base.getItemBySerialID(itemSerialID);
+            boolean itemExistsInStore = shop.checkIfItemIdExists(itemSerialID);
+
+            System.out.println("a.Serial ID:" + itemSerialID);
+            System.out.println("b.Name:" + itemInSystem.getName());
+            System.out.println("c.Type of buying:" + itemInSystem.getTypeOfMeasureStr());
+            if(itemExistsInStore)
+            {
+                SelledItemInStore itemInStore = shop.getItemySerialID(itemSerialID);
+                System.out.println("d.Price per unit:" + itemInStore.getPricePerUnit());
+            }
+            else
+            {
+                System.out.println("The store doesn't sell this item");
+            }
+            System.out.println("\n");
+        }
+    }
     public void showOrdersDetailsOfStore(Integer storeSerialID) {
         Shop shop = base.getStoreBySerialID(storeSerialID);
         List<Order> listOfOrdersInStore = shop.getListOfOrders();
