@@ -47,4 +47,15 @@ public class SDMLocation {
     {
         return ((coord >= 1 && coord <= 50));
     }
+
+    int differenceBetweenXCoordinates(int coordinateXOfOtherLocation)
+    {
+        return x - coordinateXOfOtherLocation;
+    }
+
+    int differenceBetweenYCoordinates(int coordinateYOfOtherLocation)
+    {
+        return y - coordinateYOfOtherLocation;
+    }
+
 }

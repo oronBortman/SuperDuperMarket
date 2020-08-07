@@ -243,18 +243,18 @@ public class Logic {
             for (SDMSell singleSellDetails : sellsDetails) {
                 int itemSerialID = singleSellDetails.getItemId();
                 int itemPrice = singleSellDetails.getPrice();
-
+                String storeName = store.getName();
                 if (itemsSerialIDMap != null && itemsSerialIDMap.containsKey(itemSerialID) == false) {
-                    throw new SerialIDNotExistException(itemSerialID, store.getName());
+                    throw new SerialIDNotExistException(itemSerialID, storeName);
                 } else if (sellsDetailsMap.containsKey(itemSerialID)) {
-                    throw new duplicateSerialIDException(itemSerialID, store.getName());
+                    throw new duplicateSerialIDException(itemSerialID, storeName);
                 } else {
                     sellsDetailsMap.put(itemSerialID, itemPrice);
-                    Item itemInSDK = itemsSerialIDMap.get(itemSerialID);
-                    String itemNameInSDK = itemInSDK.getName();
-                    Item.TypeOfMeasure itemMeasureTypeInSDK = itemInSDK.getTypeOfMeasure();
+                    Item itemInSDM = itemsSerialIDMap.get(itemSerialID);
+                    String itemNameInSDM = itemInSDM.getName();
+                    Item.TypeOfMeasure itemMeasureTypeInSDK = itemInSDM.getTypeOfMeasure();
 
-                    SelledItemInStore selledItemInStore = new SelledItemInStore(itemSerialID, itemNameInSDK, itemMeasureTypeInSDK, itemPrice);
+                    SelledItemInStore selledItemInStore = new SelledItemInStore(itemSerialID, itemNameInSDM, itemMeasureTypeInSDK, itemPrice);
                     storesSerialIDMap.get(shopSerialID).addItemToItemSSerialIDMap(selledItemInStore);
                 }
             }

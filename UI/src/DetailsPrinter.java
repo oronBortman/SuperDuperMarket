@@ -115,8 +115,8 @@ public class DetailsPrinter {
                 System.out.println("a. Date:" + order.getDate().toString());
                 System.out.println("a. Amount of items in order:" + order.calcSumOfItems());
                 System.out.println("c. Total price of items:" + order.calcTotalPriceOfItems());
-                System.out.println("d. Delivery price:" + order.calcDeliveryPrice());
-                System.out.println("c. Total price of order:" + order.calcTotalPriceOfOrder());
+                System.out.println("d. Delivery price:" + order.getDeliveryPriceAfterOrderIsDone());
+                System.out.println("c. Total price of order:" + order.getTotalPriceOfOrderAfterItsDone());
             }
         }
         else
@@ -162,8 +162,8 @@ public class DetailsPrinter {
                 System.out.println("3. Details about items in order:" + order.getShop().getSerialNumber());
                 System.out.println("   Total amount of type of items:" + order.calcSumAmountOfItemsType());
                 System.out.println("   Total amount of items:" + order.calcSumOfItems());
-                System.out.println("Delivery price: " + order.calcDeliveryPrice());
-                System.out.println("Total order price: " + order.calcTotalPriceOfOrder());
+                System.out.println("Delivery price: " + order.getDeliveryPriceAfterOrderIsDone());
+                System.out.println("Total order price: " + order.getTotalPriceOfOrderAfterItsDone());
             }
         }
         else
