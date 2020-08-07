@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.Scanner;
 import java.util.Set;
 
@@ -13,34 +14,69 @@ public class MenuOptionForOrderAndBuy {
 
     public void orderAndBuy() {
         Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        boolean finishOrder = false;
-        String choiceOfUser;
-
-        detailsPrinter.showStoreDetails(false, false);
+        Date date = inputDate();
+        detailsPrinter.showStoresDetails(false, false);
         int inputSerialIdOfShop = inputSerialIDOfShop();
+        Store store = base.getStoreBySerialID(inputSerialIdOfShop);
+        OpenedOrder openedOrder = new OpenedOrder(store);
+        inputItemsUntilQuitSign( store, openedOrder);
+        //TODO
+        //need to show user details of order and close it
+    }
+
+    //TODO
+    public Date inputDate()
+    {
+        return new Date();
+    }
+    public void inputItemsUntilQuitSign(Store store, OpenedOrder openedOrder)
+    {
+        int storeSerialId = store.getSerialNumber();
+        String choiceOfUser;
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
+
         do {
-            detailsPrinter.showItemsInSystemAndPricesOfStore(inputSerialIdOfShop);
-            int inputSerialIdOfItem = inputItemSerialId(inputSerialIdOfShop);
+            detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialId);
+            int inputSerialIdOfItem = inputItemSerialId(storeSerialId);
+            SelledItemInStore selledItem = store.getItemySerialID(inputSerialIdOfItem);
+            String nameOfItem = selledItem.getName();
+            int priceOfItem = selledItem.getPricePerUnit();
             Item.TypeOfMeasure typeOfMeasure = base.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();
+
             switch (typeOfMeasure) {
                 case Quantity:
                     int quantityOfItem = inputQuantityOfItemToBuy(inputSerialIdOfItem);
+                    if(openedOrder.checkIfItemAlreadyExistsInOrder(inputSerialIdOfItem))
+                    {
+                        OrderedItemByQuantity orderedItemByQuantity = (OrderedItemByQuantity)openedOrder.getItemInOrder(inputSerialIdOfItem);
+                        orderedItemByQuantity.increaseAmountOfItemOrderedByUnits(quantityOfItem);
+                    }
+                    else
+                    {
+                        OrderedItemByQuantity orderedItemByQuantity = new OrderedItemByQuantity(inputSerialIdOfItem, nameOfItem,priceOfItem, quantityOfItem);
+                        openedOrder.addItemToItemsMapOfOrder(orderedItemByQuantity);
+                    }
                     break;
                 case Weight:
-                    float weightOfItem = inputWeightOfItemToBuy(inputSerialIdOfItem);
+                    double weightOfItem = inputWeightOfItemToBuy(inputSerialIdOfItem);
+                    if(openedOrder.checkIfItemAlreadyExistsInOrder(inputSerialIdOfItem))
+                    {
+                        OrderedItemByWeight orderedItemByWeight = (OrderedItemByWeight)openedOrder.getItemInOrder(inputSerialIdOfItem);
+                        orderedItemByWeight.increaseAmountOfItemOrderedByWeight(weightOfItem);
+                    }
+                    else
+                    {
+                        OrderedItemByWeight orderedItemByWeight = new OrderedItemByWeight(inputSerialIdOfItem, nameOfItem,priceOfItem, weightOfItem);
+                        openedOrder.addItemToItemsMapOfOrder(orderedItemByWeight);
+                    }
+
                     break;
                 default:
                     break;
             }
             System.out.println("Enter q if you want finish the order");
             choiceOfUser = sc.nextLine();
-            if(choiceOfUser.equals("q"))
-            {
-                finishOrder = true;
-            }
-
-        } while(finishOrder == false);
+        } while(choiceOfUser.equals("q"));
     }
 
     public int inputSerialIDOfShop() {
@@ -51,7 +87,7 @@ public class MenuOptionForOrderAndBuy {
         do {
             System.out.println("Please enter the serial id of the shop use want to buy from");
             if (sc.hasNextInt()) {
-                detailsPrinter.showStoreDetails(false, false);
+                detailsPrinter.showStoresDetails(false, false);
                 inputOfSerialId = sc.nextInt();
 
                 if (base.checkIfStoreExists(inputOfSerialId)) {
@@ -69,10 +105,6 @@ public class MenuOptionForOrderAndBuy {
         while (goodChoice == false);
         return inputOfSerialId;
     }
-    /*public Date inputDate()
-    {
-
-    }*/
 
     public int inputItemSerialId(int storeSerialID)
     {
@@ -149,7 +181,7 @@ public class MenuOptionForOrderAndBuy {
         boolean goodChoice = false;
         int inputOfCoordinate = 0;
         do {
-            detailsPrinter.showStoreDetails(false, false);
+            detailsPrinter.showStoresDetails(false, false);
             System.out.println("Please enter your " + nameOfCoordinate + " coordinate");
             if (sc.hasNextInt()) {
 

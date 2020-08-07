@@ -1,20 +1,32 @@
-public class OrderedItem extends SelledItemInStore{
-    private int amountOfItemOrdered;
-    private int TotalCostOfItemOrdered;
+public abstract class OrderedItem extends SelledItemInStore{
+    private int amountOfItemOrderedByUnits;
 
-
-    OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {
+    /*OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {
         super(serialNumber, name, purchaseCategory, price);
+    }*/
+
+    OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price, int amountOfItemOrderedByUnits) {
+        super(serialNumber, name, purchaseCategory, price);
+        this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
 
-    public int getTotalPriceOfItemOrderedByAmount()
+    public abstract double getTotalPriceOfItemOrderedByTypeOfMeasure();
+
+    public int getAmountOfItemOrderedByUnits()
     {
-        return amountOfItemOrdered * getPricePerUnit();
+        return amountOfItemOrderedByUnits;
     }
 
-    public int getAmountOfItemOrdered()
+    public int getTotalPriceOfItemOrderedByUnits()
     {
-        return amountOfItemOrdered;
+        return amountOfItemOrderedByUnits * getPricePerUnit();
     }
+
+    public void setAmountOfItemOrderedByUnits(int amountOfItemOrderedByUnits)
+    {
+        this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
+    }
+
+
 
 }

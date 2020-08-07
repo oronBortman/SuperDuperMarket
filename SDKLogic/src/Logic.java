@@ -9,7 +9,7 @@ public class Logic {
     private Map<SDMLocation, Store> storesLocationMap;
     private Map<Integer, Store> storesSerialIDMap;
     private Map<Integer, Item> itemsSerialIDMap;
-    private Map<Integer, Order> ordersSerialIDMap;
+    private Map<Integer, ClosedOrder> ordersSerialIDMap;
 
     private static Integer currentOrderSerialIDInSDK;
 
@@ -20,11 +20,11 @@ public class Logic {
         storesLocationMap = new HashMap<SDMLocation, Store>();
         storesSerialIDMap = new HashMap<Integer, Store>();
         itemsSerialIDMap = new HashMap<Integer, Item>();
-        ordersSerialIDMap = new HashMap<Integer, Order>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
         currentOrderSerialIDInSDK = 1;
     }
 
-    public Order getOrderBySerialID(Integer orderSerialID)
+    public ClosedOrder getOrderBySerialID(Integer orderSerialID)
     {
         return ordersSerialIDMap.get(orderSerialID);
     }
@@ -50,7 +50,7 @@ public class Logic {
 
     public Set<Integer> getSetOfOrdersSerialID()
     {
-        return GeneralMethods.<Integer, Order>getSetOfDictionary(ordersSerialIDMap);
+        return GeneralMethods.<Integer, ClosedOrder>getSetOfDictionary(ordersSerialIDMap);
     }
 
     public Item getItemySerialID(Integer serialID)
@@ -68,7 +68,7 @@ public class Logic {
         return itemsSerialIDMap.get(itemID);
     }
 
-    public void closeOrderAndAddItToHistory(Order order)
+    public void closeOrderAndAddItToHistory(OpenedOrder order)
     {
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;

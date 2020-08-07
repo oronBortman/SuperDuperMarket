@@ -6,13 +6,14 @@ public class Store {
     private Integer serialNumber;
     private String name;
     private Map<Integer, SelledItemInStore> ItemsSerialIDMap;
-    private List<Order> listOfOrders;
+    private List<ClosedOrder> listOfOrders;
     private int PPK;
     private SDMLocation SDMLocationOfShop;
 
     Store(Integer serialNumber, String name, int PPK, SDMLocation SDMLocationOfShop)
     {
         ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
+        List<ClosedOrder> listOfOrders = new ArrayList<ClosedOrder>();
         this.serialNumber = serialNumber;
         this.name = name;
         this.PPK = PPK;
@@ -75,7 +76,7 @@ public class Store {
         return SDMLocationOfShop;
     }
 
-    public List<Order> getListOfOrders()
+    public List<ClosedOrder> getListOfOrders()
     {
         return listOfOrders;
     }

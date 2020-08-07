@@ -141,7 +141,7 @@ public class MainMenu {
                 }
                 break;
             case SHOW_STORE_DETAILS:
-                detailsPrinter.showStoreDetails(true, true);
+                detailsPrinter.showStoresDetails(true, true);
                 break;
             case SHOW_SYSTEM_ITEM_DETAILS:
                 detailsPrinter.showSytemItemDetails();
