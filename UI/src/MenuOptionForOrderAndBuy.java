@@ -38,7 +38,6 @@ public class MenuOptionForOrderAndBuy {
         }
     }
 
-    //TODO
     public boolean inputIfUserApprovesOrder()
     {
         System.out.println("Enter y to approve the other or any other key if you don't approve");

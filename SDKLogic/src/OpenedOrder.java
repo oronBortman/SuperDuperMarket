@@ -15,13 +15,11 @@ public class OpenedOrder extends Order{
         return(PPK * distanceBetweenTwoLocations);
     }
 
-    //TODO
     public double calcTotalPriceOfOrder(SDMLocation inputLocation)
     {
         return calcTotalPriceOfItems() + calcDeliveryPrice(inputLocation);
     }
 
-    //TODO
     public double calcTotalPriceOfItems()
     {
         return getOrderedItems().values().stream().mapToDouble(OrderedItem::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
