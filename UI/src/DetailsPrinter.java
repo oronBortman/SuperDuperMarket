@@ -1,4 +1,3 @@
-import java.util.List;
 import java.util.Set;
 
 public class DetailsPrinter {
@@ -29,7 +28,7 @@ public class DetailsPrinter {
     }*/
 
     public void showStoresDetails(boolean showItemsInStore, boolean showOrderDetailsOfStore) {
-        System.out.println("show shop general details");
+        System.out.println("show shop general details\n");
         Set<Integer> setOfShopSerial = base.getSetOfStoresSerialID();
         Store store;
         for(Integer shopSerialID : setOfShopSerial)
@@ -38,43 +37,45 @@ public class DetailsPrinter {
 
             System.out.println("Serial number of Store: " + shopSerialID);
             System.out.println("Name of Store:" + store.getName());
-            System.out.println("List of items the Store sells:");
             System.out.println("PPK: " + store.getPPK());
             if(showItemsInStore)
             {
-                showSelledItemsDetailsOfStore(shopSerialID, true, true);
+                System.out.println("List of items the Store sells:");
+                System.out.println("\n");
+                showSelledItemsDetailsOfStore(shopSerialID, true);
             }
             if(showOrderDetailsOfStore)
             {
                 showOrdersDetailsOfStore(shopSerialID);
-                System.out.println("Total payment of delivers till now:" + store.calcProfitOfDelivers());
+                if(store.getSetOfOrdersSerialID().isEmpty() == false)
+                {
+                    System.out.println("Total payment of delivers till now:" + store.calcProfitOfDelivers());
+                }
+                else
+                {
+                    System.out.println("There were no delivers because there were no orders");
+                }
             }
+            System.out.println("//--------------------------------------------------------------------------------//\n");
         }
 
     }
 
-    public void showSelledItemsDetailsOfStore(Integer storeSerialID, boolean showItemsSoldDetails, boolean showOrdersDetails) {
+    public void showSelledItemsDetailsOfStore(Integer storeSerialID, boolean showItemsSoldDetails) {
         Store store = base.getStoreBySerialID(storeSerialID);
         Set<Integer> setOfItemsSerialID = store.getSetOfItemsSerialID();
         SelledItemInStore item;
 
         for(Integer itemSerialID : setOfItemsSerialID)
         {
-            item = store.getItemySerialID(itemSerialID);
-
-            System.out.println("a.Serial ID:" + itemSerialID);
-            System.out.println("b.Name:" + item.getName());
-            System.out.println("c.Type of buying:" + item.getTypeOfMeasureStr());
-            System.out.println("d.Price per unit:" + item.getPricePerUnit());
+            item = store.getItemBySerialID(itemSerialID);
+            System.out.println("    Name:" + item.getName());
+            System.out.println("    Serial ID:" + itemSerialID);
+            System.out.println("    Type of buying:" + item.getTypeOfMeasureStr());
+            System.out.println("    Price per unit:" + item.getPricePerUnit());
             if(showItemsSoldDetails)
             {
-                //TODO
-               // System.out.println("e.Total items that sold in store " + base.getHowManyTimesTheItemSoled(itemSerialID));
-            }
-            if(showOrdersDetails)
-            {
-                System.out.print("Orders that was done from this store:");
-
+                System.out.println("    Total items that sold in store: " + store.getAmountOfItemSoled(itemSerialID));
             }
             System.out.println("\n");
         }
@@ -94,7 +95,7 @@ public class DetailsPrinter {
             System.out.println("c.Type of buying:" + itemInSystem.getTypeOfMeasureStr());
             if(itemExistsInStore)
             {
-                SelledItemInStore itemInStore = store.getItemySerialID(itemSerialID);
+                SelledItemInStore itemInStore = store.getItemBySerialID(itemSerialID);
                 System.out.println("d.Price per unit:" + itemInStore.getPricePerUnit());
             }
             else
@@ -106,18 +107,21 @@ public class DetailsPrinter {
     }
     public void showOrdersDetailsOfStore(Integer storeSerialID) {
         Store store = base.getStoreBySerialID(storeSerialID);
-        List<ClosedOrder> listOfOrdersInStore = store.getListOfOrders();
-        if(listOfOrdersInStore.isEmpty() == false)
+        Set<Integer> setOfSerialIDOfOrdersInStore = store.getSetOfOrdersSerialID();
+        if(setOfSerialIDOfOrdersInStore.isEmpty() == false)
         {
-            for(ClosedOrder closedOrder : listOfOrdersInStore)
+            System.out.println("Orders that was done from this store:");
+            for(int serialIdOfOrder : setOfSerialIDOfOrdersInStore)
             {
-                System.out.println("Orders that was done from this store:");
+                ClosedOrder closedOrder = store.getOrderBySerialID(serialIdOfOrder);
+                System.out.println("Serial key of order: " + serialIdOfOrder);
                 //TODO
                 //System.out.println("a. Date:" + closedOrder.getDate().toString());
-                System.out.println("a. Amount of items in order:" + closedOrder.getTotalAmountOfItemsByUnit());
-                System.out.println("c. Total price of items:" + closedOrder.getTotalPriceOfItems());
-                System.out.println("d. Delivery price:" + closedOrder.getDeliveryPriceAfterOrder());
-                System.out.println("c. Total price of order:" + closedOrder.getTotalPriceOfOrder());
+                System.out.println("Amount of items in order:" + closedOrder.getTotalAmountOfItemsByUnit());
+                System.out.println("Total price of items:" + closedOrder.getTotalPriceOfItems());
+                System.out.println("Delivery price:" + closedOrder.getDeliveryPriceAfterOrder());
+                System.out.println("Total price of order:" + closedOrder.getTotalPriceOfOrder());
+                System.out.println("--------------------------------------------------------");
             }
         }
         else
@@ -205,6 +209,7 @@ public class DetailsPrinter {
             System.out.println("Amount of this item in the order: " + orderedItem.getAmountOfItemOrderedByUnits());
         }
         System.out.println("Total price of item in order: " + orderedItem.getTotalPriceOfItemOrderedByTypeOfMeasure());
+        System.out.println("\n");
     }
 
 }

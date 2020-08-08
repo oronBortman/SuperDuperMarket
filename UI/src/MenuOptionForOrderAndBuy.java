@@ -15,7 +15,6 @@ public class MenuOptionForOrderAndBuy {
     public void orderAndBuy() {
         Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         Date date = inputDate();
-        detailsPrinter.showStoresDetails(false, false);
         int inputSerialIdOfShop = inputSerialIDOfShop();
         //TODO
         //input date
@@ -34,7 +33,9 @@ public class MenuOptionForOrderAndBuy {
         System.out.println("Delivery price: " + openedOrder.calcDeliveryPrice(locationOfUser));
         if(inputIfUserApprovesOrder())
         {
-            base.addClosedOrderToHistory(openedOrder.closeOrder(locationOfUser));
+            ClosedOrder closedOrder = openedOrder.closeOrder(locationOfUser);
+            base.addClosedOrderToHistory(closedOrder);
+            store.addClosedOrderToHistory(closedOrder);
         }
     }
 
@@ -60,7 +61,7 @@ public class MenuOptionForOrderAndBuy {
         do {
             detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialId);
             int inputSerialIdOfItem = inputItemSerialId(storeSerialId);
-            SelledItemInStore selledItem = store.getItemySerialID(inputSerialIdOfItem);
+            SelledItemInStore selledItem = store.getItemBySerialID(inputSerialIdOfItem);
             String nameOfItem = selledItem.getName();
             int priceOfItem = selledItem.getPricePerUnit();
             Item.TypeOfMeasure typeOfMeasure = base.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();
@@ -107,21 +108,20 @@ public class MenuOptionForOrderAndBuy {
         int inputOfSerialId = 0;
 
         do {
+            detailsPrinter.showStoresDetails(false, false);
             System.out.println("Please enter the serial id of the shop use want to buy from");
             if (sc.hasNextInt()) {
-                detailsPrinter.showStoresDetails(false, false);
                 inputOfSerialId = sc.nextInt();
-
                 if (base.checkIfStoreExists(inputOfSerialId)) {
                     goodChoice = true;
                 } else {
-                    System.out.println("Store doesn't exist. Please and serial id of the store again.");
+                    System.out.println("Store doesn't exist. Please enter the serial id of the store again.");
                 }
             }
             else
             {
-                sc.next();
                 System.out.println("You didn't entered a number!");
+                sc.next();
             }
         }
         while (goodChoice == false);
@@ -202,7 +202,6 @@ public class MenuOptionForOrderAndBuy {
         boolean goodChoice = false;
         int inputOfCoordinate = 0;
         do {
-            detailsPrinter.showStoresDetails(false, false);
             System.out.println("Please enter your " + nameOfCoordinate + " coordinate");
             if (sc.hasNextInt()) {
 
@@ -214,6 +213,7 @@ public class MenuOptionForOrderAndBuy {
                 else
                 {
                     System.out.println("The location is not valid! try again");
+                    sc.next();
                 }
             }
             else {

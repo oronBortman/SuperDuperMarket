@@ -13,6 +13,12 @@ public class Order {
         orderedItems = new HashMap<Integer, OrderedItem>();
         this.storeUsed = storeUsed;
     }
+
+    Order(Store storeUsed, Map<Integer, OrderedItem> orderedItems )
+    {
+        this.orderedItems = orderedItems;
+        this.storeUsed = storeUsed;
+    }
     //TODO
     public Date getDate()
     {
@@ -36,6 +42,20 @@ public class Order {
     public void addItemToItemsMapOfOrder(OrderedItem orderedItem)
     {
         orderedItems.put(orderedItem.getSerialNumber(), orderedItem);
+    }
+
+    public int getAmountOfCertainItemByUnit(int serialId)
+    {
+        int amountOfCertainItemByUnit;
+        if(orderedItems.containsKey(serialId))
+        {
+            amountOfCertainItemByUnit = orderedItems.get(serialId).getAmountOfItemOrderedByUnits();
+        }
+        else
+        {
+            amountOfCertainItemByUnit = 0;
+        }
+        return amountOfCertainItemByUnit;
     }
 
 }

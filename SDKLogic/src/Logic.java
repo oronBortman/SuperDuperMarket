@@ -102,7 +102,7 @@ public class Logic {
             Store store = entry.getValue();
             if(store.checkIfItemIdExists(itemID))
             {
-                sumOfAllPricesOfItemInShops+= store.getItemySerialID(itemID).getPricePerUnit();
+                sumOfAllPricesOfItemInShops+= store.getItemBySerialID(itemID).getPricePerUnit();
             }
         }
         return sumOfAllPricesOfItemInShops;
