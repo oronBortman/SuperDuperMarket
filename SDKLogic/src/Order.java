@@ -58,4 +58,9 @@ public class Order {
         return amountOfCertainItemByUnit;
     }
 
+    public boolean checkIfItemExistsInOrder(int serialId)
+    {
+        return orderedItems.containsKey(serialId);
+    }
+
 }
