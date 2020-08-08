@@ -1,24 +1,18 @@
 public class ClosedOrder extends Order {
-    private String serialNumber;
+    private Integer serialNumber;
     private double deliveryPrice;
     private double totalPriceOfOrder;
-    private int totalAmountOfItems;
+    private int totalAmountOfItemsByUnit;
+    private int totalAmountOfItemTypes;
     private double totalPriceOfItems;
-    public int calcTotalAmountOfItemsByUnit()
-    {
-        return getOrderedItems().values().stream().mapToInt(OrderedItem::getTotalPriceOfItemOrderedByUnits).sum();
-    }
-
-    //TODO
-    public double calcTotalPriceOfCertainItem(int serialIdOfItem)
-    {
-        return getOrderedItems().get(serialIdOfItem).getTotalPriceOfItemOrderedByTypeOfMeasure();
-    }    public ClosedOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItems, int totalPriceOfItems, Store storeUsed)
+   public ClosedOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed)
     {
         super(storeUsed);
+        this.serialNumber = Logic.getCurrentOrderSerialIDInSDK();
         this.deliveryPrice = deliveryPrice;
         this.totalPriceOfOrder = totalPriceOfOrder;
-        this.totalAmountOfItems = totalAmountOfItems;
+        this.totalAmountOfItemsByUnit = totalAmountOfItemsByUnit;
+        this.totalAmountOfItemTypes = totalAmountOfItemTypes;
         this.totalPriceOfItems = totalPriceOfItems;
     }
     public double getDeliveryPriceAfterOrder() {
@@ -30,12 +24,17 @@ public class ClosedOrder extends Order {
         return totalPriceOfOrder;
     }
 
-    public int getTotalAmountOfItems() {
-        return totalAmountOfItems;
+    public int getTotalAmountOfItemsByUnit() {
+        return totalAmountOfItemsByUnit;
+    }
+
+    public int getTotalAmountOfItemTypes() {
+        return totalAmountOfItemTypes;
     }
 
     public double getTotalPriceOfItems()
     {
         return totalPriceOfItems;
     }
+
 }

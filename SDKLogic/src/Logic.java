@@ -11,7 +11,7 @@ public class Logic {
     private Map<Integer, Item> itemsSerialIDMap;
     private Map<Integer, ClosedOrder> ordersSerialIDMap;
 
-    private static Integer currentOrderSerialIDInSDK;
+    private static Integer currentOrderSerialIDInSDK = 1;
 
     Logic()
     {
@@ -22,6 +22,10 @@ public class Logic {
         itemsSerialIDMap = new HashMap<Integer, Item>();
         ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
         currentOrderSerialIDInSDK = 1;
+    }
+
+    public static Integer getCurrentOrderSerialIDInSDK() {
+        return currentOrderSerialIDInSDK;
     }
 
     public ClosedOrder getOrderBySerialID(Integer orderSerialID)
@@ -68,7 +72,7 @@ public class Logic {
         return itemsSerialIDMap.get(itemID);
     }
 
-    public void closeOrderAndAddItToHistory(OpenedOrder order)
+    public void addClosedOrderToHistory(ClosedOrder order)
     {
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;

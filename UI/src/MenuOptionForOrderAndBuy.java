@@ -17,16 +17,39 @@ public class MenuOptionForOrderAndBuy {
         Date date = inputDate();
         detailsPrinter.showStoresDetails(false, false);
         int inputSerialIdOfShop = inputSerialIDOfShop();
+        //TODO
+        //input date
+        int coordinateX = inputCoordinate("x");
+        int cooridnateY = inputCoordinate("y");
+        SDMLocation locationOfUser = new SDMLocation(coordinateX, cooridnateY);
         Store store = base.getStoreBySerialID(inputSerialIdOfShop);
         OpenedOrder openedOrder = new OpenedOrder(store);
         inputItemsUntilQuitSign( store, openedOrder);
         //TODO
+        //need to check if basket is empty and then exit and not completing the order?
         //need to show user details of order and close it
+        detailsPrinter.showItemsDetailsOfOpenedOrder(openedOrder);
+        System.out.println("Price Per Kilometer: " + store.getPPK());
+        System.out.println("Air distance from store: " + locationOfUser.getAirDistanceToOtherLocation(store.getLocationOfShop()));
+        System.out.println("Delivery price: " + openedOrder.calcDeliveryPrice(locationOfUser));
+        if(inputIfUserApprovesOrder())
+        {
+            base.addClosedOrderToHistory(openedOrder.closeOrder(locationOfUser));
+        }
     }
 
     //TODO
+    public boolean inputIfUserApprovesOrder()
+    {
+        System.out.println("Enter y to approve the other or any other key if you don't approve");
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
+        String choiceOfUser = sc.nextLine();
+        return choiceOfUser.equals("y");
+    }
+
     public Date inputDate()
     {
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
         return new Date();
     }
     public void inputItemsUntilQuitSign(Store store, OpenedOrder openedOrder)
@@ -76,7 +99,7 @@ public class MenuOptionForOrderAndBuy {
             }
             System.out.println("Enter q if you want finish the order");
             choiceOfUser = sc.nextLine();
-        } while(choiceOfUser.equals("q"));
+        } while(choiceOfUser.equals("q") == false);
     }
 
     public int inputSerialIDOfShop() {
@@ -173,7 +196,6 @@ public class MenuOptionForOrderAndBuy {
         while (goodChoice == false);
         return weightOfItemToBuy;
     }
-
 
     public int inputCoordinate(String nameOfCoordinate)
     {

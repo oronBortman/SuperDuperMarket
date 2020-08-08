@@ -58,4 +58,15 @@ public class SDMLocation {
         return y - coordinateYOfOtherLocation;
     }
 
+    public double getAirDistanceToOtherLocation(SDMLocation secondLocation)
+    {
+        int pow = 2;
+        int differenceBetweenXCoordinates = differenceBetweenXCoordinates(secondLocation.getX());
+        double powOfDifferenceBetweenXCoordinates = Math.pow(differenceBetweenXCoordinates, pow);
+        int differenceBetweenYCoordinates = differenceBetweenYCoordinates(secondLocation.getY());
+        double powOfDifferenceBetweenYCoordinates = Math.pow(differenceBetweenYCoordinates, pow);
+        double sumOfPowOfCooridnateDifferences = powOfDifferenceBetweenXCoordinates + powOfDifferenceBetweenYCoordinates;
+        return(Math.sqrt(sumOfPowOfCooridnateDifferences));
+    }
+
 }

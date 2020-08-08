@@ -10,9 +10,10 @@ public class Order {
 
     Order(Store storeUsed)
     {
-        Map<Integer, OrderedItem> orderedItems = new HashMap<Integer, OrderedItem>();
-
+        orderedItems = new HashMap<Integer, OrderedItem>();
+        this.storeUsed = storeUsed;
     }
+    //TODO
     public Date getDate()
     {
         return date;
@@ -32,13 +33,9 @@ public class Order {
         return storeUsed;
     }
 
-    public int calcTotalAmountOfItemsType()
+    public void addItemToItemsMapOfOrder(OrderedItem orderedItem)
     {
-        return orderedItems.size();
+        orderedItems.put(orderedItem.getSerialNumber(), orderedItem);
     }
-
-
-
-
 
 }
