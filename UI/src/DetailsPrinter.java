@@ -46,8 +46,7 @@ public class DetailsPrinter {
             }
             if(showOrderDetailsOfStore)
             {
-                //TODO complete showOrders
-                //showOrdersDetailsOfStore(shopSerialID);
+                showOrdersDetailsOfStore(shopSerialID);
                 System.out.println("Total payment of delivers till now:" + store.calcProfitOfDelivers());
             }
         }
@@ -69,7 +68,8 @@ public class DetailsPrinter {
             System.out.println("d.Price per unit:" + item.getPricePerUnit());
             if(showItemsSoldDetails)
             {
-                System.out.println("e.Total items that sold in store " + base.getHowManyTimesTheItemSoled(itemSerialID));
+                //TODO
+               // System.out.println("e.Total items that sold in store " + base.getHowManyTimesTheItemSoled(itemSerialID));
             }
             if(showOrdersDetails)
             {
@@ -112,7 +112,8 @@ public class DetailsPrinter {
             for(ClosedOrder closedOrder : listOfOrdersInStore)
             {
                 System.out.println("Orders that was done from this store:");
-                System.out.println("a. Date:" + closedOrder.getDate().toString());
+                //TODO
+                //System.out.println("a. Date:" + closedOrder.getDate().toString());
                 System.out.println("a. Amount of items in order:" + closedOrder.getTotalAmountOfItemsByUnit());
                 System.out.println("c. Total price of items:" + closedOrder.getTotalPriceOfItems());
                 System.out.println("d. Delivery price:" + closedOrder.getDeliveryPriceAfterOrder());
