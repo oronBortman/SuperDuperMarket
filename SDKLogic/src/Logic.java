@@ -118,15 +118,13 @@ public class Logic {
     }
 
 
+
     //TODO
     public int getHowManyTimesTheItemSoled(Integer itemID)
     {
         return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemExistsInOrder(itemID)).mapToInt(x->1).sum();
     }
 
-    public int one(){
-        return 1;
-    }
     public void setStoresSerialIDMap(Map<Integer, Store> shopsSerialIdMap)
     {
         storesSerialIDMap = shopsSerialIdMap;

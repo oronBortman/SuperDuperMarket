@@ -1,3 +1,5 @@
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Set;
@@ -16,13 +18,11 @@ public class MenuOptionForOrderAndBuy {
         Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         Date date = inputDate();
         int inputSerialIdOfShop = inputSerialIDOfShop();
-        //TODO
-        //input date
         int coordinateX = inputCoordinate("x");
         int cooridnateY = inputCoordinate("y");
         SDMLocation locationOfUser = new SDMLocation(coordinateX, cooridnateY);
         Store store = base.getStoreBySerialID(inputSerialIdOfShop);
-        OpenedOrder openedOrder = new OpenedOrder(store);
+        OpenedOrder openedOrder = new OpenedOrder(store, date);
         inputItemsUntilQuitSign( store, openedOrder);
         //TODO
         //need to check if basket is empty and then exit and not completing the order?
@@ -49,8 +49,27 @@ public class MenuOptionForOrderAndBuy {
 
     public Date inputDate()
     {
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        return new Date();
+// To take the input
+        Scanner scanner = new Scanner(System.in);
+        boolean dateIsValid;
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm-hh:mm");
+        Date dateParsed=null;
+        String inputDate;
+
+        do{
+            try {
+                System.out.println("Enter the Date in the following format: dd/mm-hh:mm");
+                inputDate = scanner.nextLine();
+                //Parsing the String
+                dateParsed = dateFormat.parse(inputDate);
+                dateIsValid = true;
+                System.out.println("The date is:" + dateFormat.format(dateParsed));
+            } catch (ParseException e) {
+                System.out.println("You enetered invalid date.");
+                dateIsValid=false;
+            }
+        } while(dateIsValid == false);
+        return dateParsed;
     }
     public void inputItemsUntilQuitSign(Store store, OpenedOrder openedOrder)
     {

@@ -1,3 +1,4 @@
+import java.util.Date;
 import java.util.Map;
 
 public class ClosedOrder extends Order {
@@ -7,9 +8,9 @@ public class ClosedOrder extends Order {
     private int totalAmountOfItemsByUnit;
     private int totalAmountOfItemTypes;
     private double totalPriceOfItems;
-   public ClosedOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed, Map<Integer, OrderedItem> orderedItems )
+   public ClosedOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed, Map<Integer, OrderedItem> orderedItems, Date date )
     {
-        super(storeUsed, orderedItems);
+        super(storeUsed, orderedItems, date);
         this.serialNumber = Logic.getCurrentOrderSerialIDInSDK();
         this.deliveryPrice = deliveryPrice;
         this.totalPriceOfOrder = totalPriceOfOrder;

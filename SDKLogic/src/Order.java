@@ -8,14 +8,16 @@ public class Order {
     private Store storeUsed;
     private Map<Integer, OrderedItem> orderedItems;
 
-    Order(Store storeUsed)
+    Order(Store storeUsed, Date date)
     {
         orderedItems = new HashMap<Integer, OrderedItem>();
         this.storeUsed = storeUsed;
+        this.date = date;
     }
 
-    Order(Store storeUsed, Map<Integer, OrderedItem> orderedItems )
+    Order(Store storeUsed, Map<Integer, OrderedItem> orderedItems, Date date )
     {
+        this.date = date;
         this.orderedItems = orderedItems;
         this.storeUsed = storeUsed;
     }

@@ -1,10 +1,11 @@
+import java.util.Date;
 import java.util.Map;
 
 public class OpenedOrder extends Order{
 
-    public OpenedOrder(Store store)
+    public OpenedOrder(Store store, Date date)
     {
-        super(store);
+        super(store, date);
     }
 
     public double calcDeliveryPrice(SDMLocation inputLocation)
@@ -53,7 +54,7 @@ public class OpenedOrder extends Order{
         double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
         int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
         int totalAmountOfItemsType = calcTotalAmountOfItemsType();
-        return new ClosedOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getStoreUsed(), getOrderedItems());
+        return new ClosedOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getStoreUsed(), getOrderedItems(), getDate());
     }
 
 

@@ -1,3 +1,5 @@
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.Set;
 
 public class DetailsPrinter {
@@ -7,25 +9,6 @@ public class DetailsPrinter {
     {
         this.base = base;
     }
-
-   /* public void showStoreWithSellsItemsDetails() {
-        System.out.println("show shop details");
-        Set<Integer> setOfShopSerial = base.getSetOfStoresSerialID();
-        Shop shop;
-        for(Integer shopSerialID : setOfShopSerial)
-        {
-            shop = base.getStoreBySerialID(shopSerialID);
-
-            System.out.println("Serial number of Store: " + shopSerialID);
-            System.out.println("Name of Store:" + shop.getName());
-            System.out.println("List of items the Store sells:");
-            showSelledItemsDetailsOfStore(shopSerialID);
-            //TODO:
-           // showOrdersDetailsOfStore(shopSerialID);
-            System.out.println("PPK: " + shop.getPPK());
-        }
-
-    }*/
 
     public void showStoresDetails(boolean showItemsInStore, boolean showOrderDetailsOfStore) {
         System.out.println("show shop general details\n");
@@ -115,8 +98,7 @@ public class DetailsPrinter {
             {
                 ClosedOrder closedOrder = store.getOrderBySerialID(serialIdOfOrder);
                 System.out.println("Serial key of order: " + serialIdOfOrder);
-                //TODO
-                //System.out.println("a. Date:" + closedOrder.getDate().toString());
+                System.out.println("Date:" + dateToStrOfCertainFormat(closedOrder.getDate()));
                 System.out.println("Amount of items in order:" + closedOrder.getTotalAmountOfItemsByUnit());
                 System.out.println("Total price of items:" + closedOrder.getTotalPriceOfItems());
                 System.out.println("Delivery price:" + closedOrder.getDeliveryPriceAfterOrder());
@@ -130,6 +112,12 @@ public class DetailsPrinter {
         }
 
     }
+
+    public String dateToStrOfCertainFormat(Date dateToPrint)
+    {
+        return new SimpleDateFormat("dd/mm-hh:mm").format(dateToPrint);
+    }
+
     public void showSytemItemDetails() {
         Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         Item item;
@@ -160,9 +148,7 @@ public class DetailsPrinter {
                 store = closedOrder.getShop();
                 System.out.println("Orders that was done in Super Duper Market:");
                 System.out.println("Serial ID of order: " + orderSerialId);
-                //TODO
-                //Complete date handling
-               // System.out.println("2. Date: " + closedOrder.getDate().toString());
+                System.out.println("   Date: " + dateToStrOfCertainFormat(closedOrder.getDate()));
                 System.out.println("   Details about the shop that order made from:");
                 System.out.println("      Shop serial ID:" + store.getSerialNumber());
                 System.out.println("      Shop name:" + store.getName());
