@@ -69,4 +69,8 @@ public class SDMLocation {
         return(Math.sqrt(sumOfPowOfCooridnateDifferences));
     }
 
+    public boolean checkIfCoordinatesMatchToLocation(int coordinateX, int cooridnateY)
+    {
+        return(x == coordinateX && y == cooridnateY);
+    }
 }

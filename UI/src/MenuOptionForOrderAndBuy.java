@@ -14,29 +14,55 @@ public class MenuOptionForOrderAndBuy {
         detailsPrinter = new DetailsPrinter(base);
     }
 
+    public SDMLocation inputLocation(SDMLocation storeLocation)
+    {
+        int coordinateX;
+        int cooridnateY;
+        boolean locationIsValid;
+        System.out.println("Enter your location:");
+        coordinateX = inputCoordinate("x");
+        cooridnateY = inputCoordinate("y");
+        locationIsValid = storeLocation.checkIfCoordinatesMatchToLocation(coordinateX, cooridnateY) == false;
+        if(locationIsValid == false) {
+            System.out.println("You entered the same location of the store.\n" +
+                    "The store is in (" + storeLocation.getX() + "," + storeLocation.getY() + "), " +
+                    "and you entered the location (" + coordinateX + "," + cooridnateY + ").\n"  +
+                    "You can't order from a store at your location.\n");
+            return null;
+        }
+        else
+        {
+            return new SDMLocation(coordinateX, cooridnateY);
+        }
+    }
+
+
     public void orderAndBuy() {
         Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         Date date = inputDate();
         int inputSerialIdOfShop = inputSerialIDOfShop();
-        int coordinateX = inputCoordinate("x");
-        int cooridnateY = inputCoordinate("y");
-        SDMLocation locationOfUser = new SDMLocation(coordinateX, cooridnateY);
         Store store = base.getStoreBySerialID(inputSerialIdOfShop);
+        SDMLocation locationOfUser = inputLocation(store.getLocationOfShop());
+        if(locationOfUser == null) { return;} //Exit from OrderAndBuy if the location of user is invalid
         OpenedOrder openedOrder = new OpenedOrder(store, date);
         inputItemsUntilQuitSign( store, openedOrder);
         //TODO
         //need to check if basket is empty and then exit and not completing the order?
         //need to show user details of order and close it
-        detailsPrinter.showItemsDetailsOfOpenedOrder(openedOrder);
-        System.out.println("Price Per Kilometer: " + store.getPPK());
-        System.out.println("Air distance from store: " + locationOfUser.getAirDistanceToOtherLocation(store.getLocationOfShop()));
-        System.out.println("Delivery price: " + openedOrder.calcDeliveryPrice(locationOfUser));
+        printSumDetailsOfOrder(openedOrder, store.getPPK(), locationOfUser, store.getLocationOfShop());
         if(inputIfUserApprovesOrder())
         {
             ClosedOrder closedOrder = openedOrder.closeOrder(locationOfUser);
             base.addClosedOrderToHistory(closedOrder);
             store.addClosedOrderToHistory(closedOrder);
         }
+    }
+    public void printSumDetailsOfOrder(OpenedOrder openedOrder, int PPK, SDMLocation locationOfUser, SDMLocation locationOfShop)
+    {
+        detailsPrinter.showItemsDetailsOfOpenedOrder(openedOrder);
+        System.out.println("Price Per Kilometer: " + PPK);
+        System.out.println("Air distance from store: " + locationOfUser.getAirDistanceToOtherLocation(locationOfShop));
+        System.out.println("Delivery price: " + openedOrder.calcDeliveryPrice(locationOfUser));
     }
 
     public boolean inputIfUserApprovesOrder()
