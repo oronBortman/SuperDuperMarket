@@ -1,5 +1,4 @@
 import javax.xml.bind.JAXBException;
-import java.io.File;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Scanner;
@@ -44,7 +43,7 @@ public class MenuOptionForReadingXMLFile {
         return xmlFileName;
     }
 
-    public boolean readFromXMLFile(Logic baseFromXml) throws SerialIDNotExistException, JAXBException, duplicateSerialIDException {
+    public boolean readFromXMLFile(Logic baseFromXml) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
         boolean loadXmlSuccessfully;
         boolean readShopsSuccefully;
         boolean readItemsSuccefully;
@@ -76,7 +75,7 @@ public class MenuOptionForReadingXMLFile {
             loadXmlSuccessfully = false;
         }
 
-        catch(duplicateSerialIDException e)
+        catch(DuplicateSerialIDException e)
         {
             System.out.println("There are more the one item with serial id " + e.getSerialId() + " that are defined in the store.\n" +
                             "An item can defined only once in store");
@@ -97,19 +96,19 @@ public class MenuOptionForReadingXMLFile {
             baseFromXml.createStoresLocationMapFromXml(xmlFileName);
             readShopsSuccefully=true;
         }
-        catch (duplicateSerialIDException e)
+        catch (DuplicateSerialIDException e)
         {
             System.out.println("The serial ID " + e.getSerialId() + " of the store " + e.getName() + " is not unique.");
             System.out.println("Please fix your xml file and try again\n");
             readShopsSuccefully=false;
         }
-        catch( invalidCoordinateXException e)
+        catch( InvalidCoordinateXException e)
         {
             System.out.println("The coordinate X with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
             System.out.println("Please fix your xml file and try again\n");
             readShopsSuccefully=false;
         }
-        catch( invalidCoordinateYException e)
+        catch( InvalidCoordinateYException e)
         {
             System.out.println("The coordinate Y with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
             System.out.println("Please fix your xml file and try again\n");
@@ -129,7 +128,7 @@ public class MenuOptionForReadingXMLFile {
             baseFromXml.createItemsSerialIDMapFromXml(xmlFileName);
             readItemsSuccessfully=true;
         }
-        catch (duplicateSerialIDException e)
+        catch (DuplicateSerialIDException e)
         {
             System.out.println("The serial ID " + e.getSerialId() + " of the item " + e.getName()   + " is not unique");
             System.out.println("Please fix your xml file and try again\n");

@@ -1,11 +1,11 @@
-public class duplicateSerialIDException extends Exception{
+public class DuplicateSerialIDException extends Exception{
     String name=null;
     int serialId;
-    duplicateSerialIDException(int serialId)
+    DuplicateSerialIDException(int serialId)
     {
         this.serialId = serialId;
     }
-    duplicateSerialIDException(int serialId, String name)
+    DuplicateSerialIDException(int serialId, String name)
     {
         this.serialId = serialId;
         this.name = name;

@@ -1,12 +1,12 @@
-public class invalidCoordinateException extends Exception{
+public class InvalidCoordinateException extends Exception{
     String name=null;
     int coord;
-    invalidCoordinateException(int coord, String name)
+    InvalidCoordinateException(int coord, String name)
     {
         this.coord = coord;
         this.name = name;
     }
-    invalidCoordinateException(int coord)
+    InvalidCoordinateException(int coord)
     {
         this.coord = coord;
     }

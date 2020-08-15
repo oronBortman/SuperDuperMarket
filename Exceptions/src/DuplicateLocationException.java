@@ -1,14 +1,14 @@
-public class duplicateLocationException extends Exception{
+public class DuplicateLocationException extends Exception{
     int coordinateX;
     int coordinateY;
     String name = null;
-    duplicateLocationException(int x, int y)
+    DuplicateLocationException(int x, int y)
     {
         this.coordinateX = x;
         this.coordinateY = y;
     }
 
-    duplicateLocationException(int x, int y, String name)
+    DuplicateLocationException(int x, int y, String name)
     {
         this.coordinateX = x;
         this.coordinateY = y;
