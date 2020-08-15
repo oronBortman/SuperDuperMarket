@@ -29,7 +29,7 @@
 			<location x="3" y="4"/>
 			<SDM-prices>
 				<SDM-sell item-id="1" price="20"/>
-				<SDM-sell item-id="3" price="10"/>
+				<SDM-sell item-id="2" price="10"/>
 				<SDM-sell item-id="5" price="50"/>
 			</SDM-prices>
 		</SDM-store>

@@ -1,6 +1,8 @@
 import jaxb.schema.generated.*;
 
 import javax.xml.bind.JAXBException;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
@@ -26,6 +28,14 @@ public class Logic {
 
     public static Integer getCurrentOrderSerialIDInSDK() {
         return currentOrderSerialIDInSDK;
+    }
+    public void deleteDetailsOnSuperDuperMarket()
+    {
+        storesLocationMap.clear();
+        storesSerialIDMap.clear();
+        itemsSerialIDMap.clear();
+        ordersSerialIDMap.clear();
+        currentOrderSerialIDInSDK = 1;
     }
 
     public ClosedOrder getOrderBySerialID(Integer orderSerialID)
@@ -149,8 +159,9 @@ public class Logic {
     }
 
 
-    public void createStoresSerialIDMapFromXml(String xmlName) throws duplicateSerialIDException, invalidCoordinateException, JAXBException {
-        InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+    public void createStoresSerialIDMapFromXml(String xmlName) throws duplicateSerialIDException, invalidCoordinateException, JAXBException, FileNotFoundException {
+        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+        InputStream inputStream = new FileInputStream(xmlName);
         SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
         SDMStores shops = descriptor.getSDMStores();
         List<SDMStore> listOfStores = shops.getSDMStore();
@@ -183,8 +194,9 @@ public class Logic {
         }
     }
 
-    public void createStoresLocationMapFromXml(String xmlName) throws invalidCoordinateException, duplicateLocationException, JAXBException {
-        InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+    public void createStoresLocationMapFromXml(String xmlName) throws invalidCoordinateException, duplicateLocationException, JAXBException, FileNotFoundException {
+        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+        InputStream inputStream = new FileInputStream(xmlName);
         storesLocationMap = new HashMap<SDMLocation, Store>();
         SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
         SDMStores shops = descriptor.getSDMStores();
@@ -212,8 +224,9 @@ public class Logic {
 
     }
 
-    public void createItemsSerialIDMapFromXml(String xmlName) throws duplicateSerialIDException, JAXBException {
-        InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+    public void createItemsSerialIDMapFromXml(String xmlName) throws duplicateSerialIDException, JAXBException, FileNotFoundException {
+        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+        InputStream inputStream = new FileInputStream(xmlName);
         SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
         SDMItems items = descriptor.getSDMItems();
         List<SDMItem> listOfItems = items.getSDMItem();
@@ -232,8 +245,9 @@ public class Logic {
         }
     }
 
-    public void addItemsToStoresFromXml(String xmlName) throws SerialIDNotExistException, duplicateSerialIDException, JAXBException {
-        InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+    public void addItemsToStoresFromXml(String xmlName) throws SerialIDNotExistException, duplicateSerialIDException, JAXBException, FileNotFoundException {
+        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+        InputStream inputStream = new FileInputStream(xmlName);
         Map<Integer, Integer> storesSellsIDMap = new HashMap<Integer, Integer>();
         SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
         SDMStores shops = descriptor.getSDMStores();

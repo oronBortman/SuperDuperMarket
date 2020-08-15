@@ -1,84 +1,145 @@
 import javax.xml.bind.JAXBException;
+import java.io.File;
+import java.nio.file.Files;
+import java.nio.file.Paths;
+import java.util.Scanner;
 
 public class MenuOptionForReadingXMLFile {
-    private Logic base;
 
-    public MenuOptionForReadingXMLFile(Logic base)
+    public boolean checkIfPathHasXmlExtension(String filePath)
     {
-        this.base = base;
+        return filePath.toLowerCase().endsWith(".xml");
     }
 
-    public void readFromXMLFile() throws SerialIDNotExistException, JAXBException, duplicateSerialIDException {
+    public boolean checkIfFileExists(String filePath)
+    {
+        return Files.exists(Paths.get(filePath));
+    }
+
+    public String readXmlFileName()
+    {
+        Scanner sc = new Scanner(System.in);  // Create a Scanner object
+        boolean goodChoice;
+        int inputOfItemSerialId = 0;
+        String xmlFileName;
+        do {
+            System.out.println("Please enter the xml file you want to load from");
+            xmlFileName = sc.nextLine();
+            if(!checkIfPathHasXmlExtension(xmlFileName))
+            {
+                System.out.println("The file you entered doesn't end with the extension .xml - Please try again");
+                goodChoice=false;
+            }
+            else if (!checkIfFileExists(xmlFileName))
+            {
+                System.out.println("The path you entered doesn't exist. Please try again");
+                goodChoice=false;
+            }
+            else
+            {
+                goodChoice = true;
+            }
+        }
+        while (!goodChoice);
+        return xmlFileName;
+    }
+
+    public boolean readFromXMLFile(Logic baseFromXml) throws SerialIDNotExistException, JAXBException, duplicateSerialIDException {
+        boolean loadXmlSuccessfully;
+        boolean readShopsSuccefully;
+        boolean readItemsSuccefully;
         try
         {
-            readShopsFromXMLFile();
-            readItemsFromXMLFile();
-            base.addItemsToStoresFromXml("ex1-small.xml");
+            String xmlFile = readXmlFileName();
+            readShopsSuccefully=readShopsFromXMLFile(xmlFile, baseFromXml);
+            if(readShopsSuccefully)
+            {
+                readItemsSuccefully = readItemsFromXMLFile(xmlFile, baseFromXml);
+                if(readItemsSuccefully)
+                {
+                    baseFromXml.addItemsToStoresFromXml(xmlFile);
+                    loadXmlSuccessfully = true;
+                }
+                else
+                {
+                    loadXmlSuccessfully = false;
+                }
+            }
+            else
+            {
+                loadXmlSuccessfully = false;
+            }
         }
         catch(SerialIDNotExistException e) {
             System.out.println("An item with serial id " + e.getSerialId() + " that you tried to add to the store " + e.getName() + " doesn't exist in Super Duper Market.");
-            System.out.println("Please fix your xml file and try again");
+            System.out.println("Please fix your xml file and try again\n");
+            loadXmlSuccessfully = false;
         }
 
         catch(duplicateSerialIDException e)
         {
-            System.out.println("The serial id " + e.getSerialId() + " already define in the store");
-            System.out.println("Please fix your xml file and try again");
-
+            System.out.println("There are more the one item with serial id " + e.getSerialId() + " that are defined in the store.\n" +
+                            "An item can defined only once in store");
+            System.out.println("Please fix your xml file and try again\n");
+            loadXmlSuccessfully = false;
         }
         catch(Exception e)
         {
-
+            loadXmlSuccessfully = false;
         }
-
-
-
+        return loadXmlSuccessfully;
     }
-    private void readShopsFromXMLFile() {
-
-        System.out.println("read from XML file");
-
+    private boolean readShopsFromXMLFile(String xmlFileName, Logic baseFromXml) {
+        boolean readShopsSuccefully;
         try
         {
-            base.createStoresSerialIDMapFromXml("ex1-small.xml");
-            base.createStoresLocationMapFromXml("ex1-small.xml");
+            baseFromXml.createStoresSerialIDMapFromXml(xmlFileName);
+            baseFromXml.createStoresLocationMapFromXml(xmlFileName);
+            readShopsSuccefully=true;
         }
         catch (duplicateSerialIDException e)
         {
             System.out.println("The serial ID " + e.getSerialId() + " of the store " + e.getName() + " is not unique.");
-            System.out.println("Please fix your xml file and try again");
+            System.out.println("Please fix your xml file and try again\n");
+            readShopsSuccefully=false;
         }
         catch( invalidCoordinateXException e)
         {
             System.out.println("The coordinate X with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
-            System.out.println("Please fix your xml file and try again");
+            System.out.println("Please fix your xml file and try again\n");
+            readShopsSuccefully=false;
         }
         catch( invalidCoordinateYException e)
         {
             System.out.println("The coordinate Y with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
-            System.out.println("Please fix your xml file and try again");
+            System.out.println("Please fix your xml file and try again\n");
+            readShopsSuccefully=false;
         }
         catch(Exception e)
         {
-
+            readShopsSuccefully=false;
         }
+        return readShopsSuccefully;
     }
 
-    private void readItemsFromXMLFile() {
-        System.out.println("read from XML file");
+    private boolean readItemsFromXMLFile(String xmlFileName, Logic baseFromXml) {
+        boolean readItemsSuccessfully;
         try
         {
-            base.createItemsSerialIDMapFromXml("ex1-small.xml");
+            baseFromXml.createItemsSerialIDMapFromXml(xmlFileName);
+            readItemsSuccessfully=true;
         }
         catch (duplicateSerialIDException e)
         {
-            System.out.println("The serial ID " + e.getSerialId() + " of the store " + e.getName()   + " is not unique");
-            System.out.println("Please fix your xml file and try again");
+            System.out.println("The serial ID " + e.getSerialId() + " of the item " + e.getName()   + " is not unique");
+            System.out.println("Please fix your xml file and try again\n");
+            readItemsSuccessfully=false;
         }
         catch (Exception e)
         {
-
+            readItemsSuccessfully=false;
         }
+        return readItemsSuccessfully;
     }
 
 }

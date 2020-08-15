@@ -70,7 +70,7 @@ public class MenuOptionForOrderAndBuy {
         System.out.println("Enter y to approve the other or any other key if you don't approve");
         Scanner sc = new Scanner(System.in);  // Create a Scanner object
         String choiceOfUser = sc.nextLine();
-        return choiceOfUser.equals("y");
+        return choiceOfUser.toLowerCase().equals("y");
     }
 
     public Date inputDate()
@@ -144,7 +144,7 @@ public class MenuOptionForOrderAndBuy {
             }
             System.out.println("Enter q if you want finish the order");
             choiceOfUser = sc.nextLine();
-        } while(choiceOfUser.equals("q") == false);
+        } while(choiceOfUser.toLowerCase().equals("q") == false);
     }
 
     public int inputSerialIDOfShop() {

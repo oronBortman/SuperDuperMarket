@@ -17,6 +17,7 @@ public class DetailsPrinter {
         for(Integer shopSerialID : setOfShopSerial)
         {
             store = base.getStoreBySerialID(shopSerialID);
+            store = base.getStoreBySerialID(shopSerialID);
 
             System.out.println("Serial number of Store: " + shopSerialID);
             System.out.println("Name of Store:" + store.getName());
@@ -161,7 +162,7 @@ public class DetailsPrinter {
         }
         else
         {
-            System.out.println("There were no orders in this store");
+            System.out.println("There were no orders in Super Duper Market");
         }
     }
 

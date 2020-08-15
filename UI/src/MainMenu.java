@@ -2,6 +2,7 @@ import java.util.*;
 
 public class MainMenu {
 
+    boolean loadXmlSuccessfully = false;
     enum mainMenuOptions
     {
         READ_FROM_XML_FILE(1, "Read from XML file"),
@@ -10,7 +11,6 @@ public class MainMenu {
         ORDER_AND_BUY(4, "Order and buy"),
         SHOW_ORDERS_HISTORY(5, "Show orders history"),
         EXIT(6, "Exit");
-
         int optionNum;
         String meaning;
 
@@ -68,12 +68,12 @@ public class MainMenu {
     MenuOptionForReadingXMLFile menuOptionForReadingXMLFile;
     MenuOptionForOrderAndBuy menuOptionForOrderAndBuy;
 
-    Logic base;
+    Logic base = new Logic();
 
     public MainMenu()
     {
-        Logic base = new Logic();
-        menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile(base);
+       // Logic base = new Logic();
+        menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile();
         menuOptionForOrderAndBuy = new MenuOptionForOrderAndBuy(base);
         detailsPrinter = new DetailsPrinter(base);
     }
@@ -133,25 +133,66 @@ public class MainMenu {
                 //TODO
                 try
                 {
-                    menuOptionForReadingXMLFile.readFromXMLFile();
+                    Logic baseFromXml = new Logic();
+                    boolean loadXmlSuccessfully = menuOptionForReadingXMLFile.readFromXMLFile(baseFromXml);
+                    if(loadXmlSuccessfully)
+                    {
+                        this.loadXmlSuccessfully = true;
+                        this.base = baseFromXml;
+                        menuOptionForOrderAndBuy = new MenuOptionForOrderAndBuy(baseFromXml);
+                        detailsPrinter = new DetailsPrinter(baseFromXml);
+                        System.out.println("Xml file loaded successfully to Super Duper Market :)\n");
+                    }
                 }
                 catch(Exception e)
                 {
-                    System.out.println("General Error");
                 }
                 break;
             case SHOW_STORE_DETAILS:
-                detailsPrinter.showStoresDetails(true, true);
+                if(loadXmlSuccessfully == true)
+                {
+                    detailsPrinter.showStoresDetails(true, true);
+                }
+                else
+                {
+                    System.out.println("Can't show store details because an xml file wasn't loaded.\n Please choose option " +
+                            mainMenuOptions.READ_FROM_XML_FILE.getOptionNum() +" to load an xml file to Super Duper Market");
+                }
                 break;
             case SHOW_SYSTEM_ITEM_DETAILS:
-                detailsPrinter.showSytemItemDetails();
+                if(loadXmlSuccessfully == true)
+                {
+                    detailsPrinter.showSytemItemDetails();
+                }
+                else
+                {
+                    System.out.println("Can't show items details of Super Duper Market because an xml file wasn't loaded.\n Please choose option " +
+                            mainMenuOptions.READ_FROM_XML_FILE.getOptionNum() +" to load an xml file to Super Duper Market");
+                }
+
                 break;
             case ORDER_AND_BUY:
                 //TODO
-                menuOptionForOrderAndBuy.orderAndBuy();
+                if(loadXmlSuccessfully == true)
+                {
+                    menuOptionForOrderAndBuy.orderAndBuy();
+                }
+                else
+                {
+                    System.out.println("Can't order and buy items from Super Duper Market because an xml file wasn't loaded.\n Please choose option " +
+                            mainMenuOptions.READ_FROM_XML_FILE.getOptionNum() +" to load an xml file to Super Duper Market");
+                }
                 break;
             case SHOW_ORDERS_HISTORY:
-                detailsPrinter.showOrdersHistory();
+                if(loadXmlSuccessfully == true)
+                {
+                    detailsPrinter.showOrdersHistory();
+                }
+                else
+                {
+                    System.out.println("Can't show orders history of Super Duper Market because an xml file wasn't loaded.\n Please choose option " +
+                            mainMenuOptions.READ_FROM_XML_FILE.getOptionNum() +" to load an xml file to Super Duper Market");
+                }
                 break;
             default:
                 break;
