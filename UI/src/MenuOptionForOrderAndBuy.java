@@ -1,10 +1,54 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.Scanner;
-import java.util.Set;
 
 public class MenuOptionForOrderAndBuy {
+
+    enum OrderOptions {
+        STATIC_ORDER(1, "Static order"),
+        DYNAMIC_ORDER(2, "Dynamic order");
+
+        int optionNum;
+        String meaning;
+
+        OrderOptions(int optionNum, String meaning) {
+            this.optionNum = optionNum;
+            this.meaning = meaning;
+        }
+
+        public int getOptionNum() {
+            return optionNum;
+        }
+
+        public String getMeaning() {
+            return meaning;
+        }
+
+        public static OrderOptions convertOptionNumToEnum(int choiceNum) {
+            for (OrderOptions option : OrderOptions.values()) {
+                if (option.getOptionNum() == choiceNum) {
+                    return option;
+                }
+            }
+            return null;
+        }
+
+        public void printOption() {
+            System.out.println(optionNum + "." + meaning);
+        }
+
+        public static boolean containsChoiceNum(int choiceNum) {
+            boolean choiceNumExist = false;
+            for (MainMenu.mainMenuOptions option : MainMenu.mainMenuOptions.values()) {
+                if (option.getOptionNum() == choiceNum) {
+                    choiceNumExist = true;
+                }
+            }
+            return choiceNumExist;
+        }
+
+        public Boolean numberEqualsToOptionNum(int choiceNum) {
+            return optionNum == choiceNum;
+        }
+    }
 
     private Logic base;
     private DetailsPrinter detailsPrinter;
@@ -14,269 +58,47 @@ public class MenuOptionForOrderAndBuy {
         detailsPrinter = new DetailsPrinter(base);
     }
 
-    public SDMLocation inputLocation(SDMLocation storeLocation)
-    {
-        int coordinateX;
-        int cooridnateY;
-        boolean locationIsValid;
-        System.out.println("Enter your location:");
-        coordinateX = inputCoordinate("x");
-        cooridnateY = inputCoordinate("y");
-        locationIsValid = storeLocation.checkIfCoordinatesMatchToLocation(coordinateX, cooridnateY) == false;
-        if(locationIsValid == false) {
-            System.out.println("You entered the same location of the store.\n" +
-                    "The store is in (" + storeLocation.getX() + "," + storeLocation.getY() + "), " +
-                    "and you entered the location (" + coordinateX + "," + cooridnateY + ").\n"  +
-                    "You can't order from a store at your location.\n");
-            return null;
-        }
-        else
-        {
-            return new SDMLocation(coordinateX, cooridnateY);
-        }
+    public void printOrderTypeChoiceMenu() {
+        System.out.println("Choose your option by entering the number of option and after it press enter:");
+        System.out.println("For example: For choosing the option \"" + OrderOptions.STATIC_ORDER.getMeaning() + "\" enter the number 1 and after it press enter");
+        OrderOptions.STATIC_ORDER.printOption();
+        OrderOptions.DYNAMIC_ORDER.printOption();
     }
 
-
-    public void orderAndBuy() {
-        Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
-        Date date = inputDate();
-        int inputSerialIdOfShop = inputSerialIDOfShop();
-        Store store = base.getStoreBySerialID(inputSerialIdOfShop);
-        SDMLocation locationOfUser = inputLocation(store.getLocationOfShop());
-        if(locationOfUser == null) { return;} //Exit from OrderAndBuy if the location of user is invalid
-        OpenedOrder openedOrder = new OpenedOrder(store, date);
-        inputItemsUntilQuitSign( store, openedOrder);
-        //TODO
-        //need to check if basket is empty and then exit and not completing the order?
-        //need to show user details of order and close it
-        printSumDetailsOfOrder(openedOrder, store.getPPK(), locationOfUser, store.getLocationOfShop());
-        if(inputIfUserApprovesOrder())
-        {
-            ClosedOrder closedOrder = openedOrder.closeOrder(locationOfUser);
-            base.addClosedOrderToHistory(closedOrder);
-            store.addClosedOrderToHistory(closedOrder);
-        }
-    }
-    public void printSumDetailsOfOrder(OpenedOrder openedOrder, int PPK, SDMLocation locationOfUser, SDMLocation locationOfShop)
+    public void orderAndBuy()
     {
-        detailsPrinter.showItemsDetailsOfOpenedOrder(openedOrder);
-        System.out.println("Price Per Kilometer: " + PPK);
-        System.out.println("Air distance from store: " + locationOfUser.getAirDistanceToOtherLocation(locationOfShop));
-        System.out.println("Delivery price: " + openedOrder.calcDeliveryPrice(locationOfUser));
+        chooseOrderTypeMenu();
     }
 
-    public boolean inputIfUserApprovesOrder()
-    {
-        System.out.println("Enter y to approve the other or any other key if you don't approve");
+    public void chooseOrderTypeMenu() {
         Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        String choiceOfUser = sc.nextLine();
-        return choiceOfUser.toLowerCase().equals("y");
-    }
-
-    public Date inputDate()
-    {
-// To take the input
-        Scanner scanner = new Scanner(System.in);
-        boolean dateIsValid;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm-hh:mm");
-        Date dateParsed=null;
-        String inputDate;
-
-        do{
-            try {
-                System.out.println("Enter the Date in the following format: dd/mm-hh:mm");
-                inputDate = scanner.nextLine();
-                //Parsing the String
-                dateParsed = dateFormat.parse(inputDate);
-                dateIsValid = true;
-                System.out.println("The date is:" + dateFormat.format(dateParsed));
-            } catch (ParseException e) {
-                System.out.println("You enetered invalid date.");
-                dateIsValid=false;
-            }
-        } while(dateIsValid == false);
-        return dateParsed;
-    }
-    public void inputItemsUntilQuitSign(Store store, OpenedOrder openedOrder)
-    {
-        int storeSerialId = store.getSerialNumber();
-        String choiceOfUser;
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-
+        Integer userChoice;
+        boolean goodChoice;
         do {
-            detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialId);
-            int inputSerialIdOfItem = inputItemSerialId(storeSerialId);
-            SelledItemInStore selledItem = store.getItemBySerialID(inputSerialIdOfItem);
-            String nameOfItem = selledItem.getName();
-            int priceOfItem = selledItem.getPricePerUnit();
-            Item.TypeOfMeasure typeOfMeasure = base.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();
-
-            switch (typeOfMeasure) {
-                case Quantity:
-                    int quantityOfItem = inputQuantityOfItemToBuy(inputSerialIdOfItem);
-                    if(openedOrder.checkIfItemAlreadyExistsInOrder(inputSerialIdOfItem))
-                    {
-                        OrderedItemByQuantity orderedItemByQuantity = (OrderedItemByQuantity)openedOrder.getItemInOrder(inputSerialIdOfItem);
-                        orderedItemByQuantity.increaseAmountOfItemOrderedByUnits(quantityOfItem);
-                    }
-                    else
-                    {
-                        OrderedItemByQuantity orderedItemByQuantity = new OrderedItemByQuantity(inputSerialIdOfItem, nameOfItem,priceOfItem, quantityOfItem);
-                        openedOrder.addItemToItemsMapOfOrder(orderedItemByQuantity);
-                    }
-                    break;
-                case Weight:
-                    double weightOfItem = inputWeightOfItemToBuy(inputSerialIdOfItem);
-                    if(openedOrder.checkIfItemAlreadyExistsInOrder(inputSerialIdOfItem))
-                    {
-                        OrderedItemByWeight orderedItemByWeight = (OrderedItemByWeight)openedOrder.getItemInOrder(inputSerialIdOfItem);
-                        orderedItemByWeight.increaseAmountOfItemOrderedByWeight(weightOfItem);
-                    }
-                    else
-                    {
-                        OrderedItemByWeight orderedItemByWeight = new OrderedItemByWeight(inputSerialIdOfItem, nameOfItem,priceOfItem, weightOfItem);
-                        openedOrder.addItemToItemsMapOfOrder(orderedItemByWeight);
-                    }
-
-                    break;
-                default:
-                    break;
-            }
-            System.out.println("Enter q if you want finish the order");
-            choiceOfUser = sc.nextLine();
-        } while(choiceOfUser.toLowerCase().equals("q") == false);
-    }
-
-    public int inputSerialIDOfShop() {
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        boolean goodChoice = false;
-        int inputOfSerialId = 0;
-
-        do {
-            detailsPrinter.showStoresDetails(false, false);
-            System.out.println("Please enter the serial id of the shop use want to buy from");
+            printOrderTypeChoiceMenu();
             if (sc.hasNextInt()) {
-                inputOfSerialId = sc.nextInt();
-                if (base.checkIfStoreExists(inputOfSerialId)) {
-                    goodChoice = true;
+                userChoice = sc.nextInt();
+                if (OrderOptions.containsChoiceNum(userChoice)) {
+                    if (OrderOptions.STATIC_ORDER.numberEqualsToOptionNum(userChoice)) {
+                        StaticOrderMenu staticOrder = new StaticOrderMenu(base);
+                        staticOrder.makeStaticOrder();
+                        goodChoice = true;
+                    } else if (OrderOptions.DYNAMIC_ORDER.numberEqualsToOptionNum(userChoice)) {
+                        DynamicOrderMenu dynamicOrder = new DynamicOrderMenu(base);
+                        dynamicOrder.makeDynamicOrder();
+                        goodChoice = true;
+                    } else {
+                        goodChoice = false;
+                    }
                 } else {
-                    System.out.println("Store doesn't exist. Please enter the serial id of the store again.");
+                    goodChoice = false;
+                    System.out.println("You didn't entered a valid number. Please try again");
                 }
-            }
-            else
-            {
-                System.out.println("You didn't entered a number!");
-                sc.next();
-            }
-        }
-        while (goodChoice == false);
-        return inputOfSerialId;
-    }
-
-    public int inputItemSerialId(int storeSerialID)
-    {
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        boolean goodChoice = false;
-        int inputOfItemSerialId = 0;
-        Store store = base.getStoreBySerialID(storeSerialID);
-
-        do {
-            detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialID);
-            System.out.println("Please enter the serial id of the item to buy from");
-            if (sc.hasNextInt()) {
-                inputOfItemSerialId = sc.nextInt();
-
-                if (store.checkIfItemIdExists(inputOfItemSerialId)){
-                    goodChoice = true;
-                } else {
-                    System.out.println("The item you entered isn't exist in store. Please choose another item");
-                }
-            }
-            else
-            {
+            } else {
                 sc.next();
                 System.out.println("You didn't entered a number!");
+                goodChoice = false;
             }
-        }
-        while (goodChoice == false);
-        return inputOfItemSerialId;
+        } while (goodChoice == false);
     }
-
-    public int inputQuantityOfItemToBuy(int itemSerialID)
-    {
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        boolean goodChoice = false;
-        int quantityOfItemToBuy=0;
-        do {
-            System.out.println("Please enter the quantity that you want to buy from item.");
-            if (sc.hasNextInt()) {
-                goodChoice = true;
-                quantityOfItemToBuy= sc.nextInt();
-            }
-            else{
-                sc.next();
-                System.out.println("You didn't entered a number!");
-            }
-        }
-        while (goodChoice == false);
-        return quantityOfItemToBuy;
-    }
-    public float inputWeightOfItemToBuy(int itemSerialID)
-    {
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        boolean goodChoice = false;
-        float weightOfItemToBuy=0;
-        do {
-            System.out.println("Please enter the weight that you want to buy from item. Enter a dot number");
-            if (sc.hasNextFloat()) {
-                goodChoice = true;
-                weightOfItemToBuy= sc.nextFloat();
-             }
-            else{
-                sc.next();
-                System.out.println("You didn't entered a number!");
-            }
-        }
-        while (goodChoice == false);
-        return weightOfItemToBuy;
-    }
-
-    public int inputCoordinate(String nameOfCoordinate)
-    {
-        Scanner sc = new Scanner(System.in);  // Create a Scanner object
-        boolean goodChoice = false;
-        int inputOfCoordinate = 0;
-        do {
-            System.out.println("Please enter your " + nameOfCoordinate + " coordinate");
-            if (sc.hasNextInt()) {
-
-                inputOfCoordinate = sc.nextInt();
-
-                if (SDMLocation.checkIfLocationCoordinatesIsValid(inputOfCoordinate)) {
-                    goodChoice = true;
-                }
-                else
-                {
-                    System.out.println("The location is not valid! try again");
-                    sc.next();
-                }
-            }
-            else {
-                sc.next();
-                System.out.println("You didn't entered a number!");
-            }
-        }
-        while (goodChoice == false);
-        return inputOfCoordinate;
-    }
-
-    public SDMLocation inputField()
-    {
-        int cooridnateX = inputCoordinate("x");
-        int cooridnateY = inputCoordinate("y");
-        return new SDMLocation(cooridnateX, cooridnateY);
-    }
-
-
 }
-

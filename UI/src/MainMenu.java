@@ -1,3 +1,4 @@
+import java.text.DecimalFormat;
 import java.util.*;
 
 public class MainMenu {
@@ -11,14 +12,16 @@ public class MainMenu {
         ORDER_AND_BUY(4, "Order and buy"),
         SHOW_ORDERS_HISTORY(5, "Show orders history"),
         EXIT(6, "Exit");
-        int optionNum;
-        String meaning;
 
         mainMenuOptions(int optionNum, String meaning)
         {
             this.optionNum = optionNum;
             this.meaning = meaning;
         }
+
+        int optionNum;
+        String meaning;
+
 
         public int getOptionNum() {
             return optionNum;
@@ -76,6 +79,11 @@ public class MainMenu {
         menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile();
         menuOptionForOrderAndBuy = new MenuOptionForOrderAndBuy(base);
         detailsPrinter = new DetailsPrinter(base);
+    }
+
+    public static String convertDoubleToDecimal(double num)
+    {
+        return new DecimalFormat("##.##").format(num);
     }
 
     private void printHeadline() {

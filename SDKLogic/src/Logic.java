@@ -11,7 +11,7 @@ public class Logic {
     private Map<SDMLocation, Store> storesLocationMap;
     private Map<Integer, Store> storesSerialIDMap;
     private Map<Integer, Item> itemsSerialIDMap;
-    private Map<Integer, ClosedOrder> ordersSerialIDMap;
+    private Map<Integer, ClosedStaticOrder> ordersSerialIDMap;
 
     private static Integer currentOrderSerialIDInSDK = 1;
 
@@ -22,7 +22,7 @@ public class Logic {
         storesLocationMap = new HashMap<SDMLocation, Store>();
         storesSerialIDMap = new HashMap<Integer, Store>();
         itemsSerialIDMap = new HashMap<Integer, Item>();
-        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedStaticOrder>();
         currentOrderSerialIDInSDK = 1;
     }
 
@@ -38,7 +38,7 @@ public class Logic {
         currentOrderSerialIDInSDK = 1;
     }
 
-    public ClosedOrder getOrderBySerialID(Integer orderSerialID)
+    public ClosedStaticOrder getOrderBySerialID(Integer orderSerialID)
     {
         return ordersSerialIDMap.get(orderSerialID);
     }
@@ -64,7 +64,7 @@ public class Logic {
 
     public Set<Integer> getSetOfOrdersSerialID()
     {
-        return GeneralMethods.<Integer, ClosedOrder>getSetOfDictionary(ordersSerialIDMap);
+        return GeneralMethods.<Integer, ClosedStaticOrder>getSetOfDictionary(ordersSerialIDMap);
     }
 
     public Item getItemySerialID(Integer serialID)
@@ -82,7 +82,7 @@ public class Logic {
         return itemsSerialIDMap.get(itemID);
     }
 
-    public void addClosedOrderToHistory(ClosedOrder order)
+    public void addClosedOrderToHistory(ClosedStaticOrder order)
     {
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;
@@ -126,15 +126,53 @@ public class Logic {
         return aveargePriceOfItemInSDK;
 
     }
+    final int MIN_PRICE_INITIALIZE = -1;
 
-
-
-    //TODO
-    public int getHowManyTimesTheItemSoled(Integer itemID)
+    public int getIDOfShopWithCheapestItem(int itemSerialID)
     {
-        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemExistsInOrder(itemID)).mapToInt(x->1).sum();
+        int minPrice=MIN_PRICE_INITIALIZE;
+        int storeSerialIDWithCheapestItem=0;
+        for (Map.Entry<Integer, Store> entry : storesSerialIDMap.entrySet())
+        {
+            int storeSerialId = entry.getKey();
+            Store store = entry.getValue();
+            int itemPriceInStore = store.getItemBySerialID(itemSerialID).getPricePerUnit();
+            if(minPrice == MIN_PRICE_INITIALIZE || itemPriceInStore < minPrice)
+            {
+                minPrice=itemPriceInStore;
+                storeSerialIDWithCheapestItem = storeSerialId;
+            }
+        }
+        return storeSerialIDWithCheapestItem;
     }
 
+    public HashMap<Integer, List<SelledItemInStore>> getMapOfShopWithCheapestItemsFromList(List<Integer> listOfItemsSerialID)
+    {
+        int storeID;
+        HashMap<Integer, List<SelledItemInStore>> mapOfShopsWithCheapestItems = new HashMap<Integer, List<SelledItemInStore>>() ;
+        for(int itemSerialID: listOfItemsSerialID)
+        {
+            storeID = getIDOfShopWithCheapestItem(itemSerialID);
+            Store store = storesSerialIDMap.get(storeID);
+            SelledItemInStore itemInStore = store.getItemBySerialID(itemSerialID);
+            if(mapOfShopsWithCheapestItems.get(storeID).isEmpty())
+            {
+                mapOfShopsWithCheapestItems.put(storeID, new ArrayList<SelledItemInStore>());
+            }
+            else
+            {
+                mapOfShopsWithCheapestItems.get(storeID).add(itemInStore);
+            }
+        }
+        return mapOfShopsWithCheapestItems;
+    }
+
+    //TODO
+    public double getTotalAmountOfSoledItem(Integer itemID)
+    {
+        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemExistsInOrder(itemID)).mapToDouble(x -> x.getTotalAmountOfSoledItem(itemID)).sum();
+    }
+//        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.getTotalAmountOfSoledItem(itemID).sum();
     public void setStoresSerialIDMap(Map<Integer, Store> shopsSerialIdMap)
     {
         storesSerialIDMap = shopsSerialIdMap;

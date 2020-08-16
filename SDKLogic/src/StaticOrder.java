@@ -2,20 +2,20 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Order {
+public class StaticOrder {
 
     private Date date;
     private Store storeUsed;
     private Map<Integer, OrderedItem> orderedItems;
 
-    Order(Store storeUsed, Date date)
+    public StaticOrder(Store storeUsed, Date date)
     {
         orderedItems = new HashMap<Integer, OrderedItem>();
         this.storeUsed = storeUsed;
         this.date = date;
     }
 
-    Order(Store storeUsed, Map<Integer, OrderedItem> orderedItems, Date date )
+    public StaticOrder(Store storeUsed, Map<Integer, OrderedItem> orderedItems, Date date )
     {
         this.date = date;
         this.orderedItems = orderedItems;
@@ -63,6 +63,11 @@ public class Order {
     public boolean checkIfItemExistsInOrder(int serialId)
     {
         return orderedItems.containsKey(serialId);
+    }
+
+    public OrderedItem getItemInOrder(int serialIDOfItem)
+    {
+        return getOrderedItems().get(serialIDOfItem);
     }
 
 }

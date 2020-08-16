@@ -1,9 +1,9 @@
 import java.util.Date;
 import java.util.Map;
 
-public class OpenedOrder extends Order{
+public class OpenedStaticOrder extends StaticOrder {
 
-    public OpenedOrder(Store store, Date date)
+    public OpenedStaticOrder(Store store, Date date)
     {
         super(store, date);
     }
@@ -31,10 +31,10 @@ public class OpenedOrder extends Order{
         return getOrderedItems().values().stream().mapToInt(OrderedItem::getAmountOfItemOrderedByUnits).sum();
     }
 
-    public OrderedItem getItemInOrder(int serialIDOfItem)
+    /*public OrderedItem getItemInOrder(int serialIDOfItem)
     {
         return getOrderedItems().get(serialIDOfItem);
-    }
+    }*/
 
     public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem)
     {
@@ -47,14 +47,14 @@ public class OpenedOrder extends Order{
         return itemAlreadyExistsInOrder;
     }
 
-    public ClosedOrder closeOrder(SDMLocation location)
+    public ClosedStaticOrder closeOrder(SDMLocation location)
     {
         double totalPriceOfItems = calcTotalPriceOfItems();
         double deliveryPriceAfterOrderIsDone = calcDeliveryPrice(location);
         double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
         int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
         int totalAmountOfItemsType = calcTotalAmountOfItemsType();
-        return new ClosedOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getStoreUsed(), getOrderedItems(), getDate());
+        return new ClosedStaticOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getStoreUsed(), getOrderedItems(), getDate());
     }
 
 

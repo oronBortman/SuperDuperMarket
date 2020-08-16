@@ -11,6 +11,7 @@ public abstract class OrderedItem extends SelledItemInStore{
     }
 
     public abstract double getTotalPriceOfItemOrderedByTypeOfMeasure();
+    public abstract double getTotalAmountOfItemOrderedByTypeOfMeasure();
 
     public int getAmountOfItemOrderedByUnits()
     {

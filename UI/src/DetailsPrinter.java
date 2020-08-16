@@ -97,13 +97,13 @@ public class DetailsPrinter {
             System.out.println("Orders that was done from this store:");
             for(int serialIdOfOrder : setOfSerialIDOfOrdersInStore)
             {
-                ClosedOrder closedOrder = store.getOrderBySerialID(serialIdOfOrder);
+                ClosedStaticOrder closedOrder = store.getOrderBySerialID(serialIdOfOrder);
                 System.out.println("Serial key of order: " + serialIdOfOrder);
                 System.out.println("Date:" + dateToStrOfCertainFormat(closedOrder.getDate()));
-                System.out.println("Amount of items in order:" + closedOrder.getTotalAmountOfItemsByUnit());
-                System.out.println("Total price of items:" + closedOrder.getTotalPriceOfItems());
-                System.out.println("Delivery price:" + closedOrder.getDeliveryPriceAfterOrder());
-                System.out.println("Total price of order:" + closedOrder.getTotalPriceOfOrder());
+                System.out.println("Amount of items in order:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalAmountOfItemsByUnit()));
+                System.out.println("Total price of items:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalPriceOfItems()));
+                System.out.println("Delivery price:" + MainMenu.convertDoubleToDecimal(closedOrder.getDeliveryPriceAfterOrder()));
+                System.out.println("Total price of order:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalPriceOfOrder()));
                 System.out.println("--------------------------------------------------------");
             }
         }
@@ -129,8 +129,8 @@ public class DetailsPrinter {
             System.out.println("2.Name:" + item.getName());
             System.out.println("3.Type of buying:" + item.getTypeOfMeasureStr());
             System.out.println("4.How many shops selles the item: " + base.getHowManyShopsSellesAnItem(itemSerialID));
-            System.out.println("5.Average price of item in Super Duper Market: " + base.getAvgPriceOfItemInSDK(itemSerialID));
-            System.out.println("6.How many times the the item has been soled in Super Duper Market: " + base.getHowManyTimesTheItemSoled(itemSerialID));
+            System.out.println("5.Average price of item in Super Duper Market: " + MainMenu.convertDoubleToDecimal(base.getAvgPriceOfItemInSDK(itemSerialID)));
+            System.out.println("6.Total amount that has been soled from this item in Super Duper Market: " + MainMenu.convertDoubleToDecimal(base.getTotalAmountOfSoledItem(itemSerialID)));
             System.out.println("\n");
         }
     }
@@ -138,7 +138,7 @@ public class DetailsPrinter {
     public void showOrdersHistory()
     {
         Set<Integer> setOfOrders = base.getSetOfOrdersSerialID();
-        ClosedOrder closedOrder;
+        ClosedStaticOrder closedOrder;
         Store store;
 
         if(setOfOrders.isEmpty() == false)
@@ -155,9 +155,9 @@ public class DetailsPrinter {
                 System.out.println("      Shop name:" + store.getName());
                 System.out.println("   Details about items in order:");
                 System.out.println("      Total amount of type of items:" + closedOrder.getTotalAmountOfItemTypes());
-                System.out.println("      Total amount of items:" + closedOrder.getTotalAmountOfItemsByUnit());
-                System.out.println("   Delivery price: " + closedOrder.getDeliveryPriceAfterOrder());
-                System.out.println("   Total order price: " + closedOrder.getTotalPriceOfOrder());
+                System.out.println("      Total amount of items:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalAmountOfItemsByUnit()));
+                System.out.println("   Delivery price: " + MainMenu.convertDoubleToDecimal(closedOrder.getDeliveryPriceAfterOrder()));
+                System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedOrder.getTotalPriceOfOrder()));
             }
         }
         else
@@ -169,7 +169,7 @@ public class DetailsPrinter {
     //TODO
     //To use after user added all his items to the order
 
-    public void showItemsDetailsOfOpenedOrder(OpenedOrder openedOrder)
+    public void showItemsDetailsOfOpenedOrder(OpenedStaticOrder openedOrder)
     {
         openedOrder.getOrderedItems().values().stream().forEach(DetailsPrinter::showItemDetailsOfOpenedOrder);
     }
@@ -189,13 +189,13 @@ public class DetailsPrinter {
         System.out.println("Price per unit: " + orderedItem.getPricePerUnit());
         if(orderedItem instanceof OrderedItemByWeight)
         {
-            System.out.println("Amount of this item in the order: " + ((OrderedItemByWeight) orderedItem).getAmountOfItemOrderedByWeight());
+            System.out.println("Amount of this item in the order: " + MainMenu.convertDoubleToDecimal(((OrderedItemByWeight) orderedItem).getAmountOfItemOrderedByWeight()));
         }
         else if(orderedItem instanceof OrderedItemByQuantity)
         {
-            System.out.println("Amount of this item in the order: " + orderedItem.getAmountOfItemOrderedByUnits());
+            System.out.println("Amount of this item in the order: " + MainMenu.convertDoubleToDecimal(orderedItem.getAmountOfItemOrderedByUnits()));
         }
-        System.out.println("Total price of item in order: " + orderedItem.getTotalPriceOfItemOrderedByTypeOfMeasure());
+        System.out.println("Total price of item in order: " + MainMenu.convertDoubleToDecimal(orderedItem.getTotalPriceOfItemOrderedByTypeOfMeasure()));
         System.out.println("\n");
     }
 

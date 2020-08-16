@@ -13,6 +13,12 @@ public class OrderedItemByWeight extends OrderedItem{
         return amountOfItemOrderedByWeight * getPricePerUnit();
     }
 
+    @Override
+    public double getTotalAmountOfItemOrderedByTypeOfMeasure()
+    {
+        return amountOfItemOrderedByWeight;
+    }
+
     public void increaseAmountOfItemOrderedByWeight(double weightToAdd)
     {
         amountOfItemOrderedByWeight += weightToAdd;

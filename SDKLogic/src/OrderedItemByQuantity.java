@@ -10,6 +10,12 @@ public class OrderedItemByQuantity extends OrderedItem{
         return getAmountOfItemOrderedByUnits() * getPricePerUnit();
     }
 
+    @Override
+    public double getTotalAmountOfItemOrderedByTypeOfMeasure()
+    {
+        return getAmountOfItemOrderedByUnits();
+    }
+
     public void increaseAmountOfItemOrderedByUnits(int UnitsToAdd)
     {
         setAmountOfItemOrderedByUnits(getAmountOfItemOrderedByUnits() + UnitsToAdd);
