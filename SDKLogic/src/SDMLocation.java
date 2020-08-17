@@ -1,5 +1,6 @@
 import jaxb.schema.generated.Location;
 import java.util.Objects;
+import java.util.Set;
 
 public class SDMLocation {
     private int x;
@@ -72,5 +73,18 @@ public class SDMLocation {
     public boolean checkIfCoordinatesMatchToLocation(int coordinateX, int cooridnateY)
     {
         return(x == coordinateX && y == cooridnateY);
+    }
+
+    public boolean checkIfCoordinatesMatchToListOfLocations(Set<SDMLocation> setOfLocations)
+    {
+        boolean coordinateMatches = false;
+        for(SDMLocation location : setOfLocations)
+        {
+            if(checkIfCoordinatesMatchToLocation(location.getX(), location.getY()) == true)
+            {
+                coordinateMatches = true;
+            }
+        }
+        return coordinateMatches;
     }
 }

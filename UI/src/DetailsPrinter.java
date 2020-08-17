@@ -97,7 +97,7 @@ public class DetailsPrinter {
             System.out.println("Orders that was done from this store:");
             for(int serialIdOfOrder : setOfSerialIDOfOrdersInStore)
             {
-                ClosedStaticOrder closedOrder = store.getOrderBySerialID(serialIdOfOrder);
+                ClosedOrder closedOrder = store.getOrderBySerialID(serialIdOfOrder);
                 System.out.println("Serial key of order: " + serialIdOfOrder);
                 System.out.println("Date:" + dateToStrOfCertainFormat(closedOrder.getDate()));
                 System.out.println("Amount of items in order:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalAmountOfItemsByUnit()));
@@ -138,15 +138,17 @@ public class DetailsPrinter {
     public void showOrdersHistory()
     {
         Set<Integer> setOfOrders = base.getSetOfOrdersSerialID();
-        ClosedStaticOrder closedOrder;
+        ClosedOrder closedOrder;
         Store store;
 
         if(setOfOrders.isEmpty() == false)
         {
             for(Integer orderSerialId : setOfOrders)
             {
+                //TODO
+                //Need to show static order and dynamic order seperatly
                 closedOrder = base.getOrderBySerialID(orderSerialId);
-                store = closedOrder.getShop();
+                store = ((ClosedStaticOrder)closedOrder).getStoreUsed();
                 System.out.println("Orders that was done in Super Duper Market:");
                 System.out.println("Serial ID of order: " + orderSerialId);
                 System.out.println("   Date: " + dateToStrOfCertainFormat(closedOrder.getDate()));

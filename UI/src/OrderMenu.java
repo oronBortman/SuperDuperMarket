@@ -80,29 +80,6 @@ public class OrderMenu {
         return new SDMLocation(cooridnateX, cooridnateY);
     }
 
-
-    public SDMLocation inputLocation(SDMLocation storeLocation)
-    {
-        int coordinateX;
-        int cooridnateY;
-        boolean locationIsValid;
-        System.out.println("Enter your location:");
-        coordinateX = inputCoordinate("x");
-        cooridnateY = inputCoordinate("y");
-        locationIsValid = storeLocation.checkIfCoordinatesMatchToLocation(coordinateX, cooridnateY) == false;
-        if(locationIsValid == false) {
-            System.out.println("You entered the same location of the store.\n" +
-                    "The store is in (" + storeLocation.getX() + "," + storeLocation.getY() + "), " +
-                    "and you entered the location (" + coordinateX + "," + cooridnateY + ").\n"  +
-                    "You can't order from a store at your location.\n");
-            return null;
-        }
-        else
-        {
-            return new SDMLocation(coordinateX, cooridnateY);
-        }
-    }
-
     public boolean inputIfUserApprovesOrder()
     {
         System.out.println("Enter y to approve the other or any other key if you don't approve");

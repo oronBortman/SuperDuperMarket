@@ -6,14 +6,14 @@ public class Store {
     private Integer serialNumber;
     private String name;
     private Map<Integer, SelledItemInStore> ItemsSerialIDMap;
-    private Map<Integer, ClosedStaticOrder> ordersSerialIDMap;
+    private Map<Integer, ClosedOrder> ordersSerialIDMap;
     private int PPK;
     private SDMLocation SDMLocationOfShop;
 
     Store(Integer serialNumber, String name, int PPK, SDMLocation SDMLocationOfShop)
     {
         ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
-        ordersSerialIDMap = new HashMap<Integer, ClosedStaticOrder>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
         this.serialNumber = serialNumber;
         this.name = name;
         this.PPK = PPK;
@@ -23,7 +23,7 @@ public class Store {
     public Store(SDMStore shop)
     {
         ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
-        ordersSerialIDMap = new HashMap<Integer, ClosedStaticOrder>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
         this.serialNumber = shop.getId();
         this.name = shop.getName();
         this.PPK = shop.getDeliveryPpk();
@@ -45,7 +45,7 @@ public class Store {
 
     public Set<Integer> getSetOfOrdersSerialID()
     {
-        return GeneralMethods.<Integer, ClosedStaticOrder>getSetOfDictionary(ordersSerialIDMap);
+        return GeneralMethods.<Integer, ClosedOrder>getSetOfDictionary(ordersSerialIDMap);
 
     }
 
@@ -57,7 +57,7 @@ public class Store {
     //TODO
     public double calcProfitOfDelivers()
     {
-        return ordersSerialIDMap.values().stream().mapToDouble(ClosedStaticOrder::getDeliveryPriceAfterOrder).sum();
+        return ordersSerialIDMap.values().stream().mapToDouble(ClosedOrder::getDeliveryPriceAfterOrder).sum();
     }
 
     public String getName()
@@ -70,7 +70,7 @@ public class Store {
         return ItemsSerialIDMap.get(serialID);
     }
 
-    public ClosedStaticOrder getOrderBySerialID(Integer serialID)
+    public ClosedOrder getOrderBySerialID(Integer serialID)
     {
         return ordersSerialIDMap.get(serialID);
     }
@@ -99,7 +99,7 @@ public class Store {
         ItemsSerialIDMap.put(item.getSerialNumber(), item);
     }
 
-    public void addClosedOrderToHistory(ClosedStaticOrder order)
+    public void addClosedOrderToHistory(ClosedOrder order)
     {
         ordersSerialIDMap.put(order.getSerialNumber(), order);
     }

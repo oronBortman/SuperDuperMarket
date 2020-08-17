@@ -11,7 +11,7 @@ public class Logic {
     private Map<SDMLocation, Store> storesLocationMap;
     private Map<Integer, Store> storesSerialIDMap;
     private Map<Integer, Item> itemsSerialIDMap;
-    private Map<Integer, ClosedStaticOrder> ordersSerialIDMap;
+    private Map<Integer, ClosedOrder> ordersSerialIDMap;
 
     private static Integer currentOrderSerialIDInSDK = 1;
 
@@ -22,7 +22,7 @@ public class Logic {
         storesLocationMap = new HashMap<SDMLocation, Store>();
         storesSerialIDMap = new HashMap<Integer, Store>();
         itemsSerialIDMap = new HashMap<Integer, Item>();
-        ordersSerialIDMap = new HashMap<Integer, ClosedStaticOrder>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
         currentOrderSerialIDInSDK = 1;
     }
 
@@ -38,7 +38,7 @@ public class Logic {
         currentOrderSerialIDInSDK = 1;
     }
 
-    public ClosedStaticOrder getOrderBySerialID(Integer orderSerialID)
+    public ClosedOrder getOrderBySerialID(Integer orderSerialID)
     {
         return ordersSerialIDMap.get(orderSerialID);
     }
@@ -59,12 +59,17 @@ public class Logic {
     public Set<Integer> getSetOfItemsSerialID()
     {
         return GeneralMethods.<Integer, Item>getSetOfDictionary(itemsSerialIDMap);
+    }
 
+    public boolean checkIfLocationIsAsStores(SDMLocation location)
+    {
+        Set<SDMLocation> setOfLocations = storesLocationMap.keySet();
+        return location.checkIfCoordinatesMatchToListOfLocations(setOfLocations);
     }
 
     public Set<Integer> getSetOfOrdersSerialID()
     {
-        return GeneralMethods.<Integer, ClosedStaticOrder>getSetOfDictionary(ordersSerialIDMap);
+        return GeneralMethods.<Integer, ClosedOrder>getSetOfDictionary(ordersSerialIDMap);
     }
 
     public Item getItemySerialID(Integer serialID)
@@ -82,7 +87,7 @@ public class Logic {
         return itemsSerialIDMap.get(itemID);
     }
 
-    public void addClosedOrderToHistory(ClosedStaticOrder order)
+    public void addClosedOrderToHistory(ClosedOrder order)
     {
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;
@@ -136,32 +141,39 @@ public class Logic {
         {
             int storeSerialId = entry.getKey();
             Store store = entry.getValue();
-            int itemPriceInStore = store.getItemBySerialID(itemSerialID).getPricePerUnit();
-            if(minPrice == MIN_PRICE_INITIALIZE || itemPriceInStore < minPrice)
+            SelledItemInStore item = store.getItemBySerialID(itemSerialID);
+            if(item != null)
             {
-                minPrice=itemPriceInStore;
-                storeSerialIDWithCheapestItem = storeSerialId;
+                int itemPriceInStore = item.getPricePerUnit();
+                if(minPrice == MIN_PRICE_INITIALIZE || itemPriceInStore < minPrice)
+                {
+                    minPrice=itemPriceInStore;
+                    storeSerialIDWithCheapestItem = storeSerialId;
+                }
             }
         }
         return storeSerialIDWithCheapestItem;
     }
 
-    public HashMap<Integer, List<SelledItemInStore>> getMapOfShopWithCheapestItemsFromList(List<Integer> listOfItemsSerialID)
+    public HashMap<Store, List<OrderedItem>> getMapOfShopWithCheapestItemsFromSet(Set<OrderedItem> listOfOrderedItems)
     {
+        Store store;
         int storeID;
-        HashMap<Integer, List<SelledItemInStore>> mapOfShopsWithCheapestItems = new HashMap<Integer, List<SelledItemInStore>>() ;
-        for(int itemSerialID: listOfItemsSerialID)
+        HashMap<Store, List<OrderedItem>> mapOfShopsWithCheapestItems = new HashMap<Store, List<OrderedItem>>() ;
+        for(OrderedItem orderedItem: listOfOrderedItems)
         {
-            storeID = getIDOfShopWithCheapestItem(itemSerialID);
-            Store store = storesSerialIDMap.get(storeID);
-            SelledItemInStore itemInStore = store.getItemBySerialID(itemSerialID);
-            if(mapOfShopsWithCheapestItems.get(storeID).isEmpty())
+            storeID = getIDOfShopWithCheapestItem(orderedItem.getSerialNumber());
+            store = storesSerialIDMap.get(storeID);
+            SelledItemInStore item = store.getItemBySerialID(orderedItem.getSerialNumber());
+            if(item != null)
             {
-                mapOfShopsWithCheapestItems.put(storeID, new ArrayList<SelledItemInStore>());
-            }
-            else
-            {
-                mapOfShopsWithCheapestItems.get(storeID).add(itemInStore);
+                int pricePerUnit =  store.getItemBySerialID(orderedItem.getSerialNumber()).getPricePerUnit();
+                orderedItem.setPricePerUnit(pricePerUnit);
+                if(mapOfShopsWithCheapestItems.get(storeID) == null)
+                {
+                    mapOfShopsWithCheapestItems.put(store, new ArrayList<OrderedItem>());
+                }
+                mapOfShopsWithCheapestItems.get(store).add(orderedItem);
             }
         }
         return mapOfShopsWithCheapestItems;

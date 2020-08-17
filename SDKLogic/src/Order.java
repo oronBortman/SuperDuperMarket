@@ -2,24 +2,21 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-public class StaticOrder {
+public abstract class Order {
 
     private Date date;
-    private Store storeUsed;
     private Map<Integer, OrderedItem> orderedItems;
 
-    public StaticOrder(Store storeUsed, Date date)
+    public Order(Date date)
     {
         orderedItems = new HashMap<Integer, OrderedItem>();
-        this.storeUsed = storeUsed;
         this.date = date;
     }
 
-    public StaticOrder(Store storeUsed, Map<Integer, OrderedItem> orderedItems, Date date )
+    public Order(Map<Integer, OrderedItem> orderedItems, Date date )
     {
         this.date = date;
         this.orderedItems = orderedItems;
-        this.storeUsed = storeUsed;
     }
     //TODO
     public Date getDate()
@@ -27,18 +24,9 @@ public class StaticOrder {
         return date;
     }
 
-    public Store getShop()
-    {
-        return storeUsed;
-    }
-
     public Map<Integer, OrderedItem> getOrderedItems()
     {
         return orderedItems;
-    }
-
-    public Store getStoreUsed() {
-        return storeUsed;
     }
 
     public void addItemToItemsMapOfOrder(OrderedItem orderedItem)

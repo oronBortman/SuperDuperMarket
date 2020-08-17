@@ -4,6 +4,10 @@ public class OrderedItemByQuantity extends OrderedItem{
         super(serialNumber, name, TypeOfMeasure.Quantity, price, amountOfItemOrderedByUnits);
     }
 
+    OrderedItemByQuantity(Integer serialNumber, String name, int amountOfItemOrderedByUnits) {
+        super(serialNumber, name, TypeOfMeasure.Quantity, amountOfItemOrderedByUnits);
+    }
+
     @Override
     public double getTotalPriceOfItemOrderedByTypeOfMeasure()
     {

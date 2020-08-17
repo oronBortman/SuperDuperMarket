@@ -42,6 +42,7 @@
 				<SDM-sell item-id="2" price="20"/>
 				<SDM-sell item-id="3" price="10"/>
 				<SDM-sell item-id="4" price="50"/>
+				<SDM-sell item-id="5" price="10"/>
 			</SDM-prices>
 		</SDM-store>
 	</SDM-stores>
