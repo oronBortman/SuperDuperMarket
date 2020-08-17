@@ -295,7 +295,7 @@ public class Logic {
         }
     }
 
-    public void addItemsToStoresFromXml(String xmlName) throws SerialIDNotExistException, DuplicateSerialIDException, JAXBException, FileNotFoundException {
+    public void addItemsToStoresFromXml(String xmlName) throws SerialIDNotExistException, DuplicateSerialIDException, JAXBException, FileNotFoundException, ItemNotExistInStoresException {
         //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
         InputStream inputStream = new FileInputStream(xmlName);
         Map<Integer, Integer> storesSellsIDMap = new HashMap<Integer, Integer>();
@@ -327,6 +327,28 @@ public class Logic {
                     storesSerialIDMap.get(shopSerialID).addItemToItemSSerialIDMap(selledItemInStore);
                 }
             }
+
+        }
+        for(Map.Entry<Integer, Item> item : itemsSerialIDMap.entrySet())
+        {
+            if(checkIfItemExistsInStores(item.getKey()) == false)
+            {
+                throw new ItemNotExistInStoresException(item.getValue());
+            }
         }
     }
+
+    public boolean checkIfItemExistsInStores(int itemSerialID)
+    {
+        boolean itemIsBeingSelled=false;
+        for(Store store : storesSerialIDMap.values())
+        {
+            if(store.checkIfItemIdExists(itemSerialID) == true)
+            {
+                itemIsBeingSelled=true;
+            }
+        }
+        return itemIsBeingSelled;
+    }
 }
+

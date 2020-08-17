@@ -82,6 +82,12 @@ public class MenuOptionForReadingXMLFile {
             System.out.println("Please fix your xml file and try again\n");
             loadXmlSuccessfully = false;
         }
+        catch(ItemNotExistInStoresException e)
+        {
+            System.out.println("An item with serial id " + e.getItem().getSerialNumber() + " doesn't exist in any store in Super Duper Market.");
+            System.out.println("Please fix your xml file and try again\n");
+            loadXmlSuccessfully = false;
+        }
         catch(Exception e)
         {
             loadXmlSuccessfully = false;
