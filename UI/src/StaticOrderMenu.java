@@ -82,7 +82,7 @@ public class StaticOrderMenu extends OrderMenu{
                 default:
                     break;
             }
-            System.out.println("Enter q if you want finish the order");
+            System.out.println("Enter q if you want finish or enter any other key to continue with the order");
             choiceOfUser = sc.nextLine();
         } while(choiceOfUser.toLowerCase().equals("q") == false);
     }

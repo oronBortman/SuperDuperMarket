@@ -1,3 +1,5 @@
+import sun.applet.Main;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
@@ -139,27 +141,20 @@ public class DetailsPrinter {
     {
         Set<Integer> setOfOrders = base.getSetOfOrdersSerialID();
         ClosedOrder closedOrder;
-        Store store;
 
         if(setOfOrders.isEmpty() == false)
         {
             for(Integer orderSerialId : setOfOrders)
             {
-                //TODO
-                //Need to show static order and dynamic order seperatly
                 closedOrder = base.getOrderBySerialID(orderSerialId);
-                store = ((ClosedStaticOrder)closedOrder).getStoreUsed();
-                System.out.println("Orders that was done in Super Duper Market:");
-                System.out.println("Serial ID of order: " + orderSerialId);
-                System.out.println("   Date: " + dateToStrOfCertainFormat(closedOrder.getDate()));
-                System.out.println("   Details about the shop that order made from:");
-                System.out.println("      Shop serial ID:" + store.getSerialNumber());
-                System.out.println("      Shop name:" + store.getName());
-                System.out.println("   Details about items in order:");
-                System.out.println("      Total amount of type of items:" + closedOrder.getTotalAmountOfItemTypes());
-                System.out.println("      Total amount of items:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalAmountOfItemsByUnit()));
-                System.out.println("   Delivery price: " + MainMenu.convertDoubleToDecimal(closedOrder.getDeliveryPriceAfterOrder()));
-                System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedOrder.getTotalPriceOfOrder()));
+                if(closedOrder instanceof ClosedStaticOrder)
+                {
+                    showStaticOrderHistory((ClosedStaticOrder)closedOrder);
+                }
+                else if(closedOrder instanceof ClosedDynamicOrder)
+                {
+                    showDynamicOrderHistory((ClosedDynamicOrder)closedOrder);
+                }
             }
         }
         else
@@ -168,8 +163,33 @@ public class DetailsPrinter {
         }
     }
 
-    //TODO
-    //To use after user added all his items to the order
+    public void showStaticOrderHistory(ClosedStaticOrder closedStaticOrder)
+    {
+        Store store = closedStaticOrder.getStoreUsed();
+        System.out.println("Orders that was done in Super Duper Market:");
+        System.out.println("Serial ID of order: " + closedStaticOrder.getSerialNumber());
+        System.out.println("   Date: " + dateToStrOfCertainFormat(closedStaticOrder.getDate()));
+        System.out.println("   Details about the shop that order made from:");
+        System.out.println("      Shop serial ID:" + store.getSerialNumber());
+        System.out.println("      Shop name:" + store.getName());
+        System.out.println("   Details about items in order:");
+        System.out.println("      Total amount of type of items:" + closedStaticOrder.getTotalAmountOfItemTypes());
+        System.out.println("      Total amount of items:" + MainMenu.convertDoubleToDecimal(closedStaticOrder.getTotalAmountOfItemsByUnit()));
+        System.out.println("   Delivery price: " + MainMenu.convertDoubleToDecimal(closedStaticOrder.getDeliveryPriceAfterOrder()));
+        System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedStaticOrder.getTotalPriceOfOrder()));
+    }
+
+    public void showDynamicOrderHistory(ClosedDynamicOrder closedDynamicOrder) {
+        System.out.println("Orders that was done in Super Duper Market:");
+        System.out.println("Serial ID of order: " + closedDynamicOrder.getSerialNumber());
+        System.out.println("   Date: " + dateToStrOfCertainFormat(closedDynamicOrder.getDate()));
+        System.out.println("   Details about items in order:");
+        System.out.println("      Total amount of type of items:" + closedDynamicOrder.getTotalAmountOfItemTypes());
+        System.out.println("      Total amount of items:" + closedDynamicOrder.getTotalAmountOfItemsByUnit());
+        System.out.println("      Total amount of stores in order:" + closedDynamicOrder.getTotalAmountOfStores());
+        System.out.println("   Delivery price: " + MainMenu.convertDoubleToDecimal(closedDynamicOrder.getDeliveryPriceAfterOrder()));
+        System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedDynamicOrder.getTotalPriceOfOrder()));
+    }
 
     public void showItemsDetailsOfOpenedOrder(OpenedStaticOrder openedOrder)
     {

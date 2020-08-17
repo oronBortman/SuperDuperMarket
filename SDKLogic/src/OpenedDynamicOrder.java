@@ -23,6 +23,10 @@ public class OpenedDynamicOrder extends OpenedOrder{
         return deliveryPrice;
     }
 
+    public int calcTotalAmountOfStores()
+    {
+        return mapOfStoresIDWithSelectedItems.keySet().size();
+    }
     public void setMapOfStoresIDWithSelectedItems(HashMap<Store, List<OrderedItem>> mapOfStoresIDWithSelectedItems) {
         this.mapOfStoresIDWithSelectedItems = mapOfStoresIDWithSelectedItems;
     }
@@ -34,7 +38,8 @@ public class OpenedDynamicOrder extends OpenedOrder{
         double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
         int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
         int totalAmountOfItemsType = calcTotalAmountOfItemsType();
-        return new ClosedDynamicOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getOrderedItems(), getDate());
+        int totalAmountOfStores = calcTotalAmountOfStores();
+        return new ClosedDynamicOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getOrderedItems(), getDate(), totalAmountOfStores);
     }
 
     public void updateItemsByCheapest()

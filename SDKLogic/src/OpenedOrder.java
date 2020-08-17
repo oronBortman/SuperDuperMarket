@@ -50,16 +50,6 @@ public abstract class OpenedOrder extends Order{
         return itemAlreadyExistsInOrder;
     }
 
-    public ClosedOrder closeOrder(SDMLocation location)
-    {
-        double totalPriceOfItems = calcTotalPriceOfItems();
-        double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice(location);
-        double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
-        int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
-        int totalAmountOfItemsType = calcTotalAmountOfItemsType();
-        return new ClosedDynamicOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getOrderedItems(), getDate());
-    }
-
 
     public int calcTotalAmountOfItemsType()
     {

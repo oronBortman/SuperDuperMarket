@@ -90,7 +90,6 @@ public class OrderMenu {
 
     public Date inputDate()
     {
-// To take the input
         Scanner scanner = new Scanner(System.in);
         boolean dateIsValid;
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm-hh:mm");

@@ -81,10 +81,19 @@ public class MainMenu {
         detailsPrinter = new DetailsPrinter(base);
     }
 
-    public static String convertDoubleToDecimal(double num)
+    /*public static String convertDoubleToDecimal(double num)
     {
         return new DecimalFormat("##.##").format(num);
+    }*/
+    public static String convertDoubleToDecimal(double num)
+    {
+        return String.format("%.2f", num);
     }
+
+  /*  public static String convertIntToDecimal(Integer num)
+    {
+        return String.format("%.2d", num.doubleValue());
+    }*/
 
     private void printHeadline() {
         System.out.println("Welcome to Super Duper Market");
