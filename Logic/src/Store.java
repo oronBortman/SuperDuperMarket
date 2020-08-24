@@ -29,7 +29,6 @@ public class Store {
         this.PPK = shop.getDeliveryPpk();
         SDMLocation location = new SDMLocation(shop.getLocation());
         this.SDMLocationOfShop = location;
-
     }
 
     private void addItemToShop(SelledItemInStore selledItemInStore)

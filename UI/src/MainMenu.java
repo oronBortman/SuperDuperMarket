@@ -69,14 +69,13 @@ public class MainMenu {
 
     DetailsPrinter detailsPrinter;
     MenuOptionForReadingXMLFile menuOptionForReadingXMLFile;
-    MenuOptionForOrderAndBuy menuOptionForOrderAndBuy;
-
+    StaticOrderMenu staticOrderMenu;
     Base base = new Base();
 
     public MainMenu()
     {
         menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile();
-        menuOptionForOrderAndBuy = new MenuOptionForOrderAndBuy(base);
+        staticOrderMenu = new StaticOrderMenu(base);
         detailsPrinter = new DetailsPrinter(base);
     }
 
@@ -147,7 +146,7 @@ public class MainMenu {
                     {
                         this.loadXmlSuccessfully = true;
                         this.base = baseFromXml;
-                        menuOptionForOrderAndBuy = new MenuOptionForOrderAndBuy(baseFromXml);
+                        staticOrderMenu = new StaticOrderMenu(baseFromXml);
                         detailsPrinter = new DetailsPrinter(baseFromXml);
                         System.out.println("Xml file loaded successfully to Super Duper Market :)\n");
                     }
@@ -183,7 +182,7 @@ public class MainMenu {
                 //TODO
                 if(loadXmlSuccessfully == true)
                 {
-                    menuOptionForOrderAndBuy.orderAndBuy();
+                    staticOrderMenu.makeStaticOrder();
                 }
                 else
                 {

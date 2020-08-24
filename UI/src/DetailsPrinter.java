@@ -33,7 +33,7 @@ public class DetailsPrinter {
                 showOrdersDetailsOfStore(shopSerialID);
                 if(store.getSetOfOrdersSerialID().isEmpty() == false)
                 {
-                    System.out.println("Total payment of delivers till now:" + store.calcProfitOfDelivers());
+                    System.out.println("Total payment of delivers till now:" + MainMenu.convertDoubleToDecimal(store.calcProfitOfDelivers()));
                 }
                 else
                 {
@@ -145,14 +145,11 @@ public class DetailsPrinter {
             for(Integer orderSerialId : setOfOrders)
             {
                 closedOrder = base.getOrderBySerialID(orderSerialId);
-                if(closedOrder instanceof ClosedStaticOrder)
-                {
-                    showStaticOrderHistory((ClosedStaticOrder)closedOrder);
-                }
-                else if(closedOrder instanceof ClosedDynamicOrder)
+                showStaticOrderHistory((ClosedStaticOrder) closedOrder);
+                /*else if(closedOrder instanceof ClosedDynamicOrder)
                 {
                     showDynamicOrderHistory((ClosedDynamicOrder)closedOrder);
-                }
+                }*/
             }
         }
         else
@@ -175,7 +172,7 @@ public class DetailsPrinter {
         System.out.println("   Delivery price: " + MainMenu.convertDoubleToDecimal(closedStaticOrder.getDeliveryPriceAfterOrder()));
         System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedStaticOrder.getTotalPriceOfOrder()));
     }
-
+/*
     public void showDynamicOrderHistory(ClosedDynamicOrder closedDynamicOrder) {
         System.out.println("Serial ID of order: " + closedDynamicOrder.getSerialNumber());
         System.out.println("   Date: " + dateToStrOfCertainFormat(closedDynamicOrder.getDate()));
@@ -186,7 +183,7 @@ public class DetailsPrinter {
         System.out.println("   Delivery price: " + MainMenu.convertDoubleToDecimal(closedDynamicOrder.getDeliveryPriceAfterOrder()));
         System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedDynamicOrder.getTotalPriceOfOrder()));
     }
-
+*/
     public void showItemsDetailsOfOpenedOrder(OpenedOrder openedOrder)
     {
         openedOrder.getOrderedItems().values().stream().forEach(DetailsPrinter::showItemDetailsOfOpenedOrder);
