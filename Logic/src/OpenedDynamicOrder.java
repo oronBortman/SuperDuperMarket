@@ -1,6 +1,6 @@
 import java.util.*;
 
-public class OpenedDynamicOrder extends OpenedOrder{
+public class OpenedDynamicOrder extends OpenedCustomerOrder {
 
     HashMap<Store, List<OrderedItem>> mapOfStoresIDWithSelectedItems;
 
@@ -28,7 +28,7 @@ public class OpenedDynamicOrder extends OpenedOrder{
         this.mapOfStoresIDWithSelectedItems = mapOfStoresIDWithSelectedItems;
     }
 
-    public ClosedDynamicOrder closeOrder(SDMLocation location)
+    public ClosedCustomerOrder closeOrder(SDMLocation location)
     {
         double totalPriceOfItems = calcTotalPriceOfItems();
         double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice(location);
@@ -36,7 +36,7 @@ public class OpenedDynamicOrder extends OpenedOrder{
         int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
         int totalAmountOfItemsType = calcTotalAmountOfItemsType();
         int totalAmountOfStores = calcTotalAmountOfStores();
-        return new ClosedDynamicOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getOrderedItems(), getDate(), totalAmountOfStores);
+        return new ClosedCustomerOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, getOrderedItems(), getDate(), totalAmountOfStores);
     }
 
     public void updateItemsByCheapest()

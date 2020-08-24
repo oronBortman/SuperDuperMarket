@@ -46,7 +46,7 @@ public class DynamicOrderMenu extends OrderMenu{
         printSumDetailsOfOrder(openedOrder, locationOfUser);
         if(inputIfUserApprovesOrder())
         {
-            ClosedDynamicOrder closedDynamicOrder = openedOrder.closeOrder(locationOfUser);
+            ClosedCustomerOrder closedDynamicOrder = openedOrder.closeOrder(locationOfUser);
             base.addClosedOrderToHistory(closedDynamicOrder);
         }
     }

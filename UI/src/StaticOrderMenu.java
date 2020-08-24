@@ -20,26 +20,26 @@ public class StaticOrderMenu extends OrderMenu{
         Store store = base.getStoreBySerialID(inputSerialIdOfShop);
         SDMLocation locationOfUser = inputLocation(store.getLocationOfShop());
         if(locationOfUser == null) { return;} //Exit from OrderAndBuy if the location of user is invalid
-        OpenedStaticOrder openedOrder = new OpenedStaticOrder(store, date);
-        inputItemsUntilQuitSign( store, openedOrder);
+        OpenedStoreOrder openedOrderFromStore = new OpenedStoreOrder(store, date);
+        OpenedCustomerOrder openedOrderFromCustomer = new OpenedCustomerOrder(date);
+        openedOrderFromCustomer.addOrderFromStore(openedOrderFromStore);
+        inputItemsUntilQuitSign( store, openedOrderFromStore);
         //TODO
         //need to check if basket is empty and then exit and not completing the order?
         //need to show user details of order and close it
-        printSumDetailsOfOrder(openedOrder, store.getPPK(), locationOfUser, store.getLocationOfShop());
+        printSumDetailsOfOrder(openedOrderFromCustomer, store.getPPK(), locationOfUser, store.getLocationOfShop());
         if(inputIfUserApprovesOrder())
         {
-            ClosedOrder closedOrder = openedOrder.closeOrder(locationOfUser);
-            base.addClosedOrderToHistory(closedOrder);
-            store.addClosedOrderToHistory(closedOrder);
+            ClosedCustomerOrder closedOrderFromCustomer = openedOrderFromCustomer.closeOrder(locationOfUser);
+            base.addClosedOrderToHistory(closedOrderFromCustomer);
         }
     }
 
-     public void inputItemsUntilQuitSign(Store store, OpenedStaticOrder openedOrder)
+     public void inputItemsUntilQuitSign(Store store, OpenedStoreOrder openedOrder)
     {
         int storeSerialId = store.getSerialNumber();
         String choiceOfUser;
         Scanner sc = new Scanner(System.in);  // Create a Scanner object
-
         do {
             detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialId);
             int inputSerialIdOfItem = inputItemSerialId(storeSerialId);
@@ -141,7 +141,7 @@ public class StaticOrderMenu extends OrderMenu{
 
 
 
-    public void printSumDetailsOfOrder(OpenedStaticOrder openedOrder, int PPK, SDMLocation locationOfUser, SDMLocation locationOfShop) {
+    public void printSumDetailsOfOrder(OpenedStoreOrder openedOrder, int PPK, SDMLocation locationOfUser, SDMLocation locationOfShop) {
         detailsPrinter.showItemsDetailsOfOpenedOrder(openedOrder);
         System.out.println("Price Per Kilometer: " + PPK);
         System.out.println("Air distance from store: " + MainMenu.convertDoubleToDecimal(locationOfUser.getAirDistanceToOtherLocation(locationOfShop)));

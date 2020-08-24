@@ -2,19 +2,14 @@ import java.util.Date;
 import java.util.Map;
 import java.util.Objects;
 
-public class OpenedStaticOrder extends OpenedOrder {
+public class OpenedStoreOrder extends Order {
 
     Store storeUsed;
-    public OpenedStaticOrder(Store store, Date date)
+
+    public OpenedStoreOrder(Store store, Date date)
     {
         super(date);
         this.storeUsed = store;
-    }
-
-    @Override
-    public double calcTotalDeliveryPrice(SDMLocation inputLocation)
-    {
-        return calcDeliverPriceFromStore(inputLocation, storeUsed);
     }
 
     public double calcDeliverPriceFromStore(SDMLocation inputLocation, Store store) {
@@ -23,7 +18,6 @@ public class OpenedStaticOrder extends OpenedOrder {
         double distanceBetweenTwoLocations = inputLocation.getAirDistanceToOtherLocation(storeLocation);
         return(PPK * distanceBetweenTwoLocations);
     }
-
 
     public double calcTotalPriceOfOrder(SDMLocation inputLocation)
     {
@@ -34,7 +28,7 @@ public class OpenedStaticOrder extends OpenedOrder {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        OpenedStaticOrder that = (OpenedStaticOrder) o;
+        OpenedStoreOrder that = (OpenedStoreOrder) o;
         return Objects.equals(storeUsed, that.storeUsed);
     }
 
@@ -69,19 +63,43 @@ public class OpenedStaticOrder extends OpenedOrder {
         return itemAlreadyExistsInOrder;
     }
 
-
     public int calcTotalAmountOfItemsType()
     {
         return getOrderedItems().size();
     }
-    public ClosedStaticOrder closeOrder(SDMLocation location)
+
+    public ClosedStoreOrder closeOrder(SDMLocation location)
     {
         double totalPriceOfItems = calcTotalPriceOfItems();
         double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice(location);
         double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
         int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
         int totalAmountOfItemsType = calcTotalAmountOfItemsType();
-        return new ClosedStaticOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, storeUsed,getOrderedItems(), getDate());
+        return new ClosedStoreOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, storeUsed,getOrderedItems(), getDate());
+    }
+
+    public abstract double calcTotalDeliveryPrice(SDMLocation inputLocation);
+
+    public double calcTotalPriceOfOrder(SDMLocation inputLocation)
+    {
+        return calcTotalPriceOfItems() + calcTotalDeliveryPrice(inputLocation);
+    }
+
+    public double calcTotalPriceOfItems()
+    {
+        return getOrderedItems().values().stream().mapToDouble(OrderedItem::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
+    }
+
+    public int calcTotalAmountOfItemsByUnit()
+    {
+        return getOrderedItems().values().stream().mapToInt(OrderedItem::getAmountOfItemOrderedByUnits).sum();
+    }
+
+
+
+    public int calcTotalAmountOfItemsType()
+    {
+        return getOrderedItems().size();
     }
 
 }

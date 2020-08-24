@@ -145,13 +145,13 @@ public class DetailsPrinter {
             for(Integer orderSerialId : setOfOrders)
             {
                 closedOrder = base.getOrderBySerialID(orderSerialId);
-                if(closedOrder instanceof ClosedStaticOrder)
+                if(closedOrder instanceof ClosedStoreOrder)
                 {
-                    showStaticOrderHistory((ClosedStaticOrder)closedOrder);
+                    showStaticOrderHistory((ClosedStoreOrder)closedOrder);
                 }
-                else if(closedOrder instanceof ClosedDynamicOrder)
+                else if(closedOrder instanceof ClosedCustomerOrder)
                 {
-                    showDynamicOrderHistory((ClosedDynamicOrder)closedOrder);
+                    showDynamicOrderHistory((ClosedCustomerOrder)closedOrder);
                 }
             }
         }
@@ -161,7 +161,7 @@ public class DetailsPrinter {
         }
     }
 
-    public void showStaticOrderHistory(ClosedStaticOrder closedStaticOrder)
+    public void showStaticOrderHistory(ClosedStoreOrder closedStaticOrder)
     {
         Store store = closedStaticOrder.getStoreUsed();
         System.out.println("Serial ID of order: " + closedStaticOrder.getSerialNumber());
@@ -176,7 +176,7 @@ public class DetailsPrinter {
         System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedStaticOrder.getTotalPriceOfOrder()));
     }
 
-    public void showDynamicOrderHistory(ClosedDynamicOrder closedDynamicOrder) {
+    public void showDynamicOrderHistory(ClosedCustomerOrder closedDynamicOrder) {
         System.out.println("Serial ID of order: " + closedDynamicOrder.getSerialNumber());
         System.out.println("   Date: " + dateToStrOfCertainFormat(closedDynamicOrder.getDate()));
         System.out.println("   Details about items in order:");
@@ -187,7 +187,7 @@ public class DetailsPrinter {
         System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedDynamicOrder.getTotalPriceOfOrder()));
     }
 
-    public void showItemsDetailsOfOpenedOrder(OpenedOrder openedOrder)
+    public void showItemsDetailsOfOpenedOrder(OpenedCustomerOrder openedOrder)
     {
         openedOrder.getOrderedItems().values().stream().forEach(DetailsPrinter::showItemDetailsOfOpenedOrder);
     }
