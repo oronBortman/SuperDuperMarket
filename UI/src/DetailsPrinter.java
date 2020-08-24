@@ -1,18 +1,16 @@
-import sun.applet.Main;
-
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Set;
 
 public class DetailsPrinter {
-    private Logic base;
+    private Base base;
 
-    public DetailsPrinter(Logic base)
+    public DetailsPrinter(Base base)
     {
         this.base = base;
     }
 
-    public void showStoresDetails(boolean showItemsInStore, boolean showOrderDetailsOfStore) {
+    public void showStoresDetailsAndFilterByParams(boolean showItemsInStore, boolean showOrderDetailsOfStore) {
         System.out.println("show shop general details\n");
         Set<Integer> setOfShopSerial = base.getSetOfStoresSerialID();
         Store store;
@@ -28,7 +26,7 @@ public class DetailsPrinter {
             {
                 System.out.println("List of items the Store sells:");
                 System.out.println("\n");
-                showSelledItemsDetailsOfStore(shopSerialID, true);
+                showSelledItemsDetailsOfStoreAndFilterByParams(shopSerialID, true);
             }
             if(showOrderDetailsOfStore)
             {
@@ -47,7 +45,7 @@ public class DetailsPrinter {
 
     }
 
-    public void showSelledItemsDetailsOfStore(Integer storeSerialID, boolean showItemsSoldDetails) {
+    public void showSelledItemsDetailsOfStoreAndFilterByParams(Integer storeSerialID, boolean showItemsSoldDetails) {
         Store store = base.getStoreBySerialID(storeSerialID);
         Set<Integer> setOfItemsSerialID = store.getSetOfItemsSerialID();
         SelledItemInStore item;
@@ -61,7 +59,7 @@ public class DetailsPrinter {
             System.out.println("    Price per unit:" + item.getPricePerUnit());
             if(showItemsSoldDetails)
             {
-                System.out.println("    Total items that sold in store: " + store.getAmountOfItemSoled(itemSerialID));
+                System.out.println("    Total amount" + " of this item sold in store: " + MainMenu.convertDoubleToDecimal(store.getAmountOfItemSoledByTypeOfMeasure(itemSerialID)));
             }
             System.out.println("\n");
         }
@@ -100,7 +98,6 @@ public class DetailsPrinter {
             for(int serialIdOfOrder : setOfSerialIDOfOrdersInStore)
             {
                 ClosedOrder closedOrder = store.getOrderBySerialID(serialIdOfOrder);
-                System.out.println("Serial key of order: " + serialIdOfOrder);
                 System.out.println("Date:" + dateToStrOfCertainFormat(closedOrder.getDate()));
                 System.out.println("Amount of items in order:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalAmountOfItemsByUnit()));
                 System.out.println("Total price of items:" + MainMenu.convertDoubleToDecimal(closedOrder.getTotalPriceOfItems()));
@@ -144,6 +141,7 @@ public class DetailsPrinter {
 
         if(setOfOrders.isEmpty() == false)
         {
+            System.out.println("Orders that was done in Super Duper Market:");
             for(Integer orderSerialId : setOfOrders)
             {
                 closedOrder = base.getOrderBySerialID(orderSerialId);
@@ -166,7 +164,6 @@ public class DetailsPrinter {
     public void showStaticOrderHistory(ClosedStaticOrder closedStaticOrder)
     {
         Store store = closedStaticOrder.getStoreUsed();
-        System.out.println("Orders that was done in Super Duper Market:");
         System.out.println("Serial ID of order: " + closedStaticOrder.getSerialNumber());
         System.out.println("   Date: " + dateToStrOfCertainFormat(closedStaticOrder.getDate()));
         System.out.println("   Details about the shop that order made from:");
@@ -180,7 +177,6 @@ public class DetailsPrinter {
     }
 
     public void showDynamicOrderHistory(ClosedDynamicOrder closedDynamicOrder) {
-        System.out.println("Orders that was done in Super Duper Market:");
         System.out.println("Serial ID of order: " + closedDynamicOrder.getSerialNumber());
         System.out.println("   Date: " + dateToStrOfCertainFormat(closedDynamicOrder.getDate()));
         System.out.println("   Details about items in order:");
@@ -191,7 +187,7 @@ public class DetailsPrinter {
         System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedDynamicOrder.getTotalPriceOfOrder()));
     }
 
-    public void showItemsDetailsOfOpenedOrder(OpenedStaticOrder openedOrder)
+    public void showItemsDetailsOfOpenedOrder(OpenedOrder openedOrder)
     {
         openedOrder.getOrderedItems().values().stream().forEach(DetailsPrinter::showItemDetailsOfOpenedOrder);
     }

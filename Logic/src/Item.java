@@ -51,6 +51,13 @@ public class Item {
         Item.TypeOfMeasure itemPurchaseCategory = Item.TypeOfMeasure.convertStringToEnum(itemPurchaseCategoryStr);
         this.typeToMeasureBy = itemPurchaseCategory;
     }
+
+    public Item(Item item)
+    {
+        this.serialNumber = item.getSerialNumber();
+        this.name = item.getName();
+        this.typeToMeasureBy = item.getTypeOfMeasure();
+    }
     public String getName()
     {
         return name;

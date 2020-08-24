@@ -8,7 +8,11 @@ public class SelledItemInStore extends Item {
 
     SelledItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory) {
         super(serialNumber, name, purchaseCategory);
-        this.pricePerUnit = pricePerUnit;
+    }
+
+    SelledItemInStore(Item item, int price) {
+        super(item);
+        this.pricePerUnit = price;
     }
 
 

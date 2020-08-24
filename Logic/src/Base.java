@@ -6,7 +6,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
-public class Logic {
+public class Base {
 
     private Map<SDMLocation, Store> storesLocationMap;
     private Map<Integer, Store> storesSerialIDMap;
@@ -15,7 +15,7 @@ public class Logic {
 
     private static Integer currentOrderSerialIDInSDK = 1;
 
-    Logic()
+    Base()
     {
         //TODO
         //Check if it's the right place to allocate the new order
@@ -182,7 +182,7 @@ public class Logic {
     //TODO
     public double getTotalAmountOfSoledItem(Integer itemID)
     {
-        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemExistsInOrder(itemID)).mapToDouble(x -> x.getTotalAmountOfSoledItem(itemID)).sum();
+        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemExistsInOrder(itemID)).mapToDouble(x -> x.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
     }
 //        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.getTotalAmountOfSoledItem(itemID).sum();
     public void setStoresSerialIDMap(Map<Integer, Store> shopsSerialIdMap)
@@ -349,6 +349,40 @@ public class Logic {
             }
         }
         return itemIsBeingSelled;
+    }
+
+    public void addItemToStore(int storeID, int itemID, int priceOfItem)
+    {
+        storesSerialIDMap.get(storeID).addItemToStore(itemsSerialIDMap.get(itemID), priceOfItem);
+    }
+
+    public void removeItemFromStore(int storeID, int itemID)
+    {
+        storesSerialIDMap.get(storeID).removeItemFromStore(itemID);
+    }
+
+
+    public void updatePriceOfItemInStore(int storeID, int itemID, int priceOfItem)
+    {
+        storesSerialIDMap.get(storeID).updatePriceOfItem(itemID,priceOfItem);
+    }
+
+    public boolean checkIfOnlyCertainStoreSellesItem(int itemID, int storeID)
+    {
+        boolean onlyInputStoreSellesItem=true;
+        for(Map.Entry<Integer, Store> entry : storesSerialIDMap.entrySet())
+        {
+            if( entry.getKey() != storeID && entry.getValue().checkIfItemIdExists(itemID))
+            {
+                onlyInputStoreSellesItem=false;
+            }
+        }
+        return onlyInputStoreSellesItem;
+    }
+
+    public boolean checkIfItemExistsInStore(int storeID, int itemID)
+    {
+        return storesSerialIDMap.get(storeID).checkIfItemIdExists(itemID);
     }
 }
 

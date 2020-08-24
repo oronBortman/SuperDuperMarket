@@ -50,10 +50,10 @@ public class MenuOptionForOrderAndBuy {
         }
     }
 
-    private Logic base;
+    private Base base;
     private DetailsPrinter detailsPrinter;
 
-    public MenuOptionForOrderAndBuy(Logic base) {
+    public MenuOptionForOrderAndBuy(Base base) {
         this.base = base;
         detailsPrinter = new DetailsPrinter(base);
     }

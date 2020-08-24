@@ -48,6 +48,20 @@ public abstract class Order {
         return amountOfCertainItemByUnit;
     }
 
+    public double getAmountOfCertainItemByTypeOfMeasure(int serialId)
+    {
+        double amountOfCertainItemByUnit;
+        if(orderedItems.containsKey(serialId))
+        {
+            amountOfCertainItemByUnit = orderedItems.get(serialId).getTotalAmountOfItemOrderedByTypeOfMeasure();
+        }
+        else
+        {
+            amountOfCertainItemByUnit = 0;
+        }
+        return amountOfCertainItemByUnit;
+    }
+
     public boolean checkIfItemExistsInOrder(int serialId)
     {
         return orderedItems.containsKey(serialId);

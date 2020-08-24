@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class DynamicOrderMenu extends OrderMenu{
-    private Logic base;
+    private Base base;
     DetailsPrinter detailsPrinter;
-    public DynamicOrderMenu(Logic base)
+    public DynamicOrderMenu(Base base)
     {
         this.base=base;
         detailsPrinter = new DetailsPrinter(base);
@@ -29,8 +29,7 @@ public class DynamicOrderMenu extends OrderMenu{
         }
     }
 
-    public void makeDynamicOrder()
-    {
+    public void makeDynamicOrder() {
         Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         Date date = inputDate();
         SDMLocation locationOfUser = inputLocation();
@@ -44,8 +43,17 @@ public class DynamicOrderMenu extends OrderMenu{
         //TODO
         //need to check if basket is empty and then exit and not completing the order?
         //need to show user details of order and close it
-        ClosedDynamicOrder closedDynamicOrder = openedOrder.closeOrder(locationOfUser);
-        base.addClosedOrderToHistory(closedDynamicOrder);
+        printSumDetailsOfOrder(openedOrder, locationOfUser);
+        if(inputIfUserApprovesOrder())
+        {
+            ClosedDynamicOrder closedDynamicOrder = openedOrder.closeOrder(locationOfUser);
+            base.addClosedOrderToHistory(closedDynamicOrder);
+        }
+    }
+
+    public void printSumDetailsOfOrder(OpenedDynamicOrder openedOrder, SDMLocation locationOfUser) {
+        detailsPrinter.showItemsDetailsOfOpenedOrder(openedOrder);
+        System.out.println("Delivery price: " + MainMenu.convertDoubleToDecimal(openedOrder.calcTotalDeliveryPrice(locationOfUser)));
     }
 
 

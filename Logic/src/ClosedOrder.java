@@ -13,7 +13,7 @@ public abstract class ClosedOrder extends Order{
     public ClosedOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Map<Integer, OrderedItem> orderedItems, Date date )
     {
         super(orderedItems,date);
-        this.serialNumber = Logic.getCurrentOrderSerialIDInSDK();
+        this.serialNumber = Base.getCurrentOrderSerialIDInSDK();
         this.deliveryPrice = deliveryPrice;
         this.totalPriceOfOrder = totalPriceOfOrder;
         this.totalAmountOfItemsByUnit = totalAmountOfItemsByUnit;
@@ -47,9 +47,10 @@ public abstract class ClosedOrder extends Order{
         return serialNumber;
     }
 
-    public double getTotalAmountOfSoledItem(int itemSerialID)
+   /* public double getTotalAmountOfAnItemByTypeOfMeasure(int itemSerialID)
     {
         return getItemInOrder(itemSerialID).getTotalAmountOfItemOrderedByTypeOfMeasure();
-    }
+    }*/
+
 }
 

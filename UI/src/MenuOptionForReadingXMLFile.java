@@ -43,7 +43,7 @@ public class MenuOptionForReadingXMLFile {
         return xmlFileName;
     }
 
-    public boolean readFromXMLFile(Logic baseFromXml) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
+    public boolean readFromXMLFile(Base baseFromXml) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
         boolean loadXmlSuccessfully;
         boolean readShopsSuccefully;
         boolean readItemsSuccefully;
@@ -94,7 +94,7 @@ public class MenuOptionForReadingXMLFile {
         }
         return loadXmlSuccessfully;
     }
-    private boolean readShopsFromXMLFile(String xmlFileName, Logic baseFromXml) {
+    private boolean readShopsFromXMLFile(String xmlFileName, Base baseFromXml) {
         boolean readShopsSuccefully;
         try
         {
@@ -127,7 +127,7 @@ public class MenuOptionForReadingXMLFile {
         return readShopsSuccefully;
     }
 
-    private boolean readItemsFromXMLFile(String xmlFileName, Logic baseFromXml) {
+    private boolean readItemsFromXMLFile(String xmlFileName, Base baseFromXml) {
         boolean readItemsSuccessfully;
         try
         {

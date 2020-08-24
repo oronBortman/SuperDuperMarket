@@ -1,22 +1,19 @@
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Scanner;
 import java.util.Set;
 
 public class StaticOrderMenu extends OrderMenu{
 
-    private Logic base;
+    private Base base;
     private DetailsPrinter detailsPrinter;
 
-    public StaticOrderMenu(Logic base)
+    public StaticOrderMenu(Base base)
     {
         this.base=base;
         detailsPrinter = new DetailsPrinter(base);
     }
 
-    public void makeStaticOrder()
-    {
+    public void makeStaticOrder() {
         Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
         Date date = inputDate();
         int inputSerialIdOfShop = inputSerialIDOfShop();
@@ -93,7 +90,7 @@ public class StaticOrderMenu extends OrderMenu{
         int inputOfSerialId = 0;
 
         do {
-            detailsPrinter.showStoresDetails(false, false);
+            detailsPrinter.showStoresDetailsAndFilterByParams(false, false);
             System.out.println("Please enter the serial id of the shop use want to buy from");
             if (sc.hasNextInt()) {
                 inputOfSerialId = sc.nextInt();

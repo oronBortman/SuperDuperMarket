@@ -1,4 +1,3 @@
-import java.text.DecimalFormat;
 import java.util.*;
 
 public class MainMenu {
@@ -11,7 +10,8 @@ public class MainMenu {
         SHOW_SYSTEM_ITEM_DETAILS(3, "Show system items details"),
         ORDER_AND_BUY(4, "Order and buy"),
         SHOW_ORDERS_HISTORY(5, "Show orders history"),
-        EXIT(6, "Exit");
+        UPDATE_ITEM_IN_STORE(6, "Update item in store"),
+        EXIT(7, "Exit");
 
         mainMenuOptions(int optionNum, String meaning)
         {
@@ -71,29 +71,20 @@ public class MainMenu {
     MenuOptionForReadingXMLFile menuOptionForReadingXMLFile;
     MenuOptionForOrderAndBuy menuOptionForOrderAndBuy;
 
-    Logic base = new Logic();
+    Base base = new Base();
 
     public MainMenu()
     {
-       // Logic base = new Logic();
         menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile();
         menuOptionForOrderAndBuy = new MenuOptionForOrderAndBuy(base);
         detailsPrinter = new DetailsPrinter(base);
     }
 
-    /*public static String convertDoubleToDecimal(double num)
-    {
-        return new DecimalFormat("##.##").format(num);
-    }*/
     public static String convertDoubleToDecimal(double num)
     {
         return String.format("%.2f", num);
     }
 
-  /*  public static String convertIntToDecimal(Integer num)
-    {
-        return String.format("%.2d", num.doubleValue());
-    }*/
 
     private void printHeadline() {
         System.out.println("Welcome to Super Duper Market");
@@ -107,6 +98,7 @@ public class MainMenu {
         mainMenuOptions.SHOW_SYSTEM_ITEM_DETAILS.printOption();
         mainMenuOptions.ORDER_AND_BUY.printOption();
         mainMenuOptions.SHOW_ORDERS_HISTORY.printOption();
+        mainMenuOptions.UPDATE_ITEM_IN_STORE.printOption();
         mainMenuOptions.EXIT.printOption();
     }
 
@@ -147,10 +139,9 @@ public class MainMenu {
         switch(option)
         {
             case READ_FROM_XML_FILE:
-                //TODO
                 try
                 {
-                    Logic baseFromXml = new Logic();
+                    Base baseFromXml = new Base();
                     boolean loadXmlSuccessfully = menuOptionForReadingXMLFile.readFromXMLFile(baseFromXml);
                     if(loadXmlSuccessfully)
                     {
@@ -168,7 +159,7 @@ public class MainMenu {
             case SHOW_STORE_DETAILS:
                 if(loadXmlSuccessfully == true)
                 {
-                    detailsPrinter.showStoresDetails(true, true);
+                    detailsPrinter.showStoresDetailsAndFilterByParams(true, true);
                 }
                 else
                 {
@@ -204,6 +195,18 @@ public class MainMenu {
                 if(loadXmlSuccessfully == true)
                 {
                     detailsPrinter.showOrdersHistory();
+                }
+                else
+                {
+                    System.out.println("Can't show orders history of Super Duper Market because an xml file wasn't loaded.\n Please choose option " +
+                            mainMenuOptions.READ_FROM_XML_FILE.getOptionNum() +" to load an xml file to Super Duper Market");
+                }
+                break;
+            case UPDATE_ITEM_IN_STORE:
+                if(loadXmlSuccessfully == true)
+                {
+                    UpdatingProductsOfStoreMenu updatingProductsOfStoreMenu = new UpdatingProductsOfStoreMenu(base);
+                    updatingProductsOfStoreMenu.updatingProductsOfStore();
                 }
                 else
                 {

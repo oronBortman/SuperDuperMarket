@@ -112,9 +112,25 @@ public class Store {
     {
         return ItemsSerialIDMap;
     }
-    public int getAmountOfItemSoled(Integer itemID)
+    public int getAmountOfItemSoledByUnit(Integer itemID)
     {
         return ordersSerialIDMap.values().stream().mapToInt(closedOrder -> closedOrder.getAmountOfCertainItemByUnit(itemID)).sum();
+    }
+    public double getAmountOfItemSoledByTypeOfMeasure(Integer itemID)
+    {
+        return ordersSerialIDMap.values().stream().mapToDouble(closedOrder -> closedOrder.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
+    }
+    public void removeItemFromStore(int itemID)
+    {
+        ItemsSerialIDMap.remove(itemID);
+    }
+    public void addItemToStore(Item item, int priceOfItem)
+    {
+        ItemsSerialIDMap.put(item.getSerialNumber(), new SelledItemInStore(item, priceOfItem));
+    }
+    public void updatePriceOfItem(int itemID, int priceOfItem)
+    {
+        ItemsSerialIDMap.get(itemID).setPricePerUnit(priceOfItem);
     }
 }
 

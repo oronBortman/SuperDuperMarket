@@ -1,5 +1,8 @@
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.DateTimeException;
+import java.time.format.DateTimeFormatter;
+
 import java.util.Date;
 import java.util.Scanner;
 
@@ -88,24 +91,35 @@ public class OrderMenu {
         return choiceOfUser.toLowerCase().equals("y");
     }
 
-    public Date inputDate()
-    {
+    public Date inputDate() {
         Scanner scanner = new Scanner(System.in);
         boolean dateIsValid;
-        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/mm-hh:mm");
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd/MM-hh:mm");
+        dateFormat.setLenient(false);
         Date dateParsed=null;
         String inputDate;
 
         do{
             try {
-                System.out.println("Enter the Date in the following format: dd/mm-hh:mm");
+                System.out.println("Enter the Date in the following format: dd/MM-hh:mm");
                 inputDate = scanner.nextLine();
                 //Parsing the String
                 dateParsed = dateFormat.parse(inputDate);
-                dateIsValid = true;
+
+
                 System.out.println("The date is:" + dateFormat.format(dateParsed));
-            } catch (ParseException e) {
-                System.out.println("You enetered invalid date.");
+                dateIsValid = true;
+            }
+
+            catch(ParseException e)
+            {
+                System.out.println("Invalid date");
+                dateIsValid=false;
+            }
+            catch(Exception e)
+            {
+                System.out.println("Invalid date");
                 dateIsValid=false;
             }
         } while(dateIsValid == false);
