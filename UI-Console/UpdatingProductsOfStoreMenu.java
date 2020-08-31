@@ -109,18 +109,26 @@ public class UpdatingProductsOfStoreMenu {
         int itemID;
         Scanner sc = new Scanner(System.in);  // Create a Scanner object
         boolean goodChoice = false;
+        boolean skip=false;
         int inputOfSerialId = 0;
 
         do {
             System.out.println("Details of the items in store:");
             detailsPrinter.showSelledItemsDetailsOfStoreAndFilterByParams(storeID,false);
             System.out.println("Enter the id of the item you want to delete from the store");
+
             if (sc.hasNextInt()) {
                 itemID = sc.nextInt();
                 if(!base.getStoreBySerialID(storeID).checkIfItemIdExists(itemID))
                 {
                     goodChoice=false;
                     System.out.println("The store doesn't sells the item, therefore you can't remove the item from the store");
+                }
+                else if(base.getStoreBySerialID(storeID).checkIfItemIsTheOnlyOneInStore(itemID))
+                {
+                    goodChoice=false;
+                    skip=true;
+                    System.out.println("This is the only item in the store, therefore you can't remove it from the store");
                 }
                 else if(base.checkIfOnlyCertainStoreSellesItem(storeID,itemID))
                 {
@@ -135,12 +143,12 @@ public class UpdatingProductsOfStoreMenu {
                 }
             }
             else {
-                System.out.println("You didn't entered a number!");
+                System.out.println("You didn't ente1red a number!");
                 goodChoice=false;
                 sc.next();
             }
         }
-        while (goodChoice == false);
+        while (goodChoice == false && skip == false);
     }
 
     public void addItemToStore(int storeID)

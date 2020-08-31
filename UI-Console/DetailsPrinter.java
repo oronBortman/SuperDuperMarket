@@ -48,7 +48,7 @@ public class DetailsPrinter {
     public void showSelledItemsDetailsOfStoreAndFilterByParams(Integer storeSerialID, boolean showItemsSoldDetails) {
         Store store = base.getStoreBySerialID(storeSerialID);
         Set<Integer> setOfItemsSerialID = store.getSetOfItemsSerialID();
-        SelledItemInStore item;
+        AvailableItemInStore item;
 
         for(Integer itemSerialID : setOfItemsSerialID)
         {
@@ -79,7 +79,7 @@ public class DetailsPrinter {
             System.out.println("c.Type of buying:" + itemInSystem.getTypeOfMeasureStr());
             if(itemExistsInStore)
             {
-                SelledItemInStore itemInStore = store.getItemBySerialID(itemSerialID);
+                AvailableItemInStore itemInStore = store.getItemBySerialID(itemSerialID);
                 System.out.println("d.Price per unit:" + itemInStore.getPricePerUnit());
             }
             else
@@ -168,7 +168,7 @@ public class DetailsPrinter {
         System.out.println("      Shop name:" + store.getName());
         System.out.println("   Details about items in order:");
         System.out.println("      Total amount of type of items:" + closedStaticOrder.getTotalAmountOfItemTypes());
-        System.out.println("      Total amount of items:" + MainMenu.convertDoubleToDecimal(closedStaticOrder.getTotalAmountOfItemsByUnit()));
+        System.out.println("      Total amount of items:" + closedStaticOrder.getTotalAmountOfItemsByUnit());
         System.out.println("   Delivery price: " + MainMenu.convertDoubleToDecimal(closedStaticOrder.getDeliveryPriceAfterOrder()));
         System.out.println("   Total order price: " + MainMenu.convertDoubleToDecimal(closedStaticOrder.getTotalPriceOfOrder()));
     }

@@ -1,16 +1,16 @@
-public class SelledItemInStore extends Item {
+public class AvailableItemInStore extends Item {
     private int pricePerUnit;
 
-    SelledItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int pricePerUnit) {
+    AvailableItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int pricePerUnit) {
         super(serialNumber, name, purchaseCategory);
         this.pricePerUnit = pricePerUnit;
     }
 
-    SelledItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory) {
+    AvailableItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory) {
         super(serialNumber, name, purchaseCategory);
     }
 
-    SelledItemInStore(Item item, int price) {
+    AvailableItemInStore(Item item, int price) {
         super(item);
         this.pricePerUnit = price;
     }

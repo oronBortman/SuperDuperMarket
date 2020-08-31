@@ -77,7 +77,7 @@ public class MenuOptionForReadingXMLFile {
 
         catch(DuplicateSerialIDException e)
         {
-            System.out.println("There are more the one item with serial id " + e.getSerialId() + " that are defined in the store.\n" +
+            System.out.println("There is more than one item with serial id " + e.getSerialId() + " that is defined in the store " + e.getName() + ".\n" +
                             "An item can defined only once in store");
             System.out.println("Please fix your xml file and try again\n");
             loadXmlSuccessfully = false;
@@ -136,7 +136,7 @@ public class MenuOptionForReadingXMLFile {
         }
         catch (DuplicateSerialIDException e)
         {
-            System.out.println("The serial ID " + e.getSerialId() + " of the item " + e.getName()   + " is not unique");
+            System.out.println("The serial ID " + e.getSerialId() + " of the item " + e.getName()   + " is not unique" + " in Super Duper Market");
             System.out.println("Please fix your xml file and try again\n");
             readItemsSuccessfully=false;
         }

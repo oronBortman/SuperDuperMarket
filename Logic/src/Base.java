@@ -141,7 +141,7 @@ public class Base {
         {
             int storeSerialId = entry.getKey();
             Store store = entry.getValue();
-            SelledItemInStore item = store.getItemBySerialID(itemSerialID);
+            AvailableItemInStore item = store.getItemBySerialID(itemSerialID);
             if(item != null)
             {
                 int itemPriceInStore = item.getPricePerUnit();
@@ -164,7 +164,7 @@ public class Base {
         {
             storeID = getIDOfShopWithCheapestItem(orderedItem.getSerialNumber());
             store = storesSerialIDMap.get(storeID);
-            SelledItemInStore item = store.getItemBySerialID(orderedItem.getSerialNumber());
+            AvailableItemInStore item = store.getItemBySerialID(orderedItem.getSerialNumber());
             if(item != null)
             {
                 int pricePerUnit =  store.getItemBySerialID(orderedItem.getSerialNumber()).getPricePerUnit();
@@ -323,8 +323,8 @@ public class Base {
                     String itemNameInSDM = itemInSDM.getName();
                     Item.TypeOfMeasure itemMeasureTypeInSDK = itemInSDM.getTypeOfMeasure();
 
-                    SelledItemInStore selledItemInStore = new SelledItemInStore(itemSerialID, itemNameInSDM, itemMeasureTypeInSDK, itemPrice);
-                    storesSerialIDMap.get(shopSerialID).addItemToItemSSerialIDMap(selledItemInStore);
+                    AvailableItemInStore availableItemInStore = new AvailableItemInStore(itemSerialID, itemNameInSDM, itemMeasureTypeInSDK, itemPrice);
+                    storesSerialIDMap.get(shopSerialID).addItemToItemSSerialIDMap(availableItemInStore);
                 }
             }
 

@@ -1,6 +1,6 @@
 import java.util.Objects;
 
-public abstract class OrderedItem extends SelledItemInStore{
+public abstract class OrderedItem extends AvailableItemInStore {
     private int amountOfItemOrderedByUnits;
 
     /*OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {

@@ -64,7 +64,6 @@ public class OrderMenu {
                 else
                 {
                     System.out.println("The location is not valid! try again");
-                    sc.next();
                 }
             }
             else {

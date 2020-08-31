@@ -43,7 +43,7 @@ public class StaticOrderMenu extends OrderMenu{
         do {
             detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialId);
             int inputSerialIdOfItem = inputItemSerialId(storeSerialId);
-            SelledItemInStore selledItem = store.getItemBySerialID(inputSerialIdOfItem);
+            AvailableItemInStore selledItem = store.getItemBySerialID(inputSerialIdOfItem);
             String nameOfItem = selledItem.getName();
             int priceOfItem = selledItem.getPricePerUnit();
             Item.TypeOfMeasure typeOfMeasure = base.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();

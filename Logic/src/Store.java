@@ -5,14 +5,14 @@ import java.util.*;
 public class Store {
     private Integer serialNumber;
     private String name;
-    private Map<Integer, SelledItemInStore> ItemsSerialIDMap;
+    private Map<Integer, AvailableItemInStore> ItemsSerialIDMap;
     private Map<Integer, ClosedOrder> ordersSerialIDMap;
     private int PPK;
     private SDMLocation SDMLocationOfShop;
 
     Store(Integer serialNumber, String name, int PPK, SDMLocation SDMLocationOfShop)
     {
-        ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
+        ItemsSerialIDMap = new HashMap<Integer, AvailableItemInStore>();
         ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
         this.serialNumber = serialNumber;
         this.name = name;
@@ -22,7 +22,7 @@ public class Store {
 
     public Store(SDMStore shop)
     {
-        ItemsSerialIDMap = new HashMap<Integer, SelledItemInStore>();
+        ItemsSerialIDMap = new HashMap<Integer, AvailableItemInStore>();
         ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
         this.serialNumber = shop.getId();
         this.name = shop.getName();
@@ -31,14 +31,14 @@ public class Store {
         this.SDMLocationOfShop = location;
     }
 
-    private void addItemToShop(SelledItemInStore selledItemInStore)
+    private void addItemToShop(AvailableItemInStore availableItemInStore)
     {
-        ItemsSerialIDMap.put(selledItemInStore.getSerialNumber(), selledItemInStore);
+        ItemsSerialIDMap.put(availableItemInStore.getSerialNumber(), availableItemInStore);
     }
 
     public Set<Integer> getSetOfItemsSerialID()
     {
-        return GeneralMethods.<Integer, SelledItemInStore>getSetOfDictionary(ItemsSerialIDMap);
+        return GeneralMethods.<Integer, AvailableItemInStore>getSetOfDictionary(ItemsSerialIDMap);
 
     }
 
@@ -64,7 +64,7 @@ public class Store {
         return name;
     }
 
-    public SelledItemInStore getItemBySerialID(Integer serialID)
+    public AvailableItemInStore getItemBySerialID(Integer serialID)
     {
         return ItemsSerialIDMap.get(serialID);
     }
@@ -93,7 +93,7 @@ public class Store {
         return ItemsSerialIDMap.containsKey(itemSerialNumber);
     }
 
-    public void addItemToItemSSerialIDMap(SelledItemInStore item)
+    public void addItemToItemSSerialIDMap(AvailableItemInStore item)
     {
         ItemsSerialIDMap.put(item.getSerialNumber(), item);
     }
@@ -107,7 +107,7 @@ public class Store {
     {
         return ordersSerialIDMap.size();
     }
-    public Map<Integer, SelledItemInStore> getStoresSerialIDMap()
+    public Map<Integer, AvailableItemInStore> getStoresSerialIDMap()
     {
         return ItemsSerialIDMap;
     }
@@ -119,13 +119,18 @@ public class Store {
     {
         return ordersSerialIDMap.values().stream().mapToDouble(closedOrder -> closedOrder.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
     }
+
+    public boolean checkIfItemIsTheOnlyOneInStore(Integer itemID)
+    {
+        return ItemsSerialIDMap.size() == 1 && checkIfItemIdExists(itemID);
+    }
     public void removeItemFromStore(int itemID)
     {
         ItemsSerialIDMap.remove(itemID);
     }
     public void addItemToStore(Item item, int priceOfItem)
     {
-        ItemsSerialIDMap.put(item.getSerialNumber(), new SelledItemInStore(item, priceOfItem));
+        ItemsSerialIDMap.put(item.getSerialNumber(), new AvailableItemInStore(item, priceOfItem));
     }
     public void updatePriceOfItem(int itemID, int priceOfItem)
     {
