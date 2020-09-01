@@ -8,20 +8,20 @@ import java.util.Set;
 
 public class StaticOrderMenu extends OrderMenu{
 
-    private Base base;
+    private BusinessLogic businessLogic;
     private DetailsPrinter detailsPrinter;
 
-    public StaticOrderMenu(Base base)
+    public StaticOrderMenu(BusinessLogic businessLogic)
     {
-        this.base=base;
-        detailsPrinter = new DetailsPrinter(base);
+        this.businessLogic = businessLogic;
+        detailsPrinter = new DetailsPrinter(businessLogic);
     }
 
     public void makeStaticOrder() {
-        Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
+        Set<Integer> setOfItemsSerialID = businessLogic.getSetOfItemsSerialID();
         Date date = inputDate();
         int inputSerialIdOfShop = inputSerialIDOfShop();
-        Store store = base.getStoreBySerialID(inputSerialIdOfShop);
+        Store store = businessLogic.getStoreBySerialID(inputSerialIdOfShop);
         SDMLocation locationOfUser = inputLocation(store.getLocationOfShop());
         if(locationOfUser == null) { return;} //Exit from OrderAndBuy if the location of user is invalid
         OpenedStaticOrder openedOrder = new OpenedStaticOrder(store, date);
@@ -33,7 +33,7 @@ public class StaticOrderMenu extends OrderMenu{
         if(inputIfUserApprovesOrder())
         {
             ClosedOrder closedOrder = openedOrder.closeOrder(locationOfUser);
-            base.addClosedOrderToHistory(closedOrder);
+            businessLogic.addClosedOrderToHistory(closedOrder);
             store.addClosedOrderToHistory(closedOrder);
         }
     }
@@ -50,7 +50,7 @@ public class StaticOrderMenu extends OrderMenu{
             AvailableItemInStore selledItem = store.getItemBySerialID(inputSerialIdOfItem);
             String nameOfItem = selledItem.getName();
             int priceOfItem = selledItem.getPricePerUnit();
-            Item.TypeOfMeasure typeOfMeasure = base.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();
+            Item.TypeOfMeasure typeOfMeasure = businessLogic.getItemBySerialID(inputSerialIdOfItem).getTypeOfMeasure();
 
             switch (typeOfMeasure) {
                 case Quantity:
@@ -98,7 +98,7 @@ public class StaticOrderMenu extends OrderMenu{
             System.out.println("Please enter the serial id of the shop use want to buy from");
             if (sc.hasNextInt()) {
                 inputOfSerialId = sc.nextInt();
-                if (base.checkIfStoreExists(inputOfSerialId)) {
+                if (businessLogic.checkIfStoreExists(inputOfSerialId)) {
                     goodChoice = true;
                 } else {
                     System.out.println("logic.Store doesn't exist. Please enter the serial id of the store again.");
@@ -119,7 +119,7 @@ public class StaticOrderMenu extends OrderMenu{
         Scanner sc = new Scanner(System.in);  // Create a Scanner object
         boolean goodChoice = false;
         int inputOfItemSerialId = 0;
-        Store store = base.getStoreBySerialID(storeSerialID);
+        Store store = businessLogic.getStoreBySerialID(storeSerialID);
 
         do {
             detailsPrinter.showItemsInSystemAndPricesOfStore(storeSerialID);

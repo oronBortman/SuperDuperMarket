@@ -7,21 +7,21 @@ import java.util.Date;
 import java.util.Set;
 
 public class DetailsPrinter {
-    private Base base;
+    private BusinessLogic businessLogic;
 
-    public DetailsPrinter(Base base)
+    public DetailsPrinter(BusinessLogic businessLogic)
     {
-        this.base = base;
+        this.businessLogic = businessLogic;
     }
 
     public void showStoresDetailsAndFilterByParams(boolean showItemsInStore, boolean showOrderDetailsOfStore) {
         System.out.println("show shop general details\n");
-        Set<Integer> setOfShopSerial = base.getSetOfStoresSerialID();
+        Set<Integer> setOfShopSerial = businessLogic.getSetOfStoresSerialID();
         Store store;
         for(Integer shopSerialID : setOfShopSerial)
         {
-            store = base.getStoreBySerialID(shopSerialID);
-            store = base.getStoreBySerialID(shopSerialID);
+            store = businessLogic.getStoreBySerialID(shopSerialID);
+            store = businessLogic.getStoreBySerialID(shopSerialID);
 
             System.out.println("Serial number of logic.Store: " + shopSerialID);
             System.out.println("Name of logic.Store:" + store.getName());
@@ -50,7 +50,7 @@ public class DetailsPrinter {
     }
 
     public void showSelledItemsDetailsOfStoreAndFilterByParams(Integer storeSerialID, boolean showItemsSoldDetails) {
-        Store store = base.getStoreBySerialID(storeSerialID);
+        Store store = businessLogic.getStoreBySerialID(storeSerialID);
         Set<Integer> setOfItemsSerialID = store.getSetOfItemsSerialID();
         AvailableItemInStore item;
 
@@ -70,12 +70,12 @@ public class DetailsPrinter {
     }
 
     public void showItemsInSystemAndPricesOfStore(Integer storeSerialID) {
-        Store store = base.getStoreBySerialID(storeSerialID);
-        Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
+        Store store = businessLogic.getStoreBySerialID(storeSerialID);
+        Set<Integer> setOfItemsSerialID = businessLogic.getSetOfItemsSerialID();
 
         for(Integer itemSerialID : setOfItemsSerialID)
         {
-            Item itemInSystem = base.getItemBySerialID(itemSerialID);
+            Item itemInSystem = businessLogic.getItemBySerialID(itemSerialID);
             boolean itemExistsInStore = store.checkIfItemIdExists(itemSerialID);
 
             System.out.println("a.Serial ID:" + itemSerialID);
@@ -94,7 +94,7 @@ public class DetailsPrinter {
         }
     }
     public void showOrdersDetailsOfStore(Integer storeSerialID) {
-        Store store = base.getStoreBySerialID(storeSerialID);
+        Store store = businessLogic.getStoreBySerialID(storeSerialID);
         Set<Integer> setOfSerialIDOfOrdersInStore = store.getSetOfOrdersSerialID();
         if(setOfSerialIDOfOrdersInStore.isEmpty() == false)
         {
@@ -123,24 +123,24 @@ public class DetailsPrinter {
     }
 
     public void showSytemItemDetails() {
-        Set<Integer> setOfItemsSerialID = base.getSetOfItemsSerialID();
+        Set<Integer> setOfItemsSerialID = businessLogic.getSetOfItemsSerialID();
         Item item;
 
         for (Integer itemSerialID : setOfItemsSerialID) {
-            item = base.getItemySerialID(itemSerialID);
+            item = businessLogic.getItemySerialID(itemSerialID);
             System.out.println("1.Serial ID: " + itemSerialID);
             System.out.println("2.Name:" + item.getName());
             System.out.println("3.Type of buying:" + item.getTypeOfMeasureStr());
-            System.out.println("4.How many shops selles the item: " + base.getHowManyShopsSellesAnItem(itemSerialID));
-            System.out.println("5.Average price of item in Super Duper Market: " + MainMenu.convertDoubleToDecimal(base.getAvgPriceOfItemInSDK(itemSerialID)));
-            System.out.println("6.Total amount that has been soled from this item in Super Duper Market: " + MainMenu.convertDoubleToDecimal(base.getTotalAmountOfSoledItem(itemSerialID)));
+            System.out.println("4.How many shops selles the item: " + businessLogic.getHowManyShopsSellesAnItem(itemSerialID));
+            System.out.println("5.Average price of item in Super Duper Market: " + MainMenu.convertDoubleToDecimal(businessLogic.getAvgPriceOfItemInSDK(itemSerialID)));
+            System.out.println("6.Total amount that has been soled from this item in Super Duper Market: " + MainMenu.convertDoubleToDecimal(businessLogic.getTotalAmountOfSoledItem(itemSerialID)));
             System.out.println("\n");
         }
     }
 
     public void showOrdersHistory()
     {
-        Set<Integer> setOfOrders = base.getSetOfOrdersSerialID();
+        Set<Integer> setOfOrders = businessLogic.getSetOfOrdersSerialID();
         ClosedOrder closedOrder;
 
         if(setOfOrders.isEmpty() == false)
@@ -148,7 +148,7 @@ public class DetailsPrinter {
             System.out.println("Orders that was done in Super Duper Market:");
             for(Integer orderSerialId : setOfOrders)
             {
-                closedOrder = base.getOrderBySerialID(orderSerialId);
+                closedOrder = businessLogic.getOrderBySerialID(orderSerialId);
                 showStaticOrderHistory((ClosedStaticOrder) closedOrder);
                 /*else if(closedOrder instanceof ClosedDynamicOrder)
                 {

@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<GridPane fx:id="showStoresGridPane" minHeight="500.0" minWidth="500.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.showStoresScreen.showStoresController">
+<GridPane fx:id="showStoresGridPane" minHeight="500.0" minWidth="500.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.showStoresScreen.ShowStoresController">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="20.0" />
     <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
@@ -29,10 +29,10 @@
       <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
   </rowConstraints>
    <children>
-      <ComboBox id="comboBoxStores" onAction="#chooseStore" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+      <ComboBox fx:id="comboBoxStores" onAction="#chooseStore" GridPane.columnIndex="1" GridPane.rowIndex="1" />
       <Label text="Choose the store you want to show details " GridPane.columnIndex="1" />
       <Separator GridPane.columnSpan="2" GridPane.rowIndex="3" GridPane.valignment="BOTTOM" />
-      <Label id="listOfItems" text="List of items:" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+      <Label fx:id="listOfItems" text="List of items:" GridPane.columnIndex="1" GridPane.rowIndex="5" />
       <Label text="List of orders:" GridPane.columnIndex="1" GridPane.rowIndex="7" />
       <Separator GridPane.columnSpan="2" GridPane.rowIndex="4" GridPane.valignment="BOTTOM" />
       <Separator GridPane.columnSpan="2" GridPane.rowIndex="9" GridPane.valignment="BOTTOM" />
@@ -47,7 +47,7 @@
         </rowConstraints>
          <children>
             <Label text="Serial Number:" />
-            <Label id="serialNumberValue" text="  " GridPane.columnIndex="1" />
+            <Label fx:id="serialNumberValue" text="  " GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <GridPane fx:id="serialNumberGridPane1" GridPane.columnIndex="1" GridPane.rowIndex="4">
@@ -60,7 +60,7 @@
          </rowConstraints>
          <children>
             <Label text="Name of store:" />
-            <Label id="nameOfStoreValue" fx:id="nameOfStoreVal" text="  " GridPane.columnIndex="1" />
+            <Label id="nameOfStoreValue" fx:id="nameOfStoreValue" text="  " GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <GridPane fx:id="serialNumberGridPane11">
@@ -85,7 +85,7 @@
          </rowConstraints>
          <children>
             <Label text="PPK:" />
-            <Label id="PPKValue" fx:id="nameOfStoreVal2" text="  " GridPane.columnIndex="1" />
+            <Label id="PPKValue" fx:id="PPKValue" text="  " GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <GridPane fx:id="serialNumberGridPane121" GridPane.columnIndex="1" GridPane.rowIndex="11">
@@ -98,10 +98,10 @@
          </rowConstraints>
          <children>
             <Label text="Total payment for deliveries:" />
-            <Label id="totalPaymentForDeliveriesVal" fx:id="nameOfStoreVal21" text="  " GridPane.columnIndex="1" />
+            <Label id="totalPaymentForDeliveriesVal" fx:id="totalPaymentForDeliveriesVal" text="  " GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <TableView id="listOfItemsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <TableView fx:id="listOfItemsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
         <columns>
           <TableColumn id="itemSerialNumberCol" prefWidth="100.0" text="Serial Number" />
           <TableColumn id="NameOfItemCol" prefWidth="99.0" text="Name" />

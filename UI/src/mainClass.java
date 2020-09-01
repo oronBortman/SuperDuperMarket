@@ -4,7 +4,7 @@ import javafx.scene.Scene;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import common.SuperDuperMarketConstants;
-
+import logic.*;
 import java.net.URL;
 
 public class mainClass extends Application {
@@ -28,9 +28,9 @@ public class mainClass extends Application {
 
         // wire up controller
         components.mainScreen.mainScreenController superDuperMarketController = loader.getController();
-        //BusinessLogic businessLogic = new BusinessLogic(histogramController);
+        BusinessLogic businessLogic = new BusinessLogic();
         superDuperMarketController.setPrimaryStage(primaryStage);
-        //histogramController.setBusinessLogic(businessLogic);
+        superDuperMarketController.setBusinessLogic(businessLogic);
 
         // set stage
         primaryStage.setTitle("Super Duper Market");

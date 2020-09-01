@@ -1,11 +1,11 @@
 package InterfaceConsole;
 
-import logic.Base;
+import logic.BusinessLogic;
 
 import java.util.Scanner;
 
 public class UpdatingProductsOfStoreMenu {
-    private Base base;
+    private BusinessLogic businessLogic;
     private DetailsPrinter detailsPrinter;
 
     enum UpdatingProductsOptions {
@@ -58,9 +58,9 @@ public class UpdatingProductsOfStoreMenu {
         }
     }
 
-    public UpdatingProductsOfStoreMenu(Base base) {
-        this.base = base;
-        detailsPrinter = new DetailsPrinter(base);
+    public UpdatingProductsOfStoreMenu(BusinessLogic businessLogic) {
+        this.businessLogic = businessLogic;
+        detailsPrinter = new DetailsPrinter(businessLogic);
     }
 
     public void printUpdatingProductsOfStoreMenu() {
@@ -123,25 +123,25 @@ public class UpdatingProductsOfStoreMenu {
 
             if (sc.hasNextInt()) {
                 itemID = sc.nextInt();
-                if(!base.getStoreBySerialID(storeID).checkIfItemIdExists(itemID))
+                if(!businessLogic.getStoreBySerialID(storeID).checkIfItemIdExists(itemID))
                 {
                     goodChoice=false;
                     System.out.println("The store doesn't sells the item, therefore you can't remove the item from the store");
                 }
-                else if(base.getStoreBySerialID(storeID).checkIfItemIsTheOnlyOneInStore(itemID))
+                else if(businessLogic.getStoreBySerialID(storeID).checkIfItemIsTheOnlyOneInStore(itemID))
                 {
                     goodChoice=false;
                     skip=true;
                     System.out.println("This is the only item in the store, therefore you can't remove it from the store");
                 }
-                else if(base.checkIfOnlyCertainStoreSellesItem(storeID,itemID))
+                else if(businessLogic.checkIfOnlyCertainStoreSellesItem(storeID,itemID))
                 {
                     goodChoice=false;
                     System.out.println("Only this store sells the item, therefore you can't remove the item from the store");
                 }
                 else
                 {
-                    base.removeItemFromStore(storeID,itemID);
+                    businessLogic.removeItemFromStore(storeID,itemID);
                     System.out.println("logic.Item removed successfully from store :)");
                     goodChoice=true;
                 }
@@ -168,12 +168,12 @@ public class UpdatingProductsOfStoreMenu {
             System.out.println("Enter the id of the item you want to add to the store");
             if (sc.hasNextInt()) {
                 itemID = sc.nextInt();
-                if(!base.checkIfItemIdExists(itemID))
+                if(!businessLogic.checkIfItemIdExists(itemID))
                 {
                     goodChoice=false;
                     System.out.println("The item doesn't exist in Super Duper Market, therefore you can't add the item with this serial id to the store");
                 }
-                else if(base.checkIfItemExistsInStore(storeID, itemID))
+                else if(businessLogic.checkIfItemExistsInStore(storeID, itemID))
                 {
                     goodChoice=false;
                     skip=true;
@@ -211,7 +211,7 @@ public class UpdatingProductsOfStoreMenu {
                 else
                 {
                     goodChoice=true;
-                    base.addItemToStore(storeID,itemID, price);
+                    businessLogic.addItemToStore(storeID,itemID, price);
                     System.out.println("logic.Item was added successfully to the store :)");
                 }
             }
@@ -243,7 +243,7 @@ public class UpdatingProductsOfStoreMenu {
                 else
                 {
                     goodChoice=true;
-                    base.updatePriceOfItemInStore(storeID,itemID, price);
+                    businessLogic.updatePriceOfItemInStore(storeID,itemID, price);
                     System.out.println("Price of item updated successfully :)");
                 }
             }
@@ -269,7 +269,7 @@ public class UpdatingProductsOfStoreMenu {
             System.out.println("Enter the id of the item you want to update");
             if (sc.hasNextInt()) {
                 itemID = sc.nextInt();
-                if(!base.checkIfItemExistsInStore(storeID,itemID))
+                if(!businessLogic.checkIfItemExistsInStore(storeID,itemID))
                 {
                     goodChoice=false;
                     System.out.println("The item doesn't exist in store, therefore you can't update it's price");
@@ -299,7 +299,7 @@ public class UpdatingProductsOfStoreMenu {
             System.out.println("Please enter the serial id of the store you want to update");
             if (sc.hasNextInt()) {
                 inputOfSerialId = sc.nextInt();
-                if (base.checkIfStoreExists(inputOfSerialId)) {
+                if (businessLogic.checkIfStoreExists(inputOfSerialId)) {
                     goodChoice = true;
                 } else {
                     goodChoice=false;

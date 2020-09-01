@@ -1,6 +1,6 @@
 package InterfaceConsole;
 
-import logic.Base;
+import logic.BusinessLogic;
 
 import java.util.*;
 
@@ -74,13 +74,13 @@ public class MainMenu {
     DetailsPrinter detailsPrinter;
     MenuOptionForReadingXMLFile menuOptionForReadingXMLFile;
     StaticOrderMenu staticOrderMenu;
-    Base base = new Base();
+    BusinessLogic businessLogic = new BusinessLogic();
 
     public MainMenu()
     {
         menuOptionForReadingXMLFile = new MenuOptionForReadingXMLFile();
-        staticOrderMenu = new StaticOrderMenu(base);
-        detailsPrinter = new DetailsPrinter(base);
+        staticOrderMenu = new StaticOrderMenu(businessLogic);
+        detailsPrinter = new DetailsPrinter(businessLogic);
     }
 
     public static String convertDoubleToDecimal(double num)
@@ -144,12 +144,12 @@ public class MainMenu {
             case READ_FROM_XML_FILE:
                 try
                 {
-                    Base baseFromXml = new Base();
+                    BusinessLogic baseFromXml = new BusinessLogic();
                     boolean loadXmlSuccessfully = menuOptionForReadingXMLFile.readFromXMLFile(baseFromXml);
                     if(loadXmlSuccessfully)
                     {
                         this.loadXmlSuccessfully = true;
-                        this.base = baseFromXml;
+                        this.businessLogic = baseFromXml;
                         staticOrderMenu = new StaticOrderMenu(baseFromXml);
                         detailsPrinter = new DetailsPrinter(baseFromXml);
                         System.out.println("Xml file loaded successfully to Super Duper Market :)\n");
@@ -208,7 +208,7 @@ public class MainMenu {
             case UPDATE_ITEM_IN_STORE:
                 if(loadXmlSuccessfully == true)
                 {
-                    UpdatingProductsOfStoreMenu updatingProductsOfStoreMenu = new UpdatingProductsOfStoreMenu(base);
+                    UpdatingProductsOfStoreMenu updatingProductsOfStoreMenu = new UpdatingProductsOfStoreMenu(businessLogic);
                     updatingProductsOfStoreMenu.updatingProductsOfStore();
                 }
                 else

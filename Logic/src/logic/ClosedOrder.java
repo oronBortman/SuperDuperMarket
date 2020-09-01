@@ -15,7 +15,7 @@ public abstract class ClosedOrder extends Order{
     public ClosedOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Map<Integer, OrderedItem> orderedItems, Date date )
     {
         super(orderedItems,date);
-        this.serialNumber = Base.getCurrentOrderSerialIDInSDK();
+        this.serialNumber = BusinessLogic.getCurrentOrderSerialIDInSDK();
         this.deliveryPrice = deliveryPrice;
         this.totalPriceOfOrder = totalPriceOfOrder;
         this.totalAmountOfItemsByUnit = totalAmountOfItemsByUnit;

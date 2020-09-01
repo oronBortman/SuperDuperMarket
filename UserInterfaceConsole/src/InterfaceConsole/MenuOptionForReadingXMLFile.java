@@ -1,7 +1,7 @@
 package InterfaceConsole;
 
 import exceptions.*;
-import logic.Base;
+import logic.BusinessLogic;
 
 import javax.xml.bind.JAXBException;
 import java.nio.file.Files;
@@ -48,7 +48,7 @@ public class MenuOptionForReadingXMLFile {
         return xmlFileName;
     }
 
-    public boolean readFromXMLFile(Base baseFromXml, String xmlFile) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
+    public boolean readFromXMLFile(BusinessLogic baseFromXml, String xmlFile) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
         boolean loadXmlSuccessfully;
         boolean readShopsSuccefully;
         boolean readItemsSuccefully;
@@ -99,7 +99,7 @@ public class MenuOptionForReadingXMLFile {
         return loadXmlSuccessfully;
     }
 
-    public boolean readFromXMLFile(Base baseFromXml) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
+    public boolean readFromXMLFile(BusinessLogic baseFromXml) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
         boolean loadXmlSuccessfully;
         boolean readShopsSuccefully;
         boolean readItemsSuccefully;
@@ -150,7 +150,7 @@ public class MenuOptionForReadingXMLFile {
         }
         return loadXmlSuccessfully;
     }
-    private boolean readShopsFromXMLFile(String xmlFileName, Base baseFromXml) {
+    private boolean readShopsFromXMLFile(String xmlFileName, BusinessLogic baseFromXml) {
         boolean readShopsSuccefully;
         try
         {
@@ -186,7 +186,7 @@ public class MenuOptionForReadingXMLFile {
 
 
 
-    private boolean readItemsFromXMLFile(String xmlFileName, Base baseFromXml) {
+    private boolean readItemsFromXMLFile(String xmlFileName, BusinessLogic baseFromXml) {
         boolean readItemsSuccessfully;
         try
         {

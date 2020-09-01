@@ -10,7 +10,7 @@ import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
 
-public class Base {
+public class BusinessLogic {
 
     private Map<SDMLocation, Store> storesLocationMap;
     private Map<Integer, Store> storesSerialIDMap;
@@ -19,7 +19,7 @@ public class Base {
 
     private static Integer currentOrderSerialIDInSDK = 1;
 
-    public Base()
+    public BusinessLogic()
     {
         //TODO
         //Check if it's the right place to allocate the new order
