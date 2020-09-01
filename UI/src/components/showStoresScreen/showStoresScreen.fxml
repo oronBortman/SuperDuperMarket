@@ -60,7 +60,7 @@
          </rowConstraints>
          <children>
             <Label text="Name of store:" />
-            <Label id="serialNumberValue" fx:id="nameOfStoreVal" text="  " GridPane.columnIndex="1" />
+            <Label id="nameOfStoreValue" fx:id="nameOfStoreVal" text="  " GridPane.columnIndex="1" />
          </children>
       </GridPane>
       <GridPane fx:id="serialNumberGridPane11">
@@ -101,13 +101,13 @@
             <Label id="totalPaymentForDeliveriesVal" fx:id="nameOfStoreVal21" text="  " GridPane.columnIndex="1" />
          </children>
       </GridPane>
-      <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
+      <TableView id="listOfItemsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
         <columns>
-          <TableColumn prefWidth="100.0" text="Serial Number" />
-          <TableColumn prefWidth="99.0" text="Name" />
-            <TableColumn prefWidth="118.0" text="Type of measure" />
-            <TableColumn prefWidth="118.0" text="Price per unit" />
-            <TableColumn minWidth="40.0" prefWidth="200.0" text="Total items soled in store" />
+          <TableColumn id="itemSerialNumberCol" prefWidth="100.0" text="Serial Number" />
+          <TableColumn id="NameOfItemCol" prefWidth="99.0" text="Name" />
+            <TableColumn id="TypeOfMeasureCol" prefWidth="118.0" text="Type of measure" />
+            <TableColumn id="PricePerUnitCol" prefWidth="118.0" text="Price per unit" />
+            <TableColumn id="TotalItemsSoledInStoreCol" minWidth="40.0" prefWidth="200.0" text="Total items soled in store" />
         </columns>
       </TableView>
       <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">
