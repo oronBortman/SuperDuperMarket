@@ -9,7 +9,7 @@ public class SuperDuperMarketConstants {
     public static final  String REMOVE_ITEM_FXML_RESOURCE_IDENTIFIER = "/components/removeItemFromStoreScreen/RemoveItemFromStoreScreen.fxml";
     public static final  String UPDATE_ITEM_FXML_RESOURCE_IDENTIFIER = "/components/updatePriceOfItemInStoreScreen/UpdateItemInStoreScreen.fxml";
     public static final  String ADD_ITEM_FXML_RESOURCE_IDENTIFIER = "/components/addItemToStoreScreen/AddItemToStoreScreen.fxml";
-
+    public static final  String LOAD_XML_FXML_RESOURCE_IDENTIFIER = "/components/LoadingXMLFileScreen/LoadingXMLFileScreen.fxml";
 
     public static final  String SHOW_STORES_FXML_RESOURCE_IDENTIFIER = "/components/showStoresScreen/showStoresScreen.fxml";
 
