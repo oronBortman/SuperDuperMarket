@@ -35,9 +35,9 @@ public class Store {
         this.SDMLocationOfShop = location;
     }
 
-    public List<Item> getItemsList()
+    public List<AvailableItemInStore> getItemsList()
     {
-        return new ArrayList<Item>(ItemsSerialIDMap.values());
+        return new ArrayList<AvailableItemInStore>(ItemsSerialIDMap.values());
     }
 
     private void addItemToShop(AvailableItemInStore availableItemInStore)

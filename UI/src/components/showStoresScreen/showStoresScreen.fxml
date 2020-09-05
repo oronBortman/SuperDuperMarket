@@ -103,11 +103,11 @@
       </GridPane>
       <TableView fx:id="listOfItemsTable" prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="6">
         <columns>
-          <TableColumn id="itemSerialNumberCol" prefWidth="100.0" text="Serial Number" />
-          <TableColumn id="NameOfItemCol" prefWidth="99.0" text="Name" />
-            <TableColumn id="TypeOfMeasureCol" prefWidth="118.0" text="Type of measure" />
-            <TableColumn id="PricePerUnitCol" prefWidth="118.0" text="Price per unit" />
-            <TableColumn id="TotalItemsSoledInStoreCol" minWidth="40.0" prefWidth="200.0" text="Total items soled in store" />
+          <TableColumn id="ItemSerialNumberCol" fx:id="ItemSerialNumberCol" prefWidth="100.0" text="Serial Number" />
+          <TableColumn id="NameOfItemCol" fx:id="NameOfItemCol" prefWidth="99.0" text="Name" />
+            <TableColumn id="TypeOfMeasureCol" fx:id="TypeOfMeasureCol" prefWidth="118.0" text="Type of measure" />
+            <TableColumn id="PricePerUnitCol" fx:id="PricePerUnitCol" prefWidth="118.0" text="Price per unit" />
+            <TableColumn id="TotalItemsSoledInStoreCol" fx:id="TotalItemsSoledInStoreCol" minWidth="40.0" prefWidth="200.0" text="Total items soled in store" />
         </columns>
       </TableView>
       <TableView prefHeight="200.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="8">

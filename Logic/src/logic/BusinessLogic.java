@@ -1,6 +1,8 @@
 package logic;
 
 import exceptions.*;
+import javafx.beans.property.Property;
+import javafx.beans.property.SimpleStringProperty;
 import jaxb.schema.generated.*;
 import logic.*;
 
@@ -9,6 +11,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
+import java.util.function.Consumer;
 
 public class BusinessLogic {
 
@@ -16,6 +19,8 @@ public class BusinessLogic {
     private Map<Integer, Store> storesSerialIDMap;
     private Map<Integer, Item> itemsSerialIDMap;
     private Map<Integer, ClosedOrder> ordersSerialIDMap;
+    private Map<Integer, User> usersSerialIDMap;
+
 
     private static Integer currentOrderSerialIDInSDK = 1;
 
@@ -27,19 +32,16 @@ public class BusinessLogic {
         storesSerialIDMap = new HashMap<Integer, Store>();
         itemsSerialIDMap = new HashMap<Integer, Item>();
         ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
+        usersSerialIDMap = new HashMap<Integer, User>();
+        //TODO
+        //Need to delete this lines after reading users from xml
+        usersSerialIDMap.put(123, new User(123, "Oron", new SDMLocation(1,2)));
+
         currentOrderSerialIDInSDK = 1;
     }
 
     public static Integer getCurrentOrderSerialIDInSDK() {
         return currentOrderSerialIDInSDK;
-    }
-    public void deleteDetailsOnSuperDuperMarket()
-    {
-        storesLocationMap.clear();
-        storesSerialIDMap.clear();
-        itemsSerialIDMap.clear();
-        ordersSerialIDMap.clear();
-        currentOrderSerialIDInSDK = 1;
     }
 
     public ClosedOrder getOrderBySerialID(Integer orderSerialID)
@@ -63,6 +65,10 @@ public class BusinessLogic {
     public List<Item> getItemsList()
     {
         return new ArrayList<Item>(itemsSerialIDMap.values());
+    }
+    public List<User> getUsersList()
+    {
+        return new ArrayList<User>(usersSerialIDMap.values());
     }
 
 
@@ -398,5 +404,36 @@ public class BusinessLogic {
     {
         return storesSerialIDMap.get(storeID).checkIfItemIdExists(itemID);
     }
+
+    /*public SimpleStringProperty fileNameProperty() {
+        return this.fileName;
+    }*/
+
+   /* public void collectMetadata(Consumer<Long> totalWordsDelegate, Consumer<Long> totalLinesDelegate, Runnable onFinish) {
+
+        Consumer<Long> totalWordsConsumer = tw -> {
+            //this.totalWords = tw;
+            totalWordsDelegate.accept(tw);
+        };
+
+        //currentRunningTask = new CollectMetadataTask(fileName.get(), totalWordsConsumer, totalLinesDelegate);
+
+        controller.bindTaskToUIComponents(currentRunningTask, onFinish);
+
+        new Thread(currentRunningTask).start();
+    }
+
+
+    public void calculateHistogram(UIAdapter uiAdapter, Runnable onFinish) {
+        currentRunningTask = new CalculateHistogramsTask(fileName.get(), totalWords, uiAdapter, (q) -> controller.onTaskFinished(Optional.ofNullable(onFinish)));
+
+        controller.bindTaskToUIComponents(currentRunningTask, onFinish);
+
+        new Thread(currentRunningTask).start();
+    }
+
+    public void cancelCurrentTask() {
+        currentRunningTask.cancel();
+    }*/
 }
 

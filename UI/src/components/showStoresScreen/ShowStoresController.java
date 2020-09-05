@@ -26,6 +26,12 @@ public class ShowStoresController {
     @FXML Label nameOfStoreValue;
     @FXML Label PPKValue;
     @FXML TableView listOfItemsTable;
+    @FXML TableColumn<AvailableItemInStore, Integer> ItemSerialNumberCol;
+    @FXML TableColumn<AvailableItemInStore, String> NameOfItemCol;
+    @FXML TableColumn<AvailableItemInStore, String> TypeOfMeasureCol;
+    @FXML TableColumn<AvailableItemInStore, Integer> PricePerUnitCol;
+    @FXML TableColumn<AvailableItemInStore, Integer> TotalItemsSoledInStoreCol;
+
     BusinessLogic businessLogic;
 
     @FXML
@@ -78,19 +84,12 @@ public class ShowStoresController {
 
     private void setItemsTable()
     {
-        final ObservableList<Item> dataOfItems = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
+        final ObservableList<AvailableItemInStore> dataOfItems = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
 
-        for(TableColumn tableColumn : (ObservableList<TableColumn>)listOfItemsTable.getColumns())
-        {
-            if(tableColumn.getId().equals("itemSerialNumberCol"))
-            {
-                tableColumn.setCellValueFactory(new PropertyValueFactory<Item, Integer>("serialNumber"));
-            }
-            if(tableColumn.getId().equals("NameOfItemCol"))
-            {
-                tableColumn.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
-            }
-        }
+        ItemSerialNumberCol.setCellValueFactory(new PropertyValueFactory<AvailableItemInStore, Integer>("serialNumber"));
+        NameOfItemCol.setCellValueFactory(new PropertyValueFactory<AvailableItemInStore, String>("name"));
+        PricePerUnitCol.setCellValueFactory(new PropertyValueFactory<AvailableItemInStore, Integer>("pricePerUnit"));
+
         listOfItemsTable.setItems(dataOfItems);
     }
 
