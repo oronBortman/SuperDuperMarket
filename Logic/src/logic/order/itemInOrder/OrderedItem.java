@@ -1,5 +1,6 @@
 package logic.order.itemInOrder;
 
+import logic.Item;
 import logic.AvailableItemInStore;
 
 import java.util.Objects;
