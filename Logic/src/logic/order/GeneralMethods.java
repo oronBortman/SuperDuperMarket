@@ -1,4 +1,4 @@
-package logic;
+package logic.order;
 
 import javax.xml.bind.JAXBContext;
 import javax.xml.bind.JAXBException;

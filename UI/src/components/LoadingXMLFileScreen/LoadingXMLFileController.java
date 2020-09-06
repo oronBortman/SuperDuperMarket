@@ -1,6 +1,8 @@
 package components.LoadingXMLFileScreen;
 
-import commonUI.*;
+import exceptions.DuplicateSerialIDException;
+import exceptions.InvalidCoordinateXException;
+import exceptions.InvalidCoordinateYException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -13,7 +15,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.BusinessLogic;
-import logic.metadata.*;
+import metadata.*;
 import java.io.File;
 import java.util.Optional;
 
@@ -35,6 +37,8 @@ public class LoadingXMLFileController {
     private SimpleBooleanProperty isFileSelected;
     private SimpleBooleanProperty isMetadataCollected;
     private SimpleBooleanProperty isActive;
+    private Task<Boolean> currentRunningTask;
+
 
     private BusinessLogic businessLogic;
     private Stage primaryStage;
@@ -114,10 +118,10 @@ public class LoadingXMLFileController {
 
     @FXML
     public void stopTaskButtonAction() {
-        if(businessLogic.getCurrentRunningTask() != null)
+        if(getCurrentRunningTask() != null)
         {
             System.out.println("There is current task running");
-            businessLogic.cancelCurrentTask();
+            cancelCurrentTask();
         }
         else {
             System.out.println("There isn't current task running");
@@ -162,8 +166,8 @@ public class LoadingXMLFileController {
 
     public void collectMetadata(Runnable onFinish) {
 
-        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), (q) -> onTaskFinished(Optional.ofNullable(onFinish)));
-        businessLogic.setCurrentRunningTask(currentRunningTask);
+        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), (q) -> onTaskFinished(Optional.ofNullable(onFinish)), businessLogic);
+        setCurrentRunningTask(currentRunningTask);
 
         bindTaskToUIComponents(currentRunningTask, onFinish);
 
@@ -171,7 +175,74 @@ public class LoadingXMLFileController {
     }
 
 
+    public void setCurrentRunningTask( CollectMetadataTask currentRunningTask)
+    {
+        this.currentRunningTask = currentRunningTask;
+    }
+
+    public Task<Boolean> getCurrentRunningTask( )
+    {
+        return this.currentRunningTask;
+    }
+    public void cancelCurrentTask() {
+        currentRunningTask.cancel();
+    }
+
+
     public SimpleStringProperty fileNameProperty() {
         return this.fileName;
     }
+
+   /* private boolean readShopsFromXMLFile(String xmlFileName, BusinessLogic baseFromXml) {
+        boolean readShopsSuccefully;
+        try
+        {
+            baseFromXml.createStoresSerialIDMapFromXml(xmlFileName);
+            baseFromXml.createStoresLocationMapFromXml(xmlFileName);
+            readShopsSuccefully=true;
+        }
+        catch (DuplicateSerialIDException e)
+        {
+            System.out.println("The serial ID " + e.getSerialId() + " of the store " + e.getName() + " is not unique.");
+            System.out.println("Please fix your xml file and try again\n");
+            readShopsSuccefully=false;
+        }
+        catch( InvalidCoordinateXException e)
+        {
+            System.out.println("The coordinate X with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
+            System.out.println("Please fix your xml file and try again\n");
+            readShopsSuccefully=false;
+        }
+        catch( InvalidCoordinateYException e)
+        {
+            System.out.println("The coordinate Y with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
+            System.out.println("Please fix your xml file and try again\n");
+            readShopsSuccefully=false;
+        }
+        catch(Exception e)
+        {
+            readShopsSuccefully=false;
+        }
+        return readShopsSuccefully;
+    }
+
+    private boolean readItemsFromXMLFile(BusinessLogic baseFromXml) {
+        boolean readItemsSuccessfully;
+        try
+        {
+            baseFromXml.addItemsSerialIDMapFromXml(fileName.getName());
+            readItemsSuccessfully=true;
+        }
+        catch (DuplicateSerialIDException e)
+        {
+            System.out.println("The serial ID " + e.getSerialId() + " of the item " + e.getName()   + " is not unique" + " in Super Duper Market");
+            System.out.println("Please fix your xml file and try again\n");
+            readItemsSuccessfully=false;
+        }
+        catch (Exception e)
+        {
+            readItemsSuccessfully=false;
+        }
+        return readItemsSuccessfully;
+    }*/
 }

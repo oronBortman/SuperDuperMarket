@@ -1,4 +1,6 @@
-package logic;
+package logic.order;
+
+import logic.order.itemInOrder.OrderedItem;
 
 import java.util.Date;
 import java.util.HashMap;

@@ -12,7 +12,7 @@ public class MainMenu {
         READ_FROM_XML_FILE(1, "Read from XML file"),
         SHOW_STORE_DETAILS(2, "Show store details"),
         SHOW_SYSTEM_ITEM_DETAILS(3, "Show system items details"),
-        ORDER_AND_BUY(4, "logic.Order and buy"),
+        ORDER_AND_BUY(4, "logic.Orders.Order and buy"),
         SHOW_ORDERS_HISTORY(5, "Show orders history"),
         UPDATE_ITEM_IN_STORE(6, "Update item in store"),
         EXIT(7, "Exit");

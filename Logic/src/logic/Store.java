@@ -3,6 +3,8 @@ package logic;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import jaxb.schema.generated.SDMStore;
+import logic.order.ClosedOrder;
+import logic.order.GeneralMethods;
 
 import java.util.*;
 

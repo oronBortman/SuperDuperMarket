@@ -1,6 +1,12 @@
 package InterfaceConsole;
 
 import logic.*;
+import logic.order.ClosedOrder;
+import logic.order.ClosedStaticOrder;
+import logic.order.OpenedOrder;
+import logic.order.itemInOrder.OrderedItem;
+import logic.order.itemInOrder.OrderedItemByQuantity;
+import logic.order.itemInOrder.OrderedItemByWeight;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;

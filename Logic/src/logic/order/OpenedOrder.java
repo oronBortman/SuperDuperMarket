@@ -1,4 +1,8 @@
-package logic;
+package logic.order;
+
+import logic.order.itemInOrder.OrderedItem;
+import logic.SDMLocation;
+import logic.Store;
 
 import java.util.Date;
 import java.util.Map;
@@ -36,7 +40,7 @@ public abstract class OpenedOrder extends Order{
         return getOrderedItems().values().stream().mapToInt(OrderedItem::getAmountOfItemOrderedByUnits).sum();
     }
 
-    /*public logic.OrderedItem getItemInOrder(int serialIDOfItem)
+    /*public logic.Orders.orderItems.OrderedItem getItemInOrder(int serialIDOfItem)
     {
         return getOrderedItems().get(serialIDOfItem);
     }*/

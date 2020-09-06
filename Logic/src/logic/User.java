@@ -16,6 +16,13 @@ public class User {
         this.location = location;
     }
 
+    public User(jaxb.schema.generated.SDMCustomer user)
+    {
+        this.serialNumber = new SimpleIntegerProperty(user.getId());
+        this.name = new SimpleStringProperty(user.getName());
+        this.location = new SDMLocation(user.getLocation());
+    }
+
     public String getName()
     {
         return name.get();
@@ -24,6 +31,26 @@ public class User {
     public Integer getSerialNumber()
     {
         return serialNumber.get();
+    }
+
+    public SDMLocation getLocation()
+    {
+        return location;
+    }
+    //TODO
+    public Integer getAmountOfOrdersCol()
+    {
+        return 0;
+    }
+    //TODO
+    public Double getAverageOrderPriceCol()
+    {
+        return 0.0;
+    }
+    //TODO
+    public Double getAverageDeliveryPrice()
+    {
+        return 0.0;
     }
 
     /*

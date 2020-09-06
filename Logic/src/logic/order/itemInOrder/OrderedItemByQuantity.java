@@ -1,4 +1,4 @@
-package logic;
+package logic.order.itemInOrder;
 
 public class OrderedItemByQuantity extends OrderedItem{
 

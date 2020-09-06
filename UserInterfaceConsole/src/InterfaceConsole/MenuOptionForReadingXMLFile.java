@@ -190,7 +190,7 @@ public class MenuOptionForReadingXMLFile {
         boolean readItemsSuccessfully;
         try
         {
-            baseFromXml.createItemsSerialIDMapFromXml(xmlFileName);
+            baseFromXml.createItemsSerialIDMapFromXml(xmlFileName, 2);
             readItemsSuccessfully=true;
         }
         catch (DuplicateSerialIDException e)

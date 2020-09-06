@@ -1,19 +1,17 @@
 package logic;
 
 import exceptions.*;
-import javafx.beans.property.Property;
-import javafx.beans.property.SimpleStringProperty;
-import javafx.concurrent.Task;
 import jaxb.schema.generated.*;
-import logic.*;
-import logic.metadata.CollectMetadataTask;
+import logic.order.ClosedOrder;
+import logic.order.GeneralMethods;
+import logic.order.itemInOrder.OrderedItem;
+import logic.discount.Discount;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.InputStream;
 import java.util.*;
-import java.util.function.Consumer;
 
 public class BusinessLogic {
 
@@ -22,8 +20,7 @@ public class BusinessLogic {
     private Map<Integer, Item> itemsSerialIDMap;
     private Map<Integer, ClosedOrder> ordersSerialIDMap;
     private Map<Integer, User> usersSerialIDMap;
-    private Task<Boolean> currentRunningTask;
-
+    private List<Discount> discounts;
     private static Integer currentOrderSerialIDInSDK = 1;
 
     public BusinessLogic()
@@ -40,16 +37,6 @@ public class BusinessLogic {
         usersSerialIDMap.put(123, new User(123, "Oron", new SDMLocation(1,2)));
 
         currentOrderSerialIDInSDK = 1;
-    }
-
-    public void setCurrentRunningTask( CollectMetadataTask currentRunningTask)
-    {
-        this.currentRunningTask = currentRunningTask;
-    }
-
-    public Task<Boolean> getCurrentRunningTask( )
-    {
-        return this.currentRunningTask;
     }
 
     public static Integer getCurrentOrderSerialIDInSDK() {
@@ -127,7 +114,7 @@ public class BusinessLogic {
         //Check if it's right to create new order after closing the one before
     }
 
-    public int getHowManyShopsSellesAnItem(Integer itemID)
+    public Integer getHowManyShopsSellesAnItem(Integer itemID)
     {
         int howMuchShopsSellsTheItem=0;
         for(Map.Entry<Integer, Store> entry: storesSerialIDMap.entrySet())
@@ -141,7 +128,7 @@ public class BusinessLogic {
         return howMuchShopsSellsTheItem;
     }
 
-    public int sumAllPricesOfItemInShops(Integer itemID)
+    public Integer sumAllPricesOfItemInShops(Integer itemID)
     {
         int sumOfAllPricesOfItemInShops=0;
         for(Map.Entry<Integer, Store> entry: storesSerialIDMap.entrySet())
@@ -155,17 +142,26 @@ public class BusinessLogic {
         return sumOfAllPricesOfItemInShops;
     }
 
-    public int getAvgPriceOfItemInSDK(Integer itemID)
+    public Integer getAvgPriceOfItemInSDK(Integer itemID)
     {
         int sumOfAllPricesOfItemInShops = sumAllPricesOfItemInShops(itemID);
         int howMuchShopsSellsTheItem = getHowManyShopsSellesAnItem(itemID);
-        int aveargePriceOfItemInSDK = sumOfAllPricesOfItemInShops /  howMuchShopsSellsTheItem;
+        int aveargePriceOfItemInSDK;
+
+        if(howMuchShopsSellsTheItem != 0)
+        {
+            aveargePriceOfItemInSDK = sumOfAllPricesOfItemInShops /  howMuchShopsSellsTheItem;
+        }
+        else
+        {
+            aveargePriceOfItemInSDK=0;
+        }
         return aveargePriceOfItemInSDK;
 
     }
     final int MIN_PRICE_INITIALIZE = -1;
 
-    public int getIDOfShopWithCheapestItem(int itemSerialID)
+    public Integer getIDOfShopWithCheapestItem(int itemSerialID)
     {
         int minPrice=MIN_PRICE_INITIALIZE;
         int storeSerialIDWithCheapestItem=0;
@@ -212,7 +208,7 @@ public class BusinessLogic {
     }
 
     //TODO
-    public double getTotalAmountOfSoledItem(Integer itemID)
+    public Double getTotalAmountOfSoledItem(Integer itemID)
     {
         return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemExistsInOrder(itemID)).mapToDouble(x -> x.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
     }
@@ -306,7 +302,7 @@ public class BusinessLogic {
 
     }
 
-    public void createItemsSerialIDMapFromXml(String xmlName) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+    public void createItemsSerialIDMapFromXml(String xmlName, Integer progress) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
         //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
         InputStream inputStream = new FileInputStream(xmlName);
         SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
@@ -324,8 +320,61 @@ public class BusinessLogic {
                 Item itemToAddToMap = new Item(item);
                 itemsSerialIDMap.put(item.getId(), itemToAddToMap);
             }
+            progress++;
         }
     }
+
+    /*public void createItemsSerialIDMapFromXmlV2(String xmlName, Integer progress) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
+        InputStream inputStream = new FileInputStream(xmlName);
+        SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
+        SDMItems items = descriptor.getSDMItems();
+        List<SDMItem> listOfItems = items.getSDMItem();
+
+        for(SDMItem item : listOfItems)
+        {
+            if(itemsSerialIDMap != null  && itemsSerialIDMap.containsKey(item.getId()))
+            {
+                throw new DuplicateSerialIDException(item.getId(), item.getName());
+            }
+            else
+            {
+                Item itemToAddToMap = new Item(item);
+                itemsSerialIDMap.put(item.getId(), itemToAddToMap);
+            }
+            progress++;
+        }
+    }*/
+
+    public void addItemsSerialIDMapFromXml(SDMItem item) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+
+        if(itemsSerialIDMap != null  && itemsSerialIDMap.containsKey(item.getId()))
+        {
+            throw new DuplicateSerialIDException(item.getId(), item.getName());
+        }
+        else
+        {
+            Item itemToAddToMap = new Item(item);
+            itemsSerialIDMap.put(item.getId(), itemToAddToMap);
+        }
+
+    }
+
+    public void addUserSerialIDMapFromXml(SDMCustomer user) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+
+        if(usersSerialIDMap != null  && usersSerialIDMap.containsKey(user.getId()))
+        {
+            throw new DuplicateSerialIDException(user.getId(), user.getName());
+        }
+        else
+        {
+            User userToAddToMap = new User(user);
+            usersSerialIDMap.put(user.getId(), userToAddToMap);
+        }
+    }
+
+
+
 
     public void addItemsToStoresFromXml(String xmlName) throws SerialIDNotExistException, DuplicateSerialIDException, JAXBException, FileNotFoundException, ItemNotExistInStoresException {
         //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
@@ -418,36 +467,5 @@ public class BusinessLogic {
     }
 
 
-
-    /*public SimpleStringProperty fileNameProperty() {
-        return this.fileName;
-    }*/
-
-   /* public void collectMetadata(Consumer<Long> totalWordsDelegate, Consumer<Long> totalLinesDelegate, Runnable onFinish) {
-
-        Consumer<Long> totalWordsConsumer = tw -> {
-            //this.totalWords = tw;
-            totalWordsDelegate.accept(tw);
-        };
-
-        //currentRunningTask = new CollectMetadataTask(fileName.get(), totalWordsConsumer, totalLinesDelegate);
-
-        controller.bindTaskToUIComponents(currentRunningTask, onFinish);
-
-        new Thread(currentRunningTask).start();
-    }
-
-
-    public void calculateHistogram(UIAdapter uiAdapter, Runnable onFinish) {
-        currentRunningTask = new CalculateHistogramsTask(fileName.get(), totalWords, uiAdapter, (q) -> controller.onTaskFinished(Optional.ofNullable(onFinish)));
-
-        controller.bindTaskToUIComponents(currentRunningTask, onFinish);
-
-        new Thread(currentRunningTask).start();
-    }*/
-
-    public void cancelCurrentTask() {
-        currentRunningTask.cancel();
-    }
 }
 

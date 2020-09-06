@@ -1,11 +1,13 @@
-package logic;
+package logic.order.itemInOrder;
+
+import logic.AvailableItemInStore;
 
 import java.util.Objects;
 
 public abstract class OrderedItem extends AvailableItemInStore {
     private int amountOfItemOrderedByUnits;
 
-    /*logic.OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {
+    /*logic.Orders.orderItems.OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {
         super(serialNumber, name, purchaseCategory, price);
     }*/
 
