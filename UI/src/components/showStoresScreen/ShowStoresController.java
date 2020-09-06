@@ -40,7 +40,7 @@ public class ShowStoresController {
         comboBoxStores.setConverter(new StringConverter<Store>() {
             @Override
             public String toString(Store object) {
-                return object.getName();
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
             }
 
             @Override

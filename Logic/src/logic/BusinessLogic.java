@@ -3,8 +3,10 @@ package logic;
 import exceptions.*;
 import javafx.beans.property.Property;
 import javafx.beans.property.SimpleStringProperty;
+import javafx.concurrent.Task;
 import jaxb.schema.generated.*;
 import logic.*;
+import logic.metadata.CollectMetadataTask;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileInputStream;
@@ -20,7 +22,7 @@ public class BusinessLogic {
     private Map<Integer, Item> itemsSerialIDMap;
     private Map<Integer, ClosedOrder> ordersSerialIDMap;
     private Map<Integer, User> usersSerialIDMap;
-
+    private Task<Boolean> currentRunningTask;
 
     private static Integer currentOrderSerialIDInSDK = 1;
 
@@ -38,6 +40,16 @@ public class BusinessLogic {
         usersSerialIDMap.put(123, new User(123, "Oron", new SDMLocation(1,2)));
 
         currentOrderSerialIDInSDK = 1;
+    }
+
+    public void setCurrentRunningTask( CollectMetadataTask currentRunningTask)
+    {
+        this.currentRunningTask = currentRunningTask;
+    }
+
+    public Task<Boolean> getCurrentRunningTask( )
+    {
+        return this.currentRunningTask;
     }
 
     public static Integer getCurrentOrderSerialIDInSDK() {
@@ -405,6 +417,8 @@ public class BusinessLogic {
         return storesSerialIDMap.get(storeID).checkIfItemIdExists(itemID);
     }
 
+
+
     /*public SimpleStringProperty fileNameProperty() {
         return this.fileName;
     }*/
@@ -430,10 +444,10 @@ public class BusinessLogic {
         controller.bindTaskToUIComponents(currentRunningTask, onFinish);
 
         new Thread(currentRunningTask).start();
-    }
+    }*/
 
     public void cancelCurrentTask() {
         currentRunningTask.cancel();
-    }*/
+    }
 }
 

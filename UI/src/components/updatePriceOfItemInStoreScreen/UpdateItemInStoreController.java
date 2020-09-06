@@ -1,6 +1,7 @@
 package components.updatePriceOfItemInStoreScreen;
 
 import commonUI.GeneralUIMethods;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -26,6 +27,8 @@ public class UpdateItemInStoreController {
     @FXML Label statusAfterClickedOnButton;
 
     BusinessLogic businessLogic;
+    SimpleBooleanProperty isStoreSelected;
+    SimpleBooleanProperty isItemSelected;
 
     @FXML
     private void initialize() {
@@ -33,7 +36,8 @@ public class UpdateItemInStoreController {
         comboBoxStores.setConverter(new StringConverter<Store>() {
             @Override
             public String toString(Store object) {
-                return object.getName();
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
+
             }
 
             @Override
@@ -46,29 +50,20 @@ public class UpdateItemInStoreController {
         comboBoxItems.setConverter(new StringConverter<AvailableItemInStore>() {
             @Override
             public String toString(AvailableItemInStore object) {
-                return object.getName();
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
             }
 
             @Override
             public AvailableItemInStore fromString(String string) {
                 return comboBoxItems.getItems().stream().filter(ap ->
                         ap.getName().equals(string)).findFirst().orElse(null);
+
+
             }
         });
-
-
-       /* comboBoxStores.valueProperty().addListener((obs, oldval, newval) -> {
-            if(newval != null)
-            {
-                serialNumberValue.setText(newval.getSerialNumber().toString());
-                nameOfStoreValue.setText(newval.getName());
-                PPKValue.setText(newval.getPPK().toString());
-                // totalPaymentForDeliveriesVal.setText(newval.get);
-            }
-        });*/
-        updatePriceTextField.setDisable(true);
-        updatePriceButton.setDisable(true);
-        comboBoxItems.setDisable(true);
+        updatePriceTextField.disableProperty().bind(isItemSelected.not());
+        updatePriceButton.disableProperty().bind(isItemSelected.not());
+        comboBoxItems.disableProperty().bind(isStoreSelected.not());
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -82,14 +77,14 @@ public class UpdateItemInStoreController {
 
     public UpdateItemInStoreController()
     {
-
+        isStoreSelected = new SimpleBooleanProperty(false);
+        isItemSelected = new SimpleBooleanProperty(false);
     }
 
     @FXML
     void chooseStore(ActionEvent event){
         GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
-
-        comboBoxItems.setDisable(false);
+        isStoreSelected.setValue(true);
         final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
         comboBoxItems.setItems(items);
     }
@@ -97,13 +92,11 @@ public class UpdateItemInStoreController {
     @FXML
     void chooseItem(ActionEvent event){
         GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
-
         Store storeFromCombox = comboBoxStores.getValue();
         AvailableItemInStore itemFromCombox = comboBoxItems.getValue();
         if(storeFromCombox != null && itemFromCombox != null)
         {
-            updatePriceTextField.setDisable(false);
-            updatePriceButton.setDisable(false);
+            isItemSelected.setValue(true);
         }
     }
 
@@ -117,36 +110,4 @@ public class UpdateItemInStoreController {
             statusAfterClickedOnButton.setTextFill(Color.BLACK);
         }
     }
-
-    /*boolean checkIfStringIsValidPriceAndSetError(String priceStr)
-    {
-        if (priceStr == null) {
-            return false;
-        }
-        try {
-            Integer priceInt = Integer.parseInt(priceStr);
-            if(priceInt < 0)
-            {
-                setAnErrorToStatusAfterClickedOnButtonLabel("Price can't be negative");
-                return false;
-            }
-        } catch (NumberFormatException nfe) {
-            setAnErrorToStatusAfterClickedOnButtonLabel("Price need to be a whole number");
-            return false;
-        }
-        return true;
-    }
-
-    void setAnErrorToStatusAfterClickedOnButtonLabel(String errorMessage)
-    {
-        statusAfterClickedOnButton.setText(errorMessage);
-        statusAfterClickedOnButton.setTextFill(Color.RED);
-    }
-
-    void initiateStatusAfterClickedOnButtonLabel()
-    {
-        statusAfterClickedOnButton.setText("");
-        statusAfterClickedOnButton.setTextFill(Color.BLACK);
-    }
-*/
 }

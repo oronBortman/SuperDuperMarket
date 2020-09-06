@@ -1,6 +1,7 @@
 package components.removeItemFromStoreScreen;
 
 
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -8,6 +9,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.util.StringConverter;
 import logic.AvailableItemInStore;
 import logic.BusinessLogic;
@@ -20,8 +22,10 @@ public class RemoveItemFromStoreContoller {
     @FXML ComboBox<Store> comboBoxStores;
     @FXML ComboBox<AvailableItemInStore> comboBoxItems;
     @FXML Button deleteItemButton;
-
+    @FXML Label statusAfterClickedOnButton;
     BusinessLogic businessLogic;
+    SimpleBooleanProperty isStoreSelected;
+    SimpleBooleanProperty isItemSelected;
 
     @FXML
     private void initialize() {
@@ -29,7 +33,8 @@ public class RemoveItemFromStoreContoller {
         comboBoxStores.setConverter(new StringConverter<Store>() {
             @Override
             public String toString(Store object) {
-                return object.getName();
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
+
             }
 
             @Override
@@ -42,7 +47,8 @@ public class RemoveItemFromStoreContoller {
         comboBoxItems.setConverter(new StringConverter<AvailableItemInStore>() {
             @Override
             public String toString(AvailableItemInStore object) {
-                return object.getName();
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
+
             }
 
             @Override
@@ -52,19 +58,8 @@ public class RemoveItemFromStoreContoller {
             }
         });
 
-
-       /* comboBoxStores.valueProperty().addListener((obs, oldval, newval) -> {
-            if(newval != null)
-            {
-                serialNumberValue.setText(newval.getSerialNumber().toString());
-                nameOfStoreValue.setText(newval.getName());
-                PPKValue.setText(newval.getPPK().toString());
-                // totalPaymentForDeliveriesVal.setText(newval.get);
-            }
-        });*/
-
-        deleteItemButton.setDisable(true);
-        comboBoxItems.setDisable(true);
+        deleteItemButton.disableProperty().bind(isItemSelected.not());
+        comboBoxItems.disableProperty().bind(isStoreSelected.not());
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -78,18 +73,38 @@ public class RemoveItemFromStoreContoller {
 
     public RemoveItemFromStoreContoller()
     {
-
+        isStoreSelected = new SimpleBooleanProperty(false);
+        isItemSelected = new SimpleBooleanProperty(false);
     }
 
     @FXML
-    void chooseStore(ActionEvent event){
-        comboBoxItems.setDisable(false);
-        final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
-        comboBoxItems.setItems(items);
+    void chooseStore(ActionEvent event)
+    {
+        commonUI.GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
+        if(comboBoxStores.getValue() != null)
+        {
+            final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
+            comboBoxItems.setItems(items);
+            isStoreSelected.setValue(true);
+        }
     }
 
     @FXML
-    void chooseItem(ActionEvent event){
+    void chooseItem(ActionEvent event)
+    {
+        commonUI.GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
+
+        Store storeFromCombox = comboBoxStores.getValue();
+        AvailableItemInStore itemFromCombox = comboBoxItems.getValue();
+        if(storeFromCombox != null && itemFromCombox != null)
+        {
+            isItemSelected.setValue(true);
+        }
+    }
+
+    @FXML
+    void deleteItem(ActionEvent event)
+    {
         Store storeFromCombox = comboBoxStores.getValue();
         AvailableItemInStore itemFromCombox = comboBoxItems.getValue();
         boolean checkIfItemIsTheOnlyOneInStore;
@@ -98,20 +113,26 @@ public class RemoveItemFromStoreContoller {
         {
             onlyCertainStoreSellesItem = businessLogic.checkIfOnlyCertainStoreSellesItem(itemFromCombox.getSerialNumber(), storeFromCombox.getSerialNumber());
             checkIfItemIsTheOnlyOneInStore = storeFromCombox.checkIfItemIsTheOnlyOneInStore(itemFromCombox.getSerialNumber());
-            if(!onlyCertainStoreSellesItem && !checkIfItemIsTheOnlyOneInStore)
+            if(onlyCertainStoreSellesItem)
             {
-                deleteItemButton.setDisable(false);
+                commonUI.GeneralUIMethods.setAnErrorToStatusAfterClickedOnButtonLabel("Only this store selles The item.\nTherefore, this item can't be deleted.", statusAfterClickedOnButton);
+
+            }
+            else if(checkIfItemIsTheOnlyOneInStore)
+            {
+                commonUI.GeneralUIMethods.setAnErrorToStatusAfterClickedOnButtonLabel("This is the only item left in store.\nTherefore, this item can't be deleted.", statusAfterClickedOnButton);
+            }
+            else
+            {
+                storeFromCombox.removeItemFromStore(comboBoxItems.getValue().getSerialNumber());
+                final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
+                comboBoxItems.setItems(items);
+                isItemSelected.setValue(false);
+                statusAfterClickedOnButton.setText("Item deleted succesfully");
+                statusAfterClickedOnButton.setTextFill(Color.BLACK);
             }
         }
-    }
 
-    @FXML
-    void deleteItem(ActionEvent event)
-    {
-        comboBoxStores.getValue().removeItemFromStore(comboBoxItems.getValue().getSerialNumber());
-        final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
-        comboBoxItems.setItems(items);
-        deleteItemButton.setDisable(true);
     }
 
 }

@@ -9,29 +9,23 @@ import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.function.Consumer;
+import exceptions.TaskIsCanceledException;
 
 public class CollectMetadataTask extends Task<Boolean> {
 
     private String fileName;
-    private Consumer<Long> totalWordsDelegate;
-    private Consumer<Long> totalLinesDelegate;
+    private Consumer<Runnable> onCancel;
 
-    private final int SLEEP_TIME = 0;
+    private final int SLEEP_TIME = 100;
 
-    public CollectMetadataTask(String fileName, Consumer<Long> totalWordsDelegate, Consumer<Long> totalLinesDelegate) {
+    public CollectMetadataTask(String fileName, Consumer<Runnable> onCancel) {
         this.fileName = fileName;
-        this.totalWordsDelegate = totalWordsDelegate;
-        this.totalLinesDelegate = totalLinesDelegate;
-    }
+        this.onCancel = onCancel;
 
-    public CollectMetadataTask(String fileName) {
-        this.fileName = fileName;
     }
 
     @Override
     protected Boolean call() throws Exception {
-        //final long totalLines;
-       // final long totalWords;
 
         try {
 
@@ -40,52 +34,36 @@ public class CollectMetadataTask extends Task<Boolean> {
                     Paths.get(fileName),
                     StandardCharsets.UTF_8);
 
+            updateMessage("Counting numbers..");
+            int totalNum=50;
+            updateProgress(0, totalNum);
 
-            updateMessage("Counting lines...");
-            updateProgress(0,1);
-            /*totalLines = reader
-                    .lines()
-                    .count();*/
-
-            updateProgress(1,1);
-            // update total lines in UI
-           /* Platform.runLater(
-                    () -> totalLinesDelegate.accept(totalLines)
-            );*/
-
-            SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
-
-            // we need to reopen the stream since it reached it's end on the above pass
-            reader = Files.newBufferedReader(
-                    Paths.get(fileName),
-                    StandardCharsets.UTF_8);
-
-            updateMessage("Counting words...");
-            final int[] currentLineNumber = {0};
-            /*totalWords = reader
-                    .lines()
-                    .mapToInt(line -> {
-                        // ui updates
-                        currentLineNumber[0]++;
-                        updateProgress(currentLineNumber[0], totalLines);
-                        SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
-
-                        // actual work...
-                        return line.split(" ").length;
-                    })
-                    .sum();
-*/
-            // update in UI
-           /* Platform.runLater(
-                    () -> totalWordsDelegate.accept(totalWords)
-            );*/
+            for(int i=1; i<=totalNum; i++)
+            {
+                if (isCancelled()) {
+                    throw new TaskIsCanceledException();
+                }
+                updateProgress(i, totalNum);
+                SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
+            }
 
             updateMessage("Done...");
         } catch (IOException e) {
             e.printStackTrace();
         }
-
+     catch (TaskIsCanceledException e) {
+        SuperDuperMarketUtils.log("Task was canceled !");
+        onCancel.accept(null);
+    }
+    updateMessage("Done...");
         return Boolean.TRUE;
+
+    }
+
+    @Override
+    protected void cancelled() {
+        super.cancelled();
+        updateMessage("Cancelled!");
     }
 
 }

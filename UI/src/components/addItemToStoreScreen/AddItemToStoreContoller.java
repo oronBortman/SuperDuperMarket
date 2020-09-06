@@ -37,7 +37,8 @@ public class AddItemToStoreContoller {
         comboBoxStores.setConverter(new StringConverter<Store>() {
             @Override
             public String toString(Store object) {
-                return object.getName();
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
+
             }
 
             @Override
@@ -50,7 +51,8 @@ public class AddItemToStoreContoller {
         comboBoxItems.setConverter(new StringConverter<Item>() {
             @Override
             public String toString(Item object) {
-                return object.getName();
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
+
             }
 
             @Override
