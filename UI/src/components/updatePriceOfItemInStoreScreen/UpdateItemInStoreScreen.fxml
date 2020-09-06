@@ -40,7 +40,7 @@
                 <Label id="serialNumberValue" fx:id="serialNumberValue" text="  " GridPane.columnIndex="1" />
             </children>
         </GridPane>
-        <Label text="Choose Item to delete from store:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+        <Label text="Choose Item to update from store:" GridPane.columnIndex="1" GridPane.rowIndex="2" />
         <Button fx:id="updatePriceButton" mnemonicParsing="false" onAction="#updateItemPrice" text="Update price" GridPane.columnIndex="1" GridPane.rowIndex="6" />
         <ComboBox fx:id="comboBoxItems" onAction="#chooseItem" GridPane.columnIndex="1" GridPane.rowIndex="3" />
         <Label text="Enter price of item:" GridPane.columnIndex="1" GridPane.rowIndex="4" />
