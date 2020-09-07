@@ -1,15 +1,10 @@
 package components.LoadingXMLFileScreen;
 
-import exceptions.DuplicateSerialIDException;
-import exceptions.InvalidCoordinateXException;
-import exceptions.InvalidCoordinateYException;
-import exceptions.TaskIsCanceledException;
+import exceptions.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
-import javafx.concurrent.WorkerStateEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -21,7 +16,6 @@ import logic.BusinessLogic;
 import metadata.*;
 import java.io.File;
 import java.util.Optional;
-import java.util.function.Consumer;
 
 public class LoadingXMLFileController {
 
@@ -72,8 +66,6 @@ public class LoadingXMLFileController {
     @FXML
     private void initialize() {
         selectedFileName.textProperty().bind(selectedFileProperty);
-        errorLabel.textProperty().bind(errorMessageProperty);
-       // taskMessageLabel.textProperty().bind(taskMessageLabelProperty);
         LoadFileButton.disableProperty().bind(isFileSelected.not());
         stopTaskButton.disableProperty().bind(isActive.not());
         clearTaskButton.disableProperty().bind(isActive);
@@ -83,9 +75,9 @@ public class LoadingXMLFileController {
     @FXML
    public void LoadFileButtonAction() {
         isActive.set(true);
+        errorLabel.setText("");
 
         collectMetadata(
-                errorMessageProperty::set,
                 () -> {
                     isMetadataCollected.set(true);
                     isActive.set(false);
@@ -115,6 +107,7 @@ public class LoadingXMLFileController {
         isMetadataCollected.set(false);
         clearTaskButtonAction();
         cleanOldResults();
+        errorLabel.setText("");
     }
 
     @FXML
@@ -122,6 +115,7 @@ public class LoadingXMLFileController {
         taskMessageLabel.setText("");
         progressPercentLabel.setText("");
         taskProgressBar.setProgress(0);
+        errorLabel.setText("");
     }
 
     @FXML
@@ -142,14 +136,28 @@ public class LoadingXMLFileController {
         taskMessageLabel.textProperty().bind(aTask.messageProperty());
 
         taskProgressBar.progressProperty().bind(aTask.progressProperty());
-        aTask.setOnCancelled(e ->
-        {
-            System.out.println("Cancel!!!!!!!");
-        });
 
         aTask.setOnFailed(e ->
         {
-            System.out.println("Failed!!!!!!!");
+            Throwable ex = aTask.getException();
+            if(ex != null)
+            {
+                if (ex.getClass() == DuplicateItemSerialIDException.class)
+                {
+                    DuplicateItemSerialIDException duplicateItemSerialIDException = (DuplicateItemSerialIDException) ex;
+                    errorLabel.setText("Error: Found duplicate serial key " + duplicateItemSerialIDException.getSerialId() + " of item " + duplicateItemSerialIDException.getName());
+                }
+                else if (ex.getClass() == DuplicateStoreSerialIDException.class)
+                {
+                    DuplicateStoreSerialIDException duplicateStoreSerialIDException = (DuplicateStoreSerialIDException) ex;
+                    errorLabel.setText("Error: Found duplicate serial key " + duplicateStoreSerialIDException.getSerialId() + " of store" + duplicateStoreSerialIDException.getName());
+                }
+                else if (ex.getClass() == DuplicateCustomerSerialIDException.class)
+                {
+                    DuplicateCustomerSerialIDException duplicateCustomerSerialIDException = (DuplicateCustomerSerialIDException) ex;
+                    errorLabel.setText("Error: Found duplicate serial key " + duplicateCustomerSerialIDException.getSerialId() + " of customer " + duplicateCustomerSerialIDException.getName());
+                }
+            }
         });
 
         // task percent label
@@ -178,11 +186,12 @@ public class LoadingXMLFileController {
     private void cleanOldResults() {
         flowPane.getChildren().clear();
         taskProgressBar.setProgress(0);
+        errorLabel.setText("");
     }
 
-    public void collectMetadata(Consumer<String> errorMessage, Runnable onFinish) {
+    public void collectMetadata( Runnable onFinish) {
 
-        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), errorMessage, (q) -> onTaskFinished(Optional.ofNullable(onFinish)),  businessLogic);
+        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), (q) -> onTaskFinished(Optional.ofNullable(onFinish)),  businessLogic);
         setCurrentRunningTask(currentRunningTask);
 
         Thread t = new Thread(currentRunningTask);

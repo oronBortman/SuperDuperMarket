@@ -1,23 +1,14 @@
 package metadata;
 
 import commonUI.*;
-import exceptions.DuplicateSerialIDException;
-import javafx.application.Platform;
-import javafx.beans.property.ReadOnlyStringProperty;
-import javafx.beans.property.StringProperty;
+import exceptions.*;
 import javafx.concurrent.Task;
-
 import java.io.*;
-import java.nio.charset.StandardCharsets;
-import java.nio.file.Files;
-import java.nio.file.Paths;
 import java.util.List;
 import java.util.function.Consumer;
-import exceptions.TaskIsCanceledException;
 import jaxb.schema.generated.*;
 import logic.BusinessLogic;
 import logic.order.GeneralMethods;
-
 import javax.xml.bind.JAXBException;
 
 public class CollectMetadataTask extends Task<Boolean> {
@@ -30,13 +21,13 @@ public class CollectMetadataTask extends Task<Boolean> {
     private List<SDMCustomer> customers;
     private Consumer<String> errorMessage;
 
-    private final int SLEEP_TIME = 2000;
+    private final int SLEEP_TIME = 1000;
 
-    public CollectMetadataTask(String fileName, Consumer<String> errorMessage, Consumer<Runnable> onCancel, BusinessLogic businessLogic) {
+    public CollectMetadataTask(String fileName, Consumer<Runnable> onCancel, BusinessLogic businessLogic) {
         this.fileName = fileName;
         this.onCancel = onCancel;
         this.businessLogic = businessLogic;
-        this.errorMessage = errorMessage;
+       // this.errorMessage = errorMessage;
     }
 
     public void readListsFromXML() throws FileNotFoundException, JAXBException {
@@ -52,9 +43,6 @@ public class CollectMetadataTask extends Task<Boolean> {
     protected Boolean call() throws Exception {
 
         try {
-            Platform.runLater(
-                    () -> errorMessage.accept("")
-            );
             System.out.println("Reading file");
 
             readListsFromXML();
@@ -82,7 +70,7 @@ public class CollectMetadataTask extends Task<Boolean> {
 
     }
 
-    public void readItemsFromXML() throws Exception {
+    public void readItemsFromXML() throws JAXBException, FileNotFoundException, TaskIsCanceledException, DuplicateItemSerialIDException {
         int counter=0;
         updateProgress(counter, items.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
@@ -103,18 +91,19 @@ public class CollectMetadataTask extends Task<Boolean> {
             {
                 cancelled();
                 //TODO
-                Platform.runLater(
+                /*Platform.runLater(
                         () -> errorMessage.accept("Error: Found duplicate key!")
-                );
-                throw new TaskIsCanceledException();
-                //throw new TaskIsCanceledException(new DuplicateSerialIDException(item.getId(), item.getName()));
+                );*/
+                SuperDuperMarketUtils.log("Task was canceled !");
+                onCancel.accept(null);
+                throw new DuplicateItemSerialIDException(item.getId(), item.getName());
 
             }
             SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
         }
     }
 
-    public void readUsersFromXML() throws FileNotFoundException, JAXBException, DuplicateSerialIDException, TaskIsCanceledException {
+    public void readUsersFromXML() throws FileNotFoundException, JAXBException, DuplicateCustomerSerialIDException, TaskIsCanceledException {
         int counter=0;
         updateProgress(counter, customers.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
@@ -134,19 +123,16 @@ public class CollectMetadataTask extends Task<Boolean> {
             catch (DuplicateSerialIDException error)
             {
                 cancelled();
-                //TODO
-                Platform.runLater(
-                        () -> errorMessage.accept("Error: Found duplicate key!")
-                );
-                throw new TaskIsCanceledException();
-                // throw new TaskIsCanceledException(new DuplicateSerialIDException(user.getId(), user.getName()));
+                SuperDuperMarketUtils.log("Task was canceled !");
+                onCancel.accept(null);
+                throw new DuplicateCustomerSerialIDException(user.getId(), user.getName());
 
             }
             SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
         }
     }
 
-    public void readStoresFromXML() throws FileNotFoundException, Exception, JAXBException, DuplicateSerialIDException, TaskIsCanceledException {
+    public void readStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException {
         int counter=0;
         updateProgress(counter, stores.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
@@ -167,12 +153,9 @@ public class CollectMetadataTask extends Task<Boolean> {
             catch (DuplicateSerialIDException error)
             {
                 cancelled();
-                //TODO
-                Platform.runLater(
-                        () -> errorMessage.accept("Error: Found duplicate key!")
-                );
-                throw new TaskIsCanceledException();
-                // throw new TaskIsCanceledException(new DuplicateSerialIDException(store.getId(), store.getName()));
+                SuperDuperMarketUtils.log("Task was canceled !");
+                onCancel.accept(null);
+                throw new DuplicateStoreSerialIDException(store.getId(), store.getName());
 
             }
             SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
