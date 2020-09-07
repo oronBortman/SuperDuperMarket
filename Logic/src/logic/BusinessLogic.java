@@ -374,6 +374,19 @@ public class BusinessLogic {
     }
 
 
+    public void addStoreSerialIDMapFromXml(SDMStore store) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+
+        if(storesSerialIDMap != null  && storesSerialIDMap.containsKey(store.getId()))
+        {
+            throw new DuplicateSerialIDException(store.getId(), store.getName());
+        }
+        else
+        {
+            Store storeToAddToMap = new Store(store);
+            storesSerialIDMap.put(store.getId(), storeToAddToMap);
+        }
+    }
+
 
 
     public void addItemsToStoresFromXml(String xmlName) throws SerialIDNotExistException, DuplicateSerialIDException, JAXBException, FileNotFoundException, ItemNotExistInStoresException {

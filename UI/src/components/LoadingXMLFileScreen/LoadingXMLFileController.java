@@ -3,10 +3,13 @@ package components.LoadingXMLFileScreen;
 import exceptions.DuplicateSerialIDException;
 import exceptions.InvalidCoordinateXException;
 import exceptions.InvalidCoordinateYException;
+import exceptions.TaskIsCanceledException;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.concurrent.Task;
+import javafx.concurrent.WorkerStateEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
@@ -18,6 +21,7 @@ import logic.BusinessLogic;
 import metadata.*;
 import java.io.File;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class LoadingXMLFileController {
 
@@ -31,28 +35,29 @@ public class LoadingXMLFileController {
     @FXML Label progressPercentLabel;
     @FXML Label taskMessageLabel;
     @FXML FlowPane flowPane;
-
+    @FXML Label errorLabel;
 
     private SimpleStringProperty selectedFileProperty;
     private SimpleBooleanProperty isFileSelected;
     private SimpleBooleanProperty isMetadataCollected;
     private SimpleBooleanProperty isActive;
-    private Task<Boolean> currentRunningTask;
+    private SimpleStringProperty errorMessageProperty;
 
+    private Task<Boolean> currentRunningTask;
 
     private BusinessLogic businessLogic;
     private Stage primaryStage;
     private SimpleStringProperty fileName;
-
-
+    private SimpleStringProperty taskMessageLabelProperty;
 
     public LoadingXMLFileController() {
         isActive = new SimpleBooleanProperty(false);
         isMetadataCollected = new SimpleBooleanProperty(false);
-
         selectedFileProperty = new SimpleStringProperty();
+        errorMessageProperty = new SimpleStringProperty();
         isFileSelected = new SimpleBooleanProperty(false);
         fileName = new SimpleStringProperty();
+        taskMessageLabelProperty = new SimpleStringProperty();
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -67,6 +72,8 @@ public class LoadingXMLFileController {
     @FXML
     private void initialize() {
         selectedFileName.textProperty().bind(selectedFileProperty);
+        errorLabel.textProperty().bind(errorMessageProperty);
+       // taskMessageLabel.textProperty().bind(taskMessageLabelProperty);
         LoadFileButton.disableProperty().bind(isFileSelected.not());
         stopTaskButton.disableProperty().bind(isActive.not());
         clearTaskButton.disableProperty().bind(isActive);
@@ -78,6 +85,7 @@ public class LoadingXMLFileController {
         isActive.set(true);
 
         collectMetadata(
+                errorMessageProperty::set,
                 () -> {
                     isMetadataCollected.set(true);
                     isActive.set(false);
@@ -133,8 +141,16 @@ public class LoadingXMLFileController {
         // task message
         taskMessageLabel.textProperty().bind(aTask.messageProperty());
 
-        // task progress bar
         taskProgressBar.progressProperty().bind(aTask.progressProperty());
+        aTask.setOnCancelled(e ->
+        {
+            System.out.println("Cancel!!!!!!!");
+        });
+
+        aTask.setOnFailed(e ->
+        {
+            System.out.println("Failed!!!!!!!");
+        });
 
         // task percent label
         progressPercentLabel.textProperty().bind(
@@ -164,15 +180,21 @@ public class LoadingXMLFileController {
         taskProgressBar.setProgress(0);
     }
 
-    public void collectMetadata(Runnable onFinish) {
+    public void collectMetadata(Consumer<String> errorMessage, Runnable onFinish) {
 
-        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), (q) -> onTaskFinished(Optional.ofNullable(onFinish)), businessLogic);
+        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), errorMessage, (q) -> onTaskFinished(Optional.ofNullable(onFinish)),  businessLogic);
         setCurrentRunningTask(currentRunningTask);
 
+        Thread t = new Thread(currentRunningTask);
+        t.start();
         bindTaskToUIComponents(currentRunningTask, onFinish);
-
-        new Thread(currentRunningTask).start();
     }
+
+    private static void showError(Thread thread, Throwable throwable) {
+        System.out.println("A");
+
+    }
+
 
 
     public void setCurrentRunningTask( CollectMetadataTask currentRunningTask)

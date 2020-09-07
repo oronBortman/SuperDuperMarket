@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <super-duper-market-descriptor xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="E:\aviad\courses\JAVAAN~1\exercises\2020-C~1\SAMPLE~1\ex1\SDM-V1.xsd">
 	<SDM-items>
-		<SDM-item id="1">
+		<SDM-item id="6">
 			<name>Ketshop</name>
 			<purchase-category>Quantity</purchase-category>
 		</SDM-item>
-		<SDM-item id="2">
+		<SDM-item id="7">
 			<name>Banana</name>
 			<purchase-category>Weight</purchase-category>
 		</SDM-item>
-		<SDM-item id="3">
+		<SDM-item id="8">
 			<name>Water</name>
 			<purchase-category>Quantity</purchase-category>
 		</SDM-item>
-		<SDM-item id="4">
+		<SDM-item id="9">
 			<name>Pasta</name>
 			<purchase-category>Quantity</purchase-category>
 		</SDM-item>
-		<SDM-item id="5">
+		<SDM-item id="10">
 			<name>Tomato</name>
 			<purchase-category>Weight</purchase-category>
 		</SDM-item>
