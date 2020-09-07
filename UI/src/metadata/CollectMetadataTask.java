@@ -164,8 +164,6 @@ public class CollectMetadataTask extends Task<Boolean> {
 
     @Override
     protected void  cancelled() {
-      /*  Platform.runLater(
-                () -> taskMessage.accept("Canceled"));*/
         updateMessage("Canceled");
         //TODO
         //How to make it work without sleep!!!
