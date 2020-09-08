@@ -8,9 +8,7 @@ import logic.order.itemInOrder.OrderedItem;
 import logic.discount.Discount;
 
 import javax.xml.bind.JAXBException;
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
-import java.io.InputStream;
 import java.util.*;
 
 public class BusinessLogic {
@@ -19,7 +17,7 @@ public class BusinessLogic {
     private Map<Integer, Store> storesSerialIDMap;
     private Map<Integer, Item> itemsSerialIDMap;
     private Map<Integer, ClosedOrder> ordersSerialIDMap;
-    private Map<Integer, User> usersSerialIDMap;
+    private Map<Integer, Customer> usersSerialIDMap;
     private List<Discount> discounts;
     private static Integer currentOrderSerialIDInSDK = 1;
 
@@ -31,10 +29,10 @@ public class BusinessLogic {
         storesSerialIDMap = new HashMap<Integer, Store>();
         itemsSerialIDMap = new HashMap<Integer, Item>();
         ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
-        usersSerialIDMap = new HashMap<Integer, User>();
+        usersSerialIDMap = new HashMap<Integer, Customer>();
         //TODO
         //Need to delete this lines after reading users from xml
-        usersSerialIDMap.put(123, new User(123, "Oron", new SDMLocation(1,2)));
+        usersSerialIDMap.put(123, new Customer(123, "Oron", new SDMLocation(1,2)));
 
         currentOrderSerialIDInSDK = 1;
     }
@@ -65,9 +63,9 @@ public class BusinessLogic {
     {
         return new ArrayList<Item>(itemsSerialIDMap.values());
     }
-    public List<User> getUsersList()
+    public List<Customer> getUsersList()
     {
-        return new ArrayList<User>(usersSerialIDMap.values());
+        return new ArrayList<Customer>(usersSerialIDMap.values());
     }
 
 
@@ -236,121 +234,11 @@ public class BusinessLogic {
         return storesSerialIDMap.containsKey(storeSerialID);
     }
 
-
-    public void createStoresSerialIDMapFromXml(String xmlName) throws DuplicateSerialIDException, InvalidCoordinateException, JAXBException, FileNotFoundException {
-        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
-        InputStream inputStream = new FileInputStream(xmlName);
-        SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
-        SDMStores shops = descriptor.getSDMStores();
-        List<SDMStore> listOfStores = shops.getSDMStore();
-
-        for(SDMStore store : listOfStores)
-        {
-            Location location = store.getLocation();
-            if(storesSerialIDMap != null && storesSerialIDMap.containsKey(store.getId()))
-            {
-                throw new DuplicateSerialIDException(store.getId(), store.getName());
-            }
-            else if(SDMLocation.checkIfLocationCoordinatesIsValid(location.getX()) == false)
-            {
-                throw new InvalidCoordinateXException(location.getX(), store.getName());
-
-            }
-            else if(SDMLocation.checkIfLocationCoordinatesIsValid(location.getY()) == false)
-            {
-                throw new InvalidCoordinateYException(location.getY(), store.getName());
-
-            }
-
-            else
-            {
-                //TODO
-                //Add that if something go wrong get out and return that something got wrong
-                Store storeToAddToMap = new Store(store);
-                storesSerialIDMap.put(storeToAddToMap.getSerialNumber(), storeToAddToMap);
-            }
-        }
-    }
-
-    public void createStoresLocationMapFromXml(String xmlName) throws InvalidCoordinateException, DuplicateLocationException, JAXBException, FileNotFoundException {
-        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
-        InputStream inputStream = new FileInputStream(xmlName);
-        storesLocationMap = new HashMap<SDMLocation, Store>();
-        SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
-        SDMStores shops = descriptor.getSDMStores();
-        List<SDMStore> listOfStores = shops.getSDMStore();
-
-        for(SDMStore store : listOfStores)
-        {
-            Location location = store.getLocation();
-            if(SDMLocation.checkIfLocationCoordinatesIsValid(location.getX()) == false)
-            {
-                throw new InvalidCoordinateXException(location.getX(), store.getName());
-            }
-            else if(storesLocationMap != null  && storesLocationMap.containsKey(location))
-            {
-                throw new DuplicateLocationException(location.getX(), location.getY(), store.getName());
-            }
-            else
-            {
-                //TODO
-                //Add that if something go wrong get out and return that something got wrong
-                Store storeToAddToMap = new Store(store);
-                storesLocationMap.put(new SDMLocation(location.getX(), location.getY()), storeToAddToMap);
-            }
-        }
-
-    }
-
-    public void createItemsSerialIDMapFromXml(String xmlName, Integer progress) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
-        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
-        InputStream inputStream = new FileInputStream(xmlName);
-        SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
-        SDMItems items = descriptor.getSDMItems();
-        List<SDMItem> listOfItems = items.getSDMItem();
-
-        for(SDMItem item : listOfItems)
-        {
-            if(itemsSerialIDMap != null  && itemsSerialIDMap.containsKey(item.getId()))
-            {
-                throw new DuplicateSerialIDException(item.getId(), item.getName());
-            }
-            else
-            {
-                Item itemToAddToMap = new Item(item);
-                itemsSerialIDMap.put(item.getId(), itemToAddToMap);
-            }
-            progress++;
-        }
-    }
-
-    /*public void createItemsSerialIDMapFromXmlV2(String xmlName, Integer progress) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
-        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
-        InputStream inputStream = new FileInputStream(xmlName);
-        SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
-        SDMItems items = descriptor.getSDMItems();
-        List<SDMItem> listOfItems = items.getSDMItem();
-
-        for(SDMItem item : listOfItems)
-        {
-            if(itemsSerialIDMap != null  && itemsSerialIDMap.containsKey(item.getId()))
-            {
-                throw new DuplicateSerialIDException(item.getId(), item.getName());
-            }
-            else
-            {
-                Item itemToAddToMap = new Item(item);
-                itemsSerialIDMap.put(item.getId(), itemToAddToMap);
-            }
-            progress++;
-        }
-    }*/
-
-    public void addItemsSerialIDMapFromXml(SDMItem item) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+    public void addItemsSerialIDMapFromXml(SDMItem item) throws DuplicateItemSerialIDException, JAXBException, FileNotFoundException {
 
         if(itemsSerialIDMap != null  && itemsSerialIDMap.containsKey(item.getId()))
         {
-            throw new DuplicateSerialIDException(item.getId(), item.getName());
+            throw new DuplicateItemSerialIDException(item.getId(), item.getName());
         }
         else
         {
@@ -360,25 +248,25 @@ public class BusinessLogic {
 
     }
 
-    public void addUserSerialIDMapFromXml(SDMCustomer user) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+    public void addUserSerialIDMapFromXml(SDMCustomer user) throws DuplicateCustomerSerialIDException, JAXBException, FileNotFoundException {
 
         if(usersSerialIDMap != null  && usersSerialIDMap.containsKey(user.getId()))
         {
-            throw new DuplicateSerialIDException(user.getId(), user.getName());
+            throw new DuplicateCustomerSerialIDException(user.getId(), user.getName());
         }
         else
         {
-            User userToAddToMap = new User(user);
+            Customer userToAddToMap = new Customer(user);
             usersSerialIDMap.put(user.getId(), userToAddToMap);
         }
     }
 
 
-    public void addStoreSerialIDMapFromXml(SDMStore store) throws DuplicateSerialIDException, JAXBException, FileNotFoundException {
+    public void addStoreSerialIDMapFromXml(SDMStore store) throws JAXBException, FileNotFoundException, DuplicateStoreSerialIDException {
 
         if(storesSerialIDMap != null  && storesSerialIDMap.containsKey(store.getId()))
         {
-            throw new DuplicateSerialIDException(store.getId(), store.getName());
+            throw new DuplicateStoreSerialIDException(store.getId(), store.getName());
         }
         else
         {
@@ -388,41 +276,7 @@ public class BusinessLogic {
     }
 
 
-
-    public void addItemsToStoresFromXml(String xmlName) throws SerialIDNotExistException, DuplicateSerialIDException, JAXBException, FileNotFoundException, ItemNotExistInStoresException {
-        //InputStream inputStream = Logic.class.getResourceAsStream(xmlName);
-        InputStream inputStream = new FileInputStream(xmlName);
-        Map<Integer, Integer> storesSellsIDMap = new HashMap<Integer, Integer>();
-        SuperDuperMarketDescriptor descriptor = GeneralMethods.<SuperDuperMarketDescriptor>deserializeFrom(inputStream);
-        SDMStores shops = descriptor.getSDMStores();
-        List<SDMStore> listOfStores = shops.getSDMStore();
-
-        for (SDMStore store : listOfStores) {
-            SDMPrices prices = store.getSDMPrices();
-            List<SDMSell> sellsDetails = prices.getSDMSell();
-            Map<Integer, Integer> sellsDetailsMap = new HashMap<Integer, Integer>();
-            Integer shopSerialID = store.getId();
-
-            for (SDMSell singleSellDetails : sellsDetails) {
-                int itemSerialID = singleSellDetails.getItemId();
-                int itemPrice = singleSellDetails.getPrice();
-                String storeName = store.getName();
-                if (itemsSerialIDMap != null && itemsSerialIDMap.containsKey(itemSerialID) == false) {
-                    throw new SerialIDNotExistException(itemSerialID, storeName);
-                } else if (sellsDetailsMap.containsKey(itemSerialID)) {
-                    throw new DuplicateSerialIDException(itemSerialID, storeName);
-                } else {
-                    sellsDetailsMap.put(itemSerialID, itemPrice);
-                    Item itemInSDM = itemsSerialIDMap.get(itemSerialID);
-                    String itemNameInSDM = itemInSDM.getName();
-                    Item.TypeOfMeasure itemMeasureTypeInSDK = itemInSDM.getTypeOfMeasure();
-
-                    AvailableItemInStore availableItemInStore = new AvailableItemInStore(itemSerialID, itemNameInSDM, itemMeasureTypeInSDK, itemPrice);
-                    storesSerialIDMap.get(shopSerialID).addItemToItemSSerialIDMap(availableItemInStore);
-                }
-            }
-
-        }
+    public void checkIfThereIsItemNotInStore() throws ItemNotExistInStoresException {
         for(Map.Entry<Integer, Item> item : itemsSerialIDMap.entrySet())
         {
             if(checkIfItemExistsInStores(item.getKey()) == false)
@@ -430,6 +284,37 @@ public class BusinessLogic {
                 throw new ItemNotExistInStoresException(item.getValue());
             }
         }
+    }
+
+    public void addItemToStoreFromSDMSell(SDMSell sdmSell, int storeID) throws ItemWithSerialIDNotExistInSDMException, DuplicateItemSerialIDInStoreException, StoreNotExistException
+    {
+        int itemID = sdmSell.getItemId();
+        Store store = getStoreBySerialID(storeID);
+
+        if(checkIfItemIdExists(itemID) == false)
+        {
+            throw new ItemWithSerialIDNotExistInSDMException(itemID);
+        }
+        else if(store == null)
+        {
+            throw new StoreNotExistException(storeID);
+        }
+        else if(checkIfItemExistsInStore(storeID, itemID))
+        {
+            String itemName = getItemBySerialID(itemID).getName();
+            throw new DuplicateItemSerialIDInStoreException(storeID, store.getName(), itemID, itemName );
+        }
+        else
+        {
+            Item item = getItemBySerialID(itemID);
+            int priceOfItem = sdmSell.getPrice();
+            addItemToStore(storeID, itemID, priceOfItem);
+        }
+    }
+
+    public void addDiscountToStoreFromSDMSell(SDMDiscount sdmDiscount, int storeID) throws ItemWithSerialIDNotExistInSDMException, DuplicateItemSerialIDInStoreException, StoreNotExistException, ItemNotExistInStoresException, DuplicateDiscountNameException, ItemIDNotExistInAStoreException {
+        Store store = getStoreBySerialID(storeID);
+        store.addDiscountToStoreFromXML(sdmDiscount);
     }
 
     public boolean checkIfItemExistsInStores(int itemSerialID)

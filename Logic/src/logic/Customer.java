@@ -3,20 +3,20 @@ package logic;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class User {
+public class Customer {
     private SimpleIntegerProperty serialNumber;
     private SimpleStringProperty name;
     private SDMLocation location;
 
 
-    public User(Integer serialNumber, String name, SDMLocation location)
+    public Customer(Integer serialNumber, String name, SDMLocation location)
     {
         this.serialNumber = new SimpleIntegerProperty(serialNumber);
         this.name = new SimpleStringProperty(name);
         this.location = location;
     }
 
-    public User(jaxb.schema.generated.SDMCustomer user)
+    public Customer(jaxb.schema.generated.SDMCustomer user)
     {
         this.serialNumber = new SimpleIntegerProperty(user.getId());
         this.name = new SimpleStringProperty(user.getName());

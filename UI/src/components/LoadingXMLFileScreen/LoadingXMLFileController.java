@@ -13,6 +13,7 @@ import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.BusinessLogic;
+import logic.Item;
 import metadata.*;
 import java.io.File;
 import java.util.Optional;
@@ -144,22 +145,80 @@ public class LoadingXMLFileController {
             {
                 if (ex.getClass() == DuplicateItemSerialIDException.class)
                 {
+
                     DuplicateItemSerialIDException duplicateItemSerialIDException = (DuplicateItemSerialIDException) ex;
-                    errorLabel.setText("Error: Found duplicate serial key " + duplicateItemSerialIDException.getSerialId() + " of item " + duplicateItemSerialIDException.getName());
+                    Integer itemID = duplicateItemSerialIDException.getSerialId();
+                    String itemName = duplicateItemSerialIDException.getName();
+                    errorLabel.setText("Error: Found duplicate serial key " + itemID + " of item " + itemName);
                 }
                 else if (ex.getClass() == DuplicateStoreSerialIDException.class)
                 {
+
                     DuplicateStoreSerialIDException duplicateStoreSerialIDException = (DuplicateStoreSerialIDException) ex;
-                    errorLabel.setText("Error: Found duplicate serial key " + duplicateStoreSerialIDException.getSerialId() + " of store" + duplicateStoreSerialIDException.getName());
+                    Integer storeID = duplicateStoreSerialIDException.getSerialId();
+                    String storeName = duplicateStoreSerialIDException.getName();
+                    errorLabel.setText("Error: Found duplicate serial key " + storeID + " of store" + storeName);
                 }
                 else if (ex.getClass() == DuplicateCustomerSerialIDException.class)
                 {
                     DuplicateCustomerSerialIDException duplicateCustomerSerialIDException = (DuplicateCustomerSerialIDException) ex;
-                    errorLabel.setText("Error: Found duplicate serial key " + duplicateCustomerSerialIDException.getSerialId() + " of customer " + duplicateCustomerSerialIDException.getName());
+                    Integer customerID = duplicateCustomerSerialIDException.getSerialId();
+                    String customerName = duplicateCustomerSerialIDException.getName();
+                    errorLabel.setText("Error: Found duplicate serial key " + customerID + " of customer " + customerID);
+                }
+                else if (ex.getClass() == DuplicateItemSerialIDInStoreException.class)
+                {
+                    DuplicateItemSerialIDInStoreException duplicateItemSerialIDInStoreException = (DuplicateItemSerialIDInStoreException) ex;
+                    int itemID = duplicateItemSerialIDInStoreException.getItemSerialId();
+                    String storeName = duplicateItemSerialIDInStoreException.getStoreName();
+                    int storeID = duplicateItemSerialIDInStoreException.getStoreSerialId();
+                    errorLabel.setText("Error: Found duplicate serial key " + itemID + " in store " + storeName);
+                }
+                else if (ex.getClass() == ItemWithSerialIDNotExistInSDMException.class)
+                {
+                    ItemWithSerialIDNotExistInSDMException itemWithSerialIDNotExistInSDMException = (ItemWithSerialIDNotExistInSDMException) ex;
+                    int itemID = itemWithSerialIDNotExistInSDMException.getSerialId();
+                    errorLabel.setText("Error: Item with serial key " + itemID + " doesn't exist in Super Duper Market");
+                }
+                else if (ex.getClass() == StoreNotExistException.class)
+                {
+                    StoreNotExistException StoreNotExistException = (StoreNotExistException) ex;
+                    int storeID = StoreNotExistException.getSerialId();
+                    errorLabel.setText("Error: Store with serial key " + storeID + " doesn't exist in Super Duper Market");
+                }
+                else if (ex.getClass() == ItemNotExistInStoresException.class)
+                {
+                    ItemNotExistInStoresException itemNotExistInStoresException = (ItemNotExistInStoresException) ex;
+                    Item item = itemNotExistInStoresException.getItem();
+                    if(item != null)
+                    {
+                        int itemID = item.getSerialNumber();
+                        String itemName = item.getName();
+                        errorLabel.setText("Error: The item with the name " + itemName + " and serial key " + itemID + " doesn't exist in any store in Super Duper Market");
+                    }
+                    else
+                    {
+                        int itemID = item.getSerialNumber();
+                        errorLabel.setText("Error: The item with the serial key " + itemID + " doesn't exist in any store in Super Duper Market");
+                    }
+
+                }
+                else if (ex.getClass() == ItemIDNotExistInAStoreException.class)
+                {
+                    ItemIDNotExistInAStoreException itemIDNotExistInAStoreException = (ItemIDNotExistInAStoreException) ex;
+                    int itemID = itemIDNotExistInAStoreException.getSerialId();
+                    String storeName = itemIDNotExistInAStoreException.getStoreName();
+                    errorLabel.setText("Error: The item with the serial key " + itemID + " doesn't exist in the store " + storeName);
+                }
+                else if (ex.getClass() == DuplicateDiscountNameException.class)
+                {
+                    DuplicateDiscountNameException duplicateDiscountNameException = (DuplicateDiscountNameException) ex;
+                    String discountName = duplicateDiscountNameException.getDiscountName();
+                    String storeName = duplicateDiscountNameException.getStoreName();
+                    errorLabel.setText("Error: A discount with the name " + discountName + " already exists in the store"  + storeName);
                 }
             }
         });
-
         // task percent label
         progressPercentLabel.textProperty().bind(
                 Bindings.concat(

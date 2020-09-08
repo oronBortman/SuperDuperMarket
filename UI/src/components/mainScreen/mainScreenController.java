@@ -5,7 +5,6 @@ import components.addItemToStoreScreen.AddItemToStoreContoller;
 import components.removeItemFromStoreScreen.RemoveItemFromStoreContoller;
 import components.showStoresScreen.*;
 import components.showItemsScreen.*;
-import InterfaceConsole.MenuOptionForReadingXMLFile;
 import commonUI.*;
 import components.showUsersScreen.ShowUsersController;
 import components.updatePriceOfItemInStoreScreen.UpdateItemInStoreController;

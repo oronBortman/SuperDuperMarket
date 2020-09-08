@@ -48,7 +48,7 @@ public class MenuOptionForReadingXMLFile {
         return xmlFileName;
     }
 
-    public boolean readFromXMLFile(BusinessLogic baseFromXml, String xmlFile) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
+   /* public boolean readFromXMLFile(BusinessLogic baseFromXml, String xmlFile) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
         boolean loadXmlSuccessfully;
         boolean readShopsSuccefully;
         boolean readItemsSuccefully;
@@ -204,6 +204,6 @@ public class MenuOptionForReadingXMLFile {
             readItemsSuccessfully=false;
         }
         return readItemsSuccessfully;
-    }
+    }*/
 
 }

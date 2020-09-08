@@ -4,7 +4,7 @@ import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class Item {
-    private SimpleIntegerProperty serialNumber;
+    private Integer serialNumber;
     private SimpleStringProperty name;
     TypeOfMeasure typeToMeasureBy;
 
@@ -43,14 +43,17 @@ public class Item {
 
     Item(Integer serialNumber, String name, TypeOfMeasure itemPurchaseCategory)
     {
-        this.serialNumber = new SimpleIntegerProperty(serialNumber);
+        //this.serialNumber = new SimpleIntegerProperty(serialNumber);
+        this.serialNumber = serialNumber;
         this.name = new SimpleStringProperty(name);
         this.typeToMeasureBy = itemPurchaseCategory;
     }
 
     public Item(jaxb.schema.generated.SDMItem item)
     {
-        this.serialNumber = new SimpleIntegerProperty(item.getId());
+        //this.serialNumber = new SimpleIntegerProperty(item.getId());
+        this.serialNumber = item.getId();
+
         this.name = new SimpleStringProperty(item.getName());
         String itemPurchaseCategoryStr = item.getPurchaseCategory();
         Item.TypeOfMeasure itemPurchaseCategory = Item.TypeOfMeasure.convertStringToEnum(itemPurchaseCategoryStr);
@@ -59,7 +62,9 @@ public class Item {
 
     public Item(Item item)
     {
-        this.serialNumber = new SimpleIntegerProperty(item.getSerialNumber());
+        //this.serialNumber = new SimpleIntegerProperty(item.getSerialNumber());
+        this.serialNumber = item.getSerialNumber();
+
         this.name =  new SimpleStringProperty(item.getName());
         this.typeToMeasureBy = item.getTypeOfMeasure();
     }
@@ -70,7 +75,8 @@ public class Item {
 
     public Integer getSerialNumber()
     {
-        return serialNumber.get();
+        //return serialNumber.get();
+        return serialNumber;
     }
 
     public String getTypeOfMeasureStr()
