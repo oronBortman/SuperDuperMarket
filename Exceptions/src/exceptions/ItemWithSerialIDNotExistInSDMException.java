@@ -1,13 +1,13 @@
 package exceptions;
 
-public class  SerialIDNotExistException extends Exception{
+public class ItemWithSerialIDNotExistInSDMException extends Exception{
     String name=null;
     int serialId;
-    public SerialIDNotExistException(int serialId)
+    public ItemWithSerialIDNotExistInSDMException(int serialId)
     {
         this.serialId = serialId;
     }
-    public SerialIDNotExistException(int serialId, String name)
+    public ItemWithSerialIDNotExistInSDMException(int serialId, String name)
     {
         this.serialId = serialId;
         this.name = name;
@@ -16,7 +16,7 @@ public class  SerialIDNotExistException extends Exception{
     public String getName() {
         return name;
     }
-
+    public boolean hasName() {return name != null;};
     public int getSerialId() {
         return serialId;
     }

@@ -1,13 +1,13 @@
 package exceptions;
 
-public class  SerialIDNotExistException extends Exception{
+public class StoreNotExistException extends Exception{
     String name=null;
     int serialId;
-    public SerialIDNotExistException(int serialId)
+    public StoreNotExistException(int serialId)
     {
         this.serialId = serialId;
     }
-    public SerialIDNotExistException(int serialId, String name)
+    public StoreNotExistException(int serialId, String name)
     {
         this.serialId = serialId;
         this.name = name;
@@ -16,6 +16,7 @@ public class  SerialIDNotExistException extends Exception{
     public String getName() {
         return name;
     }
+    public boolean hasName() {return name != null;};
 
     public int getSerialId() {
         return serialId;
