@@ -42,7 +42,6 @@
    <bottom>
       <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button fx:id="buttonTest" mnemonicParsing="false" text="Test" />
             <Button fx:id="nextButton" mnemonicParsing="false" onAction="#clickOnNextButton" prefWidth="100.0" text="Next" />
          </children>
          <padding>
