@@ -1,6 +1,7 @@
 package components.mainScreen;
 
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
+import components.MakeAnOrder.MakeAnOrderController;
 import components.addItemToStoreScreen.AddItemToStoreContoller;
 import components.removeItemFromStoreScreen.RemoveItemFromStoreContoller;
 import components.showStoresScreen.*;
@@ -56,7 +57,14 @@ public class mainScreenController {
     }
 
     @FXML
-    void makeAnOrder(ActionEvent event) {
+    void makeAnOrder(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        URL makeAnOrderFXML = getClass().getResource(SuperDuperMarketConstants.MAKE_AN_ORDER_FXML_RESOURCE_IDENTIFIER);
+        loader.setLocation(makeAnOrderFXML);
+        GridPane gridPane = loader.load();
+        MakeAnOrderController makeAnOrderController = loader.getController();
+        makeAnOrderController.setBusinessLogic(businessLogic);
+        mainBorderPane.setCenter(gridPane);
 
     }
 

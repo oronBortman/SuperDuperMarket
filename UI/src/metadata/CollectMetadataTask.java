@@ -245,6 +245,10 @@ public class CollectMetadataTask extends Task<Boolean> {
             System.out.println("There are no discounts at the store " + store.getName());
             updateProgress(counter, 1);
             SuperDuperMarketUtils.sleepForAWhile(1000);
+
+        }
+        else
+        {
             List<SDMDiscount> sdmDiscountList = sdmDiscounts.getSDMDiscount();
             if (sdmDiscountList == null) {
                 System.out.println("There are no discounts at the store " + store.getName());
@@ -265,7 +269,6 @@ public class CollectMetadataTask extends Task<Boolean> {
                     SuperDuperMarketUtils.sleepForAWhile(1);
                 }
             }
-
         }
     }
 
