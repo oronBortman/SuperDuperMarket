@@ -5,65 +5,49 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.DatePicker?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.layout.BorderPane?>
-<?import javafx.scene.layout.ColumnConstraints?>
-<?import javafx.scene.layout.GridPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.RowConstraints?>
-<?import javafx.scene.text.Font?>
+<?import javafx.scene.layout.Pane?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
-   <center>
-      <GridPane BorderPane.alignment="CENTER">
-        <columnConstraints>
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
-        </columnConstraints>
-        <rowConstraints>
-          <RowConstraints maxHeight="50.0" minHeight="10.0" prefHeight="5.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-        </rowConstraints>
-         <children>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-               <children>
-                  <Label text="Choose Customer" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.rowIndex="1">
-               <children>
-                  <ComboBox prefWidth="150.0" promptText="Choose Customer" />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <children>
-                  <DatePicker />
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="1">
-               <children>
-                  <Label text="Pick A date" />
-               </children>
-            </HBox>
-         </children>
-      </GridPane>
-   </center>
+<BorderPane fx:id="borderPane" minHeight="200.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.MakeAnOrder.MakeAnOrderController">
    <top>
-      <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="100.0" prefWidth="186.0" text="Make an Order" BorderPane.alignment="CENTER">
-         <font>
-            <Font size="18.0" />
-         </font>
-      </Label>
-   </top>
-   <bottom>
-      <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <Button alignment="CENTER" contentDisplay="RIGHT" mnemonicParsing="false" prefHeight="30.0" prefWidth="100.0" text="Next" />
+            <Pane prefHeight="96.0" prefWidth="540.0">
+               <children>
+                  <Separator layoutX="170.0" layoutY="68.0" prefHeight="36.0" prefWidth="200.0" />
+               </children>
+            </Pane>
          </children>
-         <BorderPane.margin>
-            <Insets right="40.0" />
-         </BorderPane.margin>
+      </HBox>
+   </top>
+   <center>
+      <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Pane minHeight="100.0" prefHeight="300.0" prefWidth="568.0">
+               <children>
+                  <ComboBox fx:id="comboBoxCustomer" layoutX="46.0" layoutY="44.0" onAction="#chooseCustomer" prefWidth="150.0" promptText="Choose Customer" />
+                  <RadioButton fx:id="RadioButtonStatic" layoutX="104.0" layoutY="121.0" mnemonicParsing="false" onAction="#chooseStatic" text="Static" />
+                  <RadioButton fx:id="RadioButtonDynamic" layoutX="208.0" layoutY="121.0" mnemonicParsing="false" onAction="#chooseDynamic" text="Dynamic" />
+                  <Label layoutX="31.0" layoutY="121.0" text="Label" />
+                  <DatePicker fx:id="datePicker" layoutX="365.0" layoutY="44.0" onAction="#chooseDate" />
+                  <Label layoutX="429.0" layoutY="14.0" text="Pick Date" />
+               </children>
+            </Pane>
+         </children>
+      </HBox>
+   </center>
+   <bottom>
+      <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="buttonTest" mnemonicParsing="false" text="Test" />
+            <Button fx:id="nextButton" mnemonicParsing="false" onAction="#clickOnNextButton" prefWidth="100.0" text="Next" />
+         </children>
+         <padding>
+            <Insets bottom="30.0" right="30.0" />
+         </padding>
       </HBox>
    </bottom>
 </BorderPane>

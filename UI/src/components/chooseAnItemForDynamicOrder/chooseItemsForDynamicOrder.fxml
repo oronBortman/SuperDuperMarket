@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<BorderPane fx:id="borderPane" minHeight="200.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.chooseAnItemForDynamicOrder.ChooseItemsForDynamicOrderController">
+    <top>
+        <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Pane prefHeight="96.0" prefWidth="540.0">
+                    <children>
+                        <Separator layoutX="170.0" layoutY="68.0" prefHeight="36.0" prefWidth="200.0" />
+                    </children>
+                </Pane>
+            </children>
+        </HBox>
+    </top>
+    <center>
+        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Pane minHeight="100.0" prefHeight="300.0" prefWidth="568.0">
+               <children>
+                  <Button fx:id="buttonTest" layoutX="57.0" layoutY="73.0" mnemonicParsing="false" text="Button" />
+               </children></Pane>
+            </children>
+        </HBox>
+    </center>
+    <bottom>
+        <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+            <children>
+                <Button fx:id="nextButton" mnemonicParsing="false" onAction="#clickOnNextButton" prefWidth="100.0" text="Next" />
+            </children>
+            <padding>
+                <Insets bottom="30.0" right="30.0" />
+            </padding>
+        </HBox>
+    </bottom>
+</BorderPane>

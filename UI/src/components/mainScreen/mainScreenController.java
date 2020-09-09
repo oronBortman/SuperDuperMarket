@@ -3,6 +3,7 @@ package components.mainScreen;
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
 import components.MakeAnOrder.MakeAnOrderController;
 import components.addItemToStoreScreen.AddItemToStoreContoller;
+import components.chooseAnItemForDynamicOrder.ChooseItemsForDynamicOrderController;
 import components.removeItemFromStoreScreen.RemoveItemFromStoreContoller;
 import components.showStoresScreen.*;
 import components.showItemsScreen.*;
@@ -11,17 +12,23 @@ import components.showUsersScreen.ShowUsersController;
 import components.updatePriceOfItemInStoreScreen.UpdateItemInStoreController;
 import exceptions.DuplicateSerialIDException;
 import exceptions.SerialIDNotExistException;
+import javafx.beans.property.BooleanProperty;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.DatePicker;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.*;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
+import java.util.function.Consumer;
 
 public class mainScreenController {
 
@@ -61,11 +68,49 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL makeAnOrderFXML = getClass().getResource(SuperDuperMarketConstants.MAKE_AN_ORDER_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(makeAnOrderFXML);
-        GridPane gridPane = loader.load();
+        BorderPane pane = loader.load();
         MakeAnOrderController makeAnOrderController = loader.getController();
         makeAnOrderController.setBusinessLogic(businessLogic);
-        mainBorderPane.setCenter(gridPane);
 
+        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    try {
+                        if(makeAnOrderController == null)
+                        {
+                            System.out.println("NULL!!!!");
+                        }
+                        else
+                        {
+                            Customer customer = makeAnOrderController.getCustomer();
+                            boolean isOrderStatic = makeAnOrderController.getStaticBoolean();
+                            chooseItemsForDynamicOrder(customer, isOrderStatic);
+                        }
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        makeAnOrderController.setProperties(chooseNext);
+        mainBorderPane.setCenter(pane);
+
+    }
+
+    public void chooseItemsForDynamicOrder(Customer customer, Boolean isOrderStatic) throws IOException {
+        System.out.println(customer.getName());
+        System.out.println("Order is static:" + isOrderStatic);
+        FXMLLoader loader = new FXMLLoader();
+        URL chooseItemsForDynamicOrderFXML = getClass().getResource(SuperDuperMarketConstants.CHOOSE_ITEM_FOR_DYNAMIC_ORDER_RESOURCE_IDENTIFEIR);
+        loader.setLocation(chooseItemsForDynamicOrderFXML);
+        BorderPane pane = loader.load();
+        ChooseItemsForDynamicOrderController chooseItemsForDynamicOrderController = loader.getController();
+        chooseItemsForDynamicOrderController.setBusinessLogic(businessLogic);
+        System.out.println("Clicked on next");
+        mainBorderPane.setCenter(pane);
     }
 
     @FXML
