@@ -2,41 +2,73 @@ package components.chooseAnItemForDynamicOrder;
 
 
 import commonUI.SuperDuperMarketConstants;
+import components.QuantityItem.QuantityItemController;
+import components.showItemsScreen.ShowItemsController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.FlowPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.layout.Pane;
 import logic.BusinessLogic;
 import logic.Customer;
+import logic.Item;
 import logic.Store;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class ChooseItemsForDynamicOrderController {
 
     @FXML Button nextButton;
     @FXML BorderPane borderPane;
+    @FXML FlowPane flowPaneItems;
     BusinessLogic businessLogic;
+    private Map<Integer, QuantityItemController> itemToTileController;
     private Consumer<Boolean> clickedNext;
+    ObservableList<Item> items;
 
 
 
     //TODO
 
 
-    @FXML
-    public void setComboBoxCustomer(Consumer<Boolean> clickedNext)
-    {
-        this.clickedNext = clickedNext;
+    private void createQuantityTile(Integer itemID) {
+        try {
+            FXMLLoader loader = new FXMLLoader();
+            URL quantityItemFXML = getClass().getResource(SuperDuperMarketConstants.QUANTITY_ITEM_RESOURCE_IDENTIFEIR);
+            loader.setLocation(quantityItemFXML);
+            Pane singleWordTile = loader.load();
+            QuantityItemController quantityItemController = loader.getController();
+            if(quantityItemController != null)
+            {
+                System.out.println("A");
+                quantityItemController.setBusinessLogic(businessLogic);
+                System.out.println("B");
 
+                flowPaneItems.getChildren().add(singleWordTile);
+                System.out.println("C");
+
+                itemToTileController.put(itemID, quantityItemController);
+                System.out.println("Adding item");
+            }
+            else
+            {
+                System.out.println("Item controller is null");
+            }
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
-
-
     @FXML
     private void initialize() {
        // setComboBoxCustomer();
@@ -48,15 +80,20 @@ public class ChooseItemsForDynamicOrderController {
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
-        final ObservableList<Store> stores = FXCollections.observableList(businessLogic.getStoresList());
-        final ObservableList<Customer> customer = FXCollections.observableList(businessLogic.getUsersList());
+        items = FXCollections.observableList(businessLogic.getItemsList());
+        System.out.println("In buisnessLogic!!!!");
+        for(Item item : items)
+        {
+            System.out.println(item.getName());
+            createQuantityTile(item.getSerialNumber());
+        }
         //TODO
         //Change xml loading
     }
 
     public ChooseItemsForDynamicOrderController()
     {
-
+         itemToTileController = new HashMap<Integer, QuantityItemController>();
     }
 
 

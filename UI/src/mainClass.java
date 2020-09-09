@@ -1,10 +1,13 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import commonUI.SuperDuperMarketConstants;
 import logic.*;
+
+import java.awt.*;
 import java.net.URL;
 
 public class mainClass extends Application {
@@ -24,8 +27,7 @@ public class mainClass extends Application {
         // load main fxml
         URL mainFXML = getClass().getResource(SuperDuperMarketConstants.MAIN_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(mainFXML);
-        BorderPane root = loader.load();
-
+        AnchorPane anchorPane = loader.load();
         // wire up controller
         components.mainScreen.mainScreenController superDuperMarketController = loader.getController();
         BusinessLogic businessLogic = new BusinessLogic();
@@ -34,7 +36,7 @@ public class mainClass extends Application {
 
         // set stage
         primaryStage.setTitle("Super Duper Market");
-        Scene scene = new Scene(root, 1050, 600);
+        Scene scene = new Scene(anchorPane, 1050, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
 

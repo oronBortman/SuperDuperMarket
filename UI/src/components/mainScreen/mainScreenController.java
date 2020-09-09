@@ -12,22 +12,17 @@ import components.showUsersScreen.ShowUsersController;
 import components.updatePriceOfItemInStoreScreen.UpdateItemInStoreController;
 import exceptions.DuplicateSerialIDException;
 import exceptions.SerialIDNotExistException;
-import javafx.beans.property.BooleanProperty;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.DatePicker;
+import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
 import logic.*;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URL;
-import java.util.Optional;
 import java.util.function.Consumer;
 
 public class mainScreenController {
@@ -57,7 +52,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL LoadXMLFileFXML = getClass().getResource(SuperDuperMarketConstants.LOAD_XML_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(LoadXMLFileFXML);
-        BorderPane borderPane = loader.load();
+        ScrollPane borderPane = loader.load();
         LoadingXMLFileController loadingXMLFileController = loader.getController();
         loadingXMLFileController.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(borderPane);
@@ -68,7 +63,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL makeAnOrderFXML = getClass().getResource(SuperDuperMarketConstants.MAKE_AN_ORDER_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(makeAnOrderFXML);
-        BorderPane pane = loader.load();
+        ScrollPane pane = loader.load();
         MakeAnOrderController makeAnOrderController = loader.getController();
         makeAnOrderController.setBusinessLogic(businessLogic);
 
@@ -106,7 +101,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL chooseItemsForDynamicOrderFXML = getClass().getResource(SuperDuperMarketConstants.CHOOSE_ITEM_FOR_DYNAMIC_ORDER_RESOURCE_IDENTIFEIR);
         loader.setLocation(chooseItemsForDynamicOrderFXML);
-        BorderPane pane = loader.load();
+        ScrollPane pane = loader.load();
         ChooseItemsForDynamicOrderController chooseItemsForDynamicOrderController = loader.getController();
         chooseItemsForDynamicOrderController.setBusinessLogic(businessLogic);
         System.out.println("Clicked on next");
@@ -118,7 +113,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL showItemsFXML = getClass().getResource(SuperDuperMarketConstants.SHOW_ITEMS_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(showItemsFXML);
-        GridPane gridPane = loader.load();
+        ScrollPane gridPane = loader.load();
         ShowItemsController showItemsController = loader.getController();
         showItemsController.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(gridPane);
@@ -144,7 +139,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL showStoresFXML = getClass().getResource(SuperDuperMarketConstants.SHOW_STORES_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(showStoresFXML);
-        GridPane gridPane = loader.load();
+        ScrollPane gridPane = loader.load();
         ShowStoresController showStoresController = loader.getController();
         showStoresController.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(gridPane);
@@ -155,7 +150,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL showUsersFXML = getClass().getResource(SuperDuperMarketConstants.SHOW_USERS_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(showUsersFXML);
-        GridPane gridPane = loader.load();
+        ScrollPane gridPane = loader.load();
         ShowUsersController showUsersController = loader.getController();
         showUsersController.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(gridPane);
@@ -165,7 +160,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL removeItemsFXML = getClass().getResource(SuperDuperMarketConstants.ADD_ITEM_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(removeItemsFXML);
-        GridPane gridPane = loader.load();
+        ScrollPane gridPane = loader.load();
         AddItemToStoreContoller addItemToStoreContoller = loader.getController();
         addItemToStoreContoller.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(gridPane);
@@ -177,7 +172,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL removeItemsFXML = getClass().getResource(SuperDuperMarketConstants.REMOVE_ITEM_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(removeItemsFXML);
-        GridPane gridPane = loader.load();
+        ScrollPane gridPane = loader.load();
         RemoveItemFromStoreContoller removeItemFromStoreContoller = loader.getController();
         removeItemFromStoreContoller.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(gridPane);
@@ -189,7 +184,7 @@ public class mainScreenController {
         FXMLLoader loader = new FXMLLoader();
         URL removeItemsFXML = getClass().getResource(SuperDuperMarketConstants.UPDATE_ITEM_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(removeItemsFXML);
-        GridPane gridPane = loader.load();
+        ScrollPane gridPane = loader.load();
         UpdateItemInStoreController updateItemFromStoreContoller = loader.getController();
         updateItemFromStoreContoller.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(gridPane);

@@ -1,28 +1,13 @@
 package components.MakeAnOrder;
-
-
-import commonUI.SuperDuperMarketConstants;
-import components.chooseAnItemForDynamicOrder.ChooseItemsForDynamicOrderController;
-import javafx.beans.binding.Bindings;
-import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.control.TableColumn.CellDataFeatures;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.stage.Modality;
 import javafx.stage.Stage;
-import javafx.util.Callback;
 import javafx.util.StringConverter;
-import logic.AvailableItemInStore;
 import logic.BusinessLogic;
 import logic.Customer;
 import logic.Store;
@@ -38,7 +23,6 @@ public class MakeAnOrderController {
     @FXML RadioButton RadioButtonDynamic;
     @FXML ComboBox<Customer> comboBoxCustomer;
     @FXML Button nextButton;
-    @FXML Button buttonTest;
     @FXML BorderPane borderPane;
     BusinessLogic businessLogic;
     SimpleBooleanProperty isCustomerSelected;

@@ -19,5 +19,6 @@ public class SuperDuperMarketConstants {
     public static final URL MAIN_FXML_RESOURCE = SuperDuperMarketConstants.class.getResource(SuperDuperMarketConstants.SHOW_ITEMS_FXML_RESOURCE_IDENTIFIER);
     public static final String MAKE_AN_ORDER_FXML_RESOURCE_IDENTIFIER = "/components/MakeAnOrder/MakeAnOrderScreen.fxml";
     public static final String CHOOSE_ITEM_FOR_DYNAMIC_ORDER_RESOURCE_IDENTIFEIR = "/components/chooseAnItemForDynamicOrder/chooseItemsForDynamicOrder.fxml";
+    public static final String QUANTITY_ITEM_RESOURCE_IDENTIFEIR = "/components/QuantityItem/QuantityItem.fxml";
 
 }

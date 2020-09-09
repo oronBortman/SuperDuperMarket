@@ -1,27 +1,35 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
-<GridPane fx:id="showUsersGridPane" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.showUsersScreen.ShowUsersController">
-   <columnConstraints>
-      <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="20.0" />
-      <ColumnConstraints hgrow="SOMETIMES" minWidth="1000.0" prefWidth="1000.0" />
-   </columnConstraints>
-   <rowConstraints>
-      <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-      <RowConstraints vgrow="SOMETIMES" />
-   </rowConstraints>
-   <children>
-      <Label fx:id="listOfUsers" text="List of users:" GridPane.columnIndex="1" />
-      <TableView fx:id="listOfUsersTable" prefHeight="200.0" prefWidth="10000.0" GridPane.columnIndex="1" GridPane.rowIndex="1">
-         <columns>
-            <TableColumn id="UserSerialNumberCol" fx:id="UserSerialNumberCol" prefWidth="99.0" text="Serial Number" />
-            <TableColumn id="NameOfUserCol" fx:id="NameOfUserCol" prefWidth="99.0" text="Name" />
-            <TableColumn id="LocationCol" fx:id="LocationCol" prefWidth="118.0" text="Location" />
-            <TableColumn id="AmountOfOrdersCol" fx:id="AmountOfOrdersCol" prefWidth="195.0" text="Amount of orders" />
-            <TableColumn id="AverageOrderPriceCol" fx:id="AverageOrderPriceCol" minWidth="40.0" prefWidth="123.0" text="Average orders price" />
-            <TableColumn id="AverageDeliveryPrice" fx:id="AverageDeliveryPrice" minWidth="40.0" prefWidth="200.0" text="Average deliveries price" />
-         </columns>
-      </TableView>
-   </children>
-</GridPane>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+
+
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.showUsersScreen.ShowUsersController">
+   <content>
+      <BorderPane>
+         <center>
+            <TableView fx:id="listOfUsersTable" prefHeight="200.0" prefWidth="700.0" BorderPane.alignment="CENTER">
+               <columns>
+                  <TableColumn id="UserSerialNumberCol" fx:id="UserSerialNumberCol" prefWidth="99.0" text="Serial Number" />
+                  <TableColumn id="NameOfUserCol" fx:id="NameOfUserCol" prefWidth="99.0" text="Name" />
+                  <TableColumn id="LocationCol" fx:id="LocationCol" prefWidth="118.0" text="Location" />
+                  <TableColumn id="AmountOfOrdersCol" fx:id="AmountOfOrdersCol" prefWidth="195.0" text="Amount of orders" />
+                  <TableColumn id="AverageOrderPriceCol" fx:id="AverageOrderPriceCol" minWidth="40.0" prefWidth="123.0" text="Average orders price" />
+                  <TableColumn id="AverageDeliveryPrice" fx:id="AverageDeliveryPrice" minWidth="40.0" prefWidth="200.0" text="Average deliveries price" />
+               </columns>
+            </TableView>
+         </center>
+         <top>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label text="List of customers" />
+               </children>
+            </HBox>
+         </top>
+      </BorderPane>
+   </content>
+</ScrollPane>
