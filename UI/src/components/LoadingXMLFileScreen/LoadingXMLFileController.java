@@ -29,30 +29,25 @@ public class LoadingXMLFileController {
     @FXML ProgressBar taskProgressBar;
     @FXML Label progressPercentLabel;
     @FXML Label taskMessageLabel;
-    @FXML FlowPane flowPane;
     @FXML Label errorLabel;
 
     private SimpleStringProperty selectedFileProperty;
     private SimpleBooleanProperty isFileSelected;
     private SimpleBooleanProperty isMetadataCollected;
     private SimpleBooleanProperty isActive;
-    private SimpleStringProperty errorMessageProperty;
 
     private Task<Boolean> currentRunningTask;
 
     private BusinessLogic businessLogic;
     private Stage primaryStage;
     private SimpleStringProperty fileName;
-    private SimpleStringProperty taskMessageLabelProperty;
 
     public LoadingXMLFileController() {
         isActive = new SimpleBooleanProperty(false);
         isMetadataCollected = new SimpleBooleanProperty(false);
         selectedFileProperty = new SimpleStringProperty();
-        errorMessageProperty = new SimpleStringProperty();
         isFileSelected = new SimpleBooleanProperty(false);
         fileName = new SimpleStringProperty();
-        taskMessageLabelProperty = new SimpleStringProperty();
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -243,7 +238,6 @@ public class LoadingXMLFileController {
     }
 
     private void cleanOldResults() {
-        flowPane.getChildren().clear();
         taskProgressBar.setProgress(0);
         errorLabel.setText("");
     }
@@ -282,57 +276,4 @@ public class LoadingXMLFileController {
     public SimpleStringProperty fileNameProperty() {
         return this.fileName;
     }
-
-   /* private boolean readShopsFromXMLFile(String xmlFileName, BusinessLogic baseFromXml) {
-        boolean readShopsSuccefully;
-        try
-        {
-            baseFromXml.createStoresSerialIDMapFromXml(xmlFileName);
-            baseFromXml.createStoresLocationMapFromXml(xmlFileName);
-            readShopsSuccefully=true;
-        }
-        catch (DuplicateSerialIDException e)
-        {
-            System.out.println("The serial ID " + e.getSerialId() + " of the store " + e.getName() + " is not unique.");
-            System.out.println("Please fix your xml file and try again\n");
-            readShopsSuccefully=false;
-        }
-        catch( InvalidCoordinateXException e)
-        {
-            System.out.println("The coordinate X with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
-            System.out.println("Please fix your xml file and try again\n");
-            readShopsSuccefully=false;
-        }
-        catch( InvalidCoordinateYException e)
-        {
-            System.out.println("The coordinate Y with value " + e.getCoord() + " of the store " + e.getName() + " is invalid. You need to enter coordinate between 1 to 50.");
-            System.out.println("Please fix your xml file and try again\n");
-            readShopsSuccefully=false;
-        }
-        catch(Exception e)
-        {
-            readShopsSuccefully=false;
-        }
-        return readShopsSuccefully;
-    }
-
-    private boolean readItemsFromXMLFile(BusinessLogic baseFromXml) {
-        boolean readItemsSuccessfully;
-        try
-        {
-            baseFromXml.addItemsSerialIDMapFromXml(fileName.getName());
-            readItemsSuccessfully=true;
-        }
-        catch (DuplicateSerialIDException e)
-        {
-            System.out.println("The serial ID " + e.getSerialId() + " of the item " + e.getName()   + " is not unique" + " in Super Duper Market");
-            System.out.println("Please fix your xml file and try again\n");
-            readItemsSuccessfully=false;
-        }
-        catch (Exception e)
-        {
-            readItemsSuccessfully=false;
-        }
-        return readItemsSuccessfully;
-    }*/
 }

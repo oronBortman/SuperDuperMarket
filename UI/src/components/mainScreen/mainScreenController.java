@@ -41,14 +41,10 @@ public class mainScreenController {
 
     public void setBusinessLogic(BusinessLogic businessLogic) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
         this.businessLogic = businessLogic;
-        //TODO
-        //Change xml loading
-        //new MenuOptionForReadingXMLFile().readFromXMLFile(businessLogic, SuperDuperMarketConstants.XML_PATH);
     }
 
     @FXML
     void loadFromXml(ActionEvent event) throws IOException {
-        //GridPane gridPane = FXMLLoader.load(getClass().getResource(SuperDuperMarketConstants.SHOW_ITEMS_FXML_RESOURCE_IDENTIFIER));
         FXMLLoader loader = new FXMLLoader();
         URL LoadXMLFileFXML = getClass().getResource(SuperDuperMarketConstants.LOAD_XML_FXML_RESOURCE_IDENTIFIER);
         loader.setLocation(LoadXMLFileFXML);
