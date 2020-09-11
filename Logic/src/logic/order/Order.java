@@ -9,71 +9,30 @@ import java.util.Map;
 public abstract class Order {
 
     private Date date;
-    private Map<Integer, OrderedItem> orderedItems;
+    private boolean isOrderStatic;
+    private boolean isOrderDynamic;
 
-    public Order(Date date)
-    {
-        orderedItems = new HashMap<Integer, OrderedItem>();
-        this.date = date;
-    }
 
-    public Order(Map<Integer, OrderedItem> orderedItems, Date date )
+    public Order(Date date, boolean isOrderStatic)
     {
         this.date = date;
-        this.orderedItems = orderedItems;
+        this.isOrderStatic = isOrderStatic;
+        this.isOrderDynamic = !isOrderStatic;
+
     }
-    //TODO
     public Date getDate()
     {
         return date;
     }
 
-    public Map<Integer, OrderedItem> getOrderedItems()
-    {
-        return orderedItems;
+    public boolean isOrderDynamic() {
+        return isOrderDynamic;
     }
 
-    public void addItemToItemsMapOfOrder(OrderedItem orderedItem)
-    {
-        orderedItems.put(orderedItem.getSerialNumber(), orderedItem);
+    public boolean isOrderStatic() {
+        return isOrderStatic;
     }
 
-    public int getAmountOfCertainItemByUnit(int serialId)
-    {
-        int amountOfCertainItemByUnit;
-        if(orderedItems.containsKey(serialId))
-        {
-            amountOfCertainItemByUnit = orderedItems.get(serialId).getAmountOfItemOrderedByUnits();
-        }
-        else
-        {
-            amountOfCertainItemByUnit = 0;
-        }
-        return amountOfCertainItemByUnit;
-    }
-
-    public double getAmountOfCertainItemByTypeOfMeasure(int serialId)
-    {
-        double amountOfCertainItemByUnit;
-        if(orderedItems.containsKey(serialId))
-        {
-            amountOfCertainItemByUnit = orderedItems.get(serialId).getTotalAmountOfItemOrderedByTypeOfMeasure();
-        }
-        else
-        {
-            amountOfCertainItemByUnit = 0;
-        }
-        return amountOfCertainItemByUnit;
-    }
-
-    public boolean checkIfItemExistsInOrder(int serialId)
-    {
-        return orderedItems.containsKey(serialId);
-    }
-
-    public OrderedItem getItemInOrder(int serialIDOfItem)
-    {
-        return getOrderedItems().get(serialIDOfItem);
-    }
+    public abstract boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem);
 
 }

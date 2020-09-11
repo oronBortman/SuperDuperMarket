@@ -1,26 +1,35 @@
-package logic.order;
+package logic.order.StoreOrder;
 
-import logic.order.itemInOrder.OrderedItem;
 import logic.SDMLocation;
 import logic.Store;
+import logic.order.OpenedOrder;
+import logic.order.itemInOrder.OrderedItem;
 
 import java.util.Date;
 import java.util.Map;
-import java.util.Objects;
 
-public class OpenedStaticOrder extends OpenedOrder {
+public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
 
-    Store storeUsed;
-    public OpenedStaticOrder(Store store, Date date)
+
+    public OpenedStoreOrder(Store store, Date date, boolean isOrderStatic)
     {
-        super(date);
-        this.storeUsed = store;
+        super(store, date, isOrderStatic);
+    }
+
+    public OpenedStoreOrder(Date date, boolean isOrderStatic)
+    {
+        super(date, isOrderStatic);
     }
 
     @Override
-    public double calcTotalDeliveryPrice(SDMLocation inputLocation)
+    public double calcTotalDeliveryPrice(SDMLocation inputLocation) {
+        //TODO
+        return 0;
+    }
+
+    public void addItemToItemsMapOfOrder(OrderedItem orderedItem)
     {
-        return calcDeliverPriceFromStore(inputLocation, storeUsed);
+        getOrderedItems().put(orderedItem.getSerialNumber(), orderedItem);
     }
 
     public double calcDeliverPriceFromStore(SDMLocation inputLocation, Store store) {
@@ -31,29 +40,19 @@ public class OpenedStaticOrder extends OpenedOrder {
     }
 
 
+    @Override
     public double calcTotalPriceOfOrder(SDMLocation inputLocation)
     {
         return calcTotalPriceOfItems() + calcTotalDeliveryPrice(inputLocation);
     }
 
     @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        OpenedStaticOrder that = (OpenedStaticOrder) o;
-        return Objects.equals(storeUsed, that.storeUsed);
-    }
-
-    @Override
-    public int hashCode() {
-        return Objects.hash(storeUsed);
-    }
-
     public double calcTotalPriceOfItems()
     {
         return getOrderedItems().values().stream().mapToDouble(OrderedItem::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
     }
 
+    @Override
     public int calcTotalAmountOfItemsByUnit()
     {
         return getOrderedItems().values().stream().mapToInt(OrderedItem::getAmountOfItemOrderedByUnits).sum();
@@ -64,30 +63,23 @@ public class OpenedStaticOrder extends OpenedOrder {
         return getOrderedItems().get(serialIDOfItem);
     }*/
 
-    public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem)
-    {
-        Map<Integer, OrderedItem> orderedItems = getOrderedItems();
-        boolean itemAlreadyExistsInOrder=false;
-        if(orderedItems != null)
-        {
-            itemAlreadyExistsInOrder = getOrderedItems().containsKey(serialIDOfItem);
-        }
-        return itemAlreadyExistsInOrder;
-    }
 
 
     public int calcTotalAmountOfItemsType()
     {
         return getOrderedItems().size();
     }
-    public ClosedStaticOrder closeOrder(SDMLocation location)
+
+
+    public ClosedStoreOrder closeOrder(SDMLocation location)
     {
         double totalPriceOfItems = calcTotalPriceOfItems();
         double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice(location);
         double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
         int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
         int totalAmountOfItemsType = calcTotalAmountOfItemsType();
-        return new ClosedStaticOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, storeUsed,getOrderedItems(), getDate());
+        ClosedStoreOrder closedStoreOrder = new ClosedStoreOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, storeUsed,getOrderedItems(), getDate(), isOrderStatic());
+        getStoreUsed().addClosedOrderToHistory(closedStoreOrder);
+        return closedStoreOrder;
     }
-
 }

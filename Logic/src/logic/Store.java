@@ -11,6 +11,7 @@ import logic.discount.Offer;
 import logic.discount.ThenYouGetSDM;
 import logic.order.ClosedOrder;
 import logic.order.GeneralMethods;
+import logic.order.StoreOrder.ClosedStoreOrder;
 
 import java.util.*;
 
@@ -18,7 +19,7 @@ public class Store {
     private Integer serialNumber;
     private String name;
     private Map<Integer, AvailableItemInStore> ItemsSerialIDMap;
-    private Map<Integer, ClosedOrder> ordersSerialIDMap;
+    private Map<Integer, ClosedStoreOrder> ordersSerialIDMap;
     private Map<Integer, Discount> discountNameDMap;
 
     private Integer PPK;
@@ -27,7 +28,7 @@ public class Store {
     public Store(Integer serialNumber, String name, int PPK, SDMLocation SDMLocationOfShop)
     {
         ItemsSerialIDMap = new HashMap<Integer, AvailableItemInStore>();
-        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedStoreOrder>();
         discountNameDMap = new HashMap<Integer, Discount>();
 
         this.serialNumber = serialNumber;
@@ -39,7 +40,7 @@ public class Store {
     public Store(SDMStore shop)
     {
         ItemsSerialIDMap = new HashMap<Integer, AvailableItemInStore>();
-        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedStoreOrder>();
         discountNameDMap = new HashMap<Integer, Discount>();
 
         this.serialNumber = shop.getId();
@@ -116,7 +117,7 @@ public class Store {
 
     public Set<Integer> getSetOfOrdersSerialID()
     {
-        return GeneralMethods.<Integer, ClosedOrder>getSetOfDictionary(ordersSerialIDMap);
+        return GeneralMethods.<Integer, ClosedStoreOrder>getSetOfDictionary(ordersSerialIDMap);
 
     }
 
@@ -128,7 +129,7 @@ public class Store {
     //TODO
     public double calcProfitOfDelivers()
     {
-        return ordersSerialIDMap.values().stream().mapToDouble(ClosedOrder::getDeliveryPriceAfterOrder).sum();
+        return ordersSerialIDMap.values().stream().mapToDouble(ClosedStoreOrder::getDeliveryPriceAfterOrder).sum();
     }
 
     public String getName()
@@ -170,7 +171,7 @@ public class Store {
         ItemsSerialIDMap.put(item.getSerialNumber(), item);
     }
 
-    public void addClosedOrderToHistory(ClosedOrder order)
+    public void addClosedOrderToHistory(ClosedStoreOrder order)
     {
         ordersSerialIDMap.put(order.getSerialNumber(), order);
     }
@@ -185,11 +186,11 @@ public class Store {
     }
     public int getAmountOfItemSoledByUnit(Integer itemID)
     {
-        return ordersSerialIDMap.values().stream().mapToInt(closedOrder -> closedOrder.getAmountOfCertainItemByUnit(itemID)).sum();
+        return ordersSerialIDMap.values().stream().mapToInt(closedStoreOrder -> closedStoreOrder.getAmountOfCertainItemByUnit(itemID)).sum();
     }
     public double getAmountOfItemSoledByTypeOfMeasure(Integer itemID)
     {
-        return ordersSerialIDMap.values().stream().mapToDouble(closedOrder -> closedOrder.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
+        return ordersSerialIDMap.values().stream().mapToDouble(closedStoreOrder -> closedStoreOrder.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
     }
 
     public boolean checkIfItemIsTheOnlyOneInStore(Integer itemID)

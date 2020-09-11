@@ -3,7 +3,9 @@ package logic;
 import exceptions.*;
 import jaxb.schema.generated.*;
 import logic.order.ClosedOrder;
+import logic.order.CustomerOrder.ClosedCustomerOrder;
 import logic.order.GeneralMethods;
+import logic.order.StoreOrder.ClosedStoreOrder;
 import logic.order.itemInOrder.OrderedItem;
 import logic.discount.Discount;
 
@@ -16,7 +18,7 @@ public class BusinessLogic {
     private Map<SDMLocation, Store> storesLocationMap;
     private Map<Integer, Store> storesSerialIDMap;
     private Map<Integer, Item> itemsSerialIDMap;
-    private Map<Integer, ClosedOrder> ordersSerialIDMap;
+    private Map<Integer, ClosedCustomerOrder> ordersSerialIDMap;
     private Map<Integer, Customer> usersSerialIDMap;
     private List<Discount> discounts;
     private static Integer currentOrderSerialIDInSDK = 1;
@@ -28,7 +30,7 @@ public class BusinessLogic {
         storesLocationMap = new HashMap<SDMLocation, Store>();
         storesSerialIDMap = new HashMap<Integer, Store>();
         itemsSerialIDMap = new HashMap<Integer, Item>();
-        ordersSerialIDMap = new HashMap<Integer, ClosedOrder>();
+        ordersSerialIDMap = new HashMap<Integer, ClosedCustomerOrder>();
         usersSerialIDMap = new HashMap<Integer, Customer>();
         //TODO
         //Need to delete this lines after reading users from xml
@@ -86,7 +88,7 @@ public class BusinessLogic {
 
     public Set<Integer> getSetOfOrdersSerialID()
     {
-        return GeneralMethods.<Integer, ClosedOrder>getSetOfDictionary(ordersSerialIDMap);
+        return GeneralMethods.<Integer, ClosedCustomerOrder>getSetOfDictionary(ordersSerialIDMap);
     }
 
     public Item getItemySerialID(Integer serialID)
@@ -104,8 +106,12 @@ public class BusinessLogic {
         return itemsSerialIDMap.get(itemID);
     }
 
-    public void addClosedOrderToHistory(ClosedOrder order)
+    public void addClosedOrderToHistory(ClosedCustomerOrder order)
     {
+        for(ClosedStoreOrder closedStoreOrder : order.getClosedStoresOrderMapByStoreSerialID().values())
+        {
+            closedStoreOrder.setSerialNumber(currentOrderSerialIDInSDK);
+        }
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;
         //TODO
@@ -208,7 +214,7 @@ public class BusinessLogic {
     //TODO
     public Double getTotalAmountOfSoledItem(Integer itemID)
     {
-        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemExistsInOrder(itemID)).mapToDouble(x -> x.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
+        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemAlreadyExistsInOrder(itemID)).mapToDouble(x -> x.getTotalAmountOfItemTypesOfStoreOrderBySerialIDOfItem(itemID)).sum();
     }
 //        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.getTotalAmountOfSoledItem(itemID).sum();
     public void setStoresSerialIDMap(Map<Integer, Store> shopsSerialIdMap)
