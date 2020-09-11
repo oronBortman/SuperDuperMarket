@@ -165,51 +165,7 @@ public class BusinessLogic {
     }
     final int MIN_PRICE_INITIALIZE = -1;
 
-    public Integer getIDOfShopWithCheapestItem(int itemSerialID)
-    {
-        int minPrice=MIN_PRICE_INITIALIZE;
-        int storeSerialIDWithCheapestItem=0;
-        for (Map.Entry<Integer, Store> entry : storesSerialIDMap.entrySet())
-        {
-            int storeSerialId = entry.getKey();
-            Store store = entry.getValue();
-            AvailableItemInStore item = store.getItemBySerialID(itemSerialID);
-            if(item != null)
-            {
-                int itemPriceInStore = item.getPricePerUnit();
-                if(minPrice == MIN_PRICE_INITIALIZE || itemPriceInStore < minPrice)
-                {
-                    minPrice=itemPriceInStore;
-                    storeSerialIDWithCheapestItem = storeSerialId;
-                }
-            }
-        }
-        return storeSerialIDWithCheapestItem;
-    }
 
-    public HashMap<Store, List<OrderedItem>> getMapOfShopWithCheapestItemsFromSet(Set<OrderedItem> listOfOrderedItems)
-    {
-        Store store;
-        int storeID;
-        HashMap<Store, List<OrderedItem>> mapOfShopsWithCheapestItems = new HashMap<Store, List<OrderedItem>>() ;
-        for(OrderedItem orderedItem: listOfOrderedItems)
-        {
-            storeID = getIDOfShopWithCheapestItem(orderedItem.getSerialNumber());
-            store = storesSerialIDMap.get(storeID);
-            AvailableItemInStore item = store.getItemBySerialID(orderedItem.getSerialNumber());
-            if(item != null)
-            {
-                int pricePerUnit =  store.getItemBySerialID(orderedItem.getSerialNumber()).getPricePerUnit();
-                orderedItem.setPricePerUnit(pricePerUnit);
-                if(mapOfShopsWithCheapestItems.get(storeID) == null)
-                {
-                    mapOfShopsWithCheapestItems.put(store, new ArrayList<OrderedItem>());
-                }
-                mapOfShopsWithCheapestItems.get(store).add(orderedItem);
-            }
-        }
-        return mapOfShopsWithCheapestItems;
-    }
 
     //TODO
     public Double getTotalAmountOfSoledItem(Integer itemID)
@@ -368,6 +324,54 @@ public class BusinessLogic {
     public boolean checkIfItemExistsInStore(int storeID, int itemID)
     {
         return storesSerialIDMap.get(storeID).checkIfItemIdExists(itemID);
+    }
+
+
+    public int getIDOfShopWithCheapestItem(int itemSerialID)
+    {
+        final int MIN_PRICE_INITIALIZE = -1;
+        int minPrice=MIN_PRICE_INITIALIZE;
+        int storeSerialIDWithCheapestItem=0;
+        for (Map.Entry<Integer, Store> entry : storesSerialIDMap.entrySet())
+        {
+            int storeSerialId = entry.getKey();
+            Store store = entry.getValue();
+            AvailableItemInStore item = store.getItemBySerialID(itemSerialID);
+            if(item != null)
+            {
+                int itemPriceInStore = item.getPricePerUnit();
+                if(minPrice == MIN_PRICE_INITIALIZE || itemPriceInStore < minPrice)
+                {
+                    minPrice=itemPriceInStore;
+                    storeSerialIDWithCheapestItem = storeSerialId;
+                }
+            }
+        }
+        return storeSerialIDWithCheapestItem;
+    }
+
+    public HashMap<Store, List<OrderedItem>> getMapOfShopWithCheapestItemsFromSet(Set<OrderedItem> listOfOrderedItems)
+    {
+        Store store;
+        int storeID;
+        HashMap<Store, List<OrderedItem>> mapOfShopsWithCheapestItems = new HashMap<Store, List<OrderedItem>>() ;
+        for(OrderedItem orderedItem: listOfOrderedItems)
+        {
+            storeID = getIDOfShopWithCheapestItem(orderedItem.getSerialNumber());
+            store = storesSerialIDMap.get(storeID);
+            AvailableItemInStore item = store.getItemBySerialID(orderedItem.getSerialNumber());
+            if(item != null)
+            {
+                int pricePerUnit =  store.getItemBySerialID(orderedItem.getSerialNumber()).getPricePerUnit();
+                orderedItem.setPricePerUnit(pricePerUnit);
+                if(mapOfShopsWithCheapestItems.get(storeID) == null)
+                {
+                    mapOfShopsWithCheapestItems.put(store, new ArrayList<OrderedItem>());
+                }
+                mapOfShopsWithCheapestItems.get(store).add(orderedItem);
+            }
+        }
+        return mapOfShopsWithCheapestItems;
     }
 
 
