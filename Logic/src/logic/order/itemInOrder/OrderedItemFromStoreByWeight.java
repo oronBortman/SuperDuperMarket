@@ -1,14 +1,21 @@
 package logic.order.itemInOrder;
 
+import logic.AvailableItemInStore;
+
 import java.util.Objects;
 
-public class OrderedItemByWeight extends OrderedItem{
+public class OrderedItemFromStoreByWeight extends OrderedItemFromStore {
     private double amountOfItemOrderedByWeight;
     private static final int amountOfItemOrderedByUnitsInItemWithWeight = 1;
-    public OrderedItemByWeight(Integer serialNumber, String name, int price, double amountOfItemOrderedByWeight) {
+    public OrderedItemFromStoreByWeight(Integer serialNumber, String name, int price, double amountOfItemOrderedByWeight) {
         super(serialNumber, name, TypeOfMeasure.Weight, price, amountOfItemOrderedByUnitsInItemWithWeight);
         this.amountOfItemOrderedByWeight = amountOfItemOrderedByWeight;
 
+    }
+
+    public OrderedItemFromStoreByWeight(AvailableItemInStore availableItemInStore, double amountOfItemOrderedByWeight) {
+        super(availableItemInStore, amountOfItemOrderedByUnitsInItemWithWeight);
+        this.amountOfItemOrderedByWeight = amountOfItemOrderedByWeight;
     }
 
     @Override
@@ -16,7 +23,7 @@ public class OrderedItemByWeight extends OrderedItem{
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        OrderedItemByWeight that = (OrderedItemByWeight) o;
+        OrderedItemFromStoreByWeight that = (OrderedItemFromStoreByWeight) o;
         return Double.compare(that.amountOfItemOrderedByWeight, amountOfItemOrderedByWeight) == 0;
     }
 
@@ -25,20 +32,20 @@ public class OrderedItemByWeight extends OrderedItem{
         return Objects.hash(super.hashCode(), amountOfItemOrderedByWeight);
     }
 
-    OrderedItemByWeight(Integer serialNumber, String name, double amountOfItemOrderedByWeight) {
+    OrderedItemFromStoreByWeight(Integer serialNumber, String name, double amountOfItemOrderedByWeight) {
         super(serialNumber, name, TypeOfMeasure.Weight, amountOfItemOrderedByUnitsInItemWithWeight);
         this.amountOfItemOrderedByWeight = amountOfItemOrderedByWeight;
 
     }
 
     @Override
-    public double getTotalPriceOfItemOrderedByTypeOfMeasure()
+    public Double getTotalPriceOfItemOrderedByTypeOfMeasure()
     {
         return amountOfItemOrderedByWeight * getPricePerUnit();
     }
 
     @Override
-    public double getTotalAmountOfItemOrderedByTypeOfMeasure()
+    public Double getTotalAmountOfItemOrderedByTypeOfMeasure()
     {
         return amountOfItemOrderedByWeight;
     }

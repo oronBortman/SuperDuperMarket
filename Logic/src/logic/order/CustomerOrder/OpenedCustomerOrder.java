@@ -6,9 +6,8 @@ import logic.order.Order;
 import logic.order.StoreOrder.ClosedStoreOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
 
 public class OpenedCustomerOrder extends Order implements OpenedOrder {
 
@@ -17,27 +16,43 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
 
     public OpenedCustomerOrder(Date date, SDMLocation customerLocation, boolean isOrderStatic) {
         super(date, isOrderStatic);
+        this.customerLocation = customerLocation;
         openedStoresOrderMap = new HashMap<Integer, OpenedStoreOrder>();
     }
 
 
-    @Override
-    public double calcTotalDeliveryPrice(SDMLocation inputLocation) {
-        return 0;
+    public Map<Integer, OpenedStoreOrder> getOpenedStoresOrderMap() {
+        return openedStoresOrderMap;
+    }
+
+    public List<OpenedStoreOrder> getListOfOpenedStoreOrder()
+    {
+        ArrayList<OpenedStoreOrder> listOfValues
+                = openedStoresOrderMap.values().stream().collect(
+                Collectors.toCollection(ArrayList::new));
+        return listOfValues;
+    }
+    public SDMLocation getCustomerLocation() {
+        return customerLocation;
     }
 
     @Override
-    public double calcTotalPriceOfOrder(SDMLocation inputLocation) {
-        return 0;
+    public Double calcTotalDeliveryPrice(SDMLocation inputLocation) {
+        return 0.0;
     }
 
     @Override
-    public double calcTotalPriceOfItems() {
-        return 0;
+    public Double calcTotalPriceOfOrder(SDMLocation inputLocation) {
+        return 0.0;
     }
 
     @Override
-    public int calcTotalAmountOfItemsByUnit() {
+    public Double calcTotalPriceOfItems() {
+        return 0.0;
+    }
+
+    @Override
+    public Integer calcTotalAmountOfItemsByUnit() {
         return 0;
     }
 
@@ -47,7 +62,7 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
     }
 
     @Override
-    public int calcTotalAmountOfItemsType() {
+    public Integer calcTotalAmountOfItemsType() {
         return 0;
     }
 
@@ -63,5 +78,10 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
         }
 
         return new ClosedCustomerOrder(getDate(), closedStoresOrderMapByStoreSerialID, isOrderStatic());
+    }
+
+    public void addStoreOrder(OpenedStoreOrder openedStoreOrder)
+    {
+        openedStoresOrderMap.put(openedStoreOrder.getStoreUsed().getSerialNumber(), openedStoreOrder);
     }
 }

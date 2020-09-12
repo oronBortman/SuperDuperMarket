@@ -83,7 +83,7 @@ public class RemoveItemFromStoreContoller {
         commonUI.GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
         if(comboBoxStores.getValue() != null)
         {
-            final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
+            final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getAvailableItemsList());
             comboBoxItems.setItems(items);
             isStoreSelected.setValue(true);
         }
@@ -125,7 +125,7 @@ public class RemoveItemFromStoreContoller {
             else
             {
                 storeFromCombox.removeItemFromStore(comboBoxItems.getValue().getSerialNumber());
-                final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
+                final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getAvailableItemsList());
                 comboBoxItems.setItems(items);
                 isItemSelected.setValue(false);
                 statusAfterClickedOnButton.setText("Item deleted succesfully");

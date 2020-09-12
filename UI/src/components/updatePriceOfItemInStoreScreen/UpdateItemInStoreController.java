@@ -85,7 +85,7 @@ public class UpdateItemInStoreController {
     void chooseStore(ActionEvent event){
         GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
         isStoreSelected.setValue(true);
-        final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
+        final ObservableList<AvailableItemInStore> items = FXCollections.observableList(comboBoxStores.getValue().getAvailableItemsList());
         comboBoxItems.setItems(items);
     }
 

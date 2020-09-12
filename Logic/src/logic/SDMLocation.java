@@ -61,7 +61,7 @@ public class SDMLocation {
         return y - coordinateYOfOtherLocation;
     }
 
-    public double getAirDistanceToOtherLocation(SDMLocation secondLocation)
+    public Double getAirDistanceToOtherLocation(SDMLocation secondLocation)
     {
         int pow = 2;
         int differenceBetweenXCoordinates = differenceBetweenXCoordinates(secondLocation.getX());

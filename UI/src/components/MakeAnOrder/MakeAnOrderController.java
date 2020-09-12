@@ -1,4 +1,6 @@
 package components.MakeAnOrder;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.BooleanBinding;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,6 +10,7 @@ import javafx.scene.control.*;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import javafx.util.StringConverter;
+import logic.AvailableItemInStore;
 import logic.BusinessLogic;
 import logic.Customer;
 import logic.Store;
@@ -24,6 +27,7 @@ public class MakeAnOrderController {
     @FXML ComboBox<Customer> comboBoxCustomer;
     @FXML Button nextButton;
     @FXML BorderPane borderPane;
+    @FXML ComboBox<Store> comboBoxStore;
     BusinessLogic businessLogic;
     SimpleBooleanProperty isCustomerSelected;
     SimpleBooleanProperty isDatePickerSelected;
@@ -69,6 +73,30 @@ public class MakeAnOrderController {
         });
     }
 
+    @FXML
+    public void setComboBoxStore()
+    {
+        comboBoxStore.setConverter(new StringConverter<Store>() {
+            @Override
+            public String toString(Store object) {
+                return "Serial Number:" + object.getSerialNumber() + ", Name:" +object.getName();
+            }
+
+            @Override
+            public Store fromString(String string) {
+                return comboBoxStore.getItems().stream().filter(ap ->
+                        ap.getName().equals(string)).findFirst().orElse(null);
+            }
+        });
+
+        comboBoxCustomer.valueProperty().addListener((obs, oldval, newval) -> {
+            if(newval != null)
+            {
+
+            }
+        });
+    }
+
     public void setStage(Stage stage)
     {
         this.stage = stage;
@@ -77,11 +105,26 @@ public class MakeAnOrderController {
     @FXML
     private void initialize() {
         setComboBoxCustomer();
-      /* comboBoxStores.disableProperty().bind(
+        setComboBoxStore();
+
+                // array of thing to observe to recompute binding - this gives the array
+
+       /*comboBoxStores.disableProperty().bind(
                 Bindings.or(
                         isOrderTypeSelected.not(),
                         comboBoxOrderType.valueProperty().isEqualTo(DYNAMIC_ORDER)));*/
         datePicker.disableProperty().bind(isCustomerSelected.not());
+        RadioButtonDynamic.disableProperty().bind(isDatePickerSelected.not());
+        RadioButtonStatic.disableProperty().bind(isDatePickerSelected.not());
+        comboBoxStore.visibleProperty().bind(
+                Bindings.and(
+                        isStaticSelected,
+                        isDynamicSelected.not()));
+        nextButton.disableProperty().bind(
+                Bindings.and(
+                        isStoreSelected.not(),
+                        isDynamicSelected.not()
+                ));
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -89,6 +132,7 @@ public class MakeAnOrderController {
         final ObservableList<Store> stores = FXCollections.observableList(businessLogic.getStoresList());
         final ObservableList<Customer> customer = FXCollections.observableList(businessLogic.getUsersList());
         comboBoxCustomer.setItems(customer);
+        comboBoxStore.setItems(stores);
         //TODO
         //Change xml loading
     }
@@ -96,17 +140,25 @@ public class MakeAnOrderController {
     public MakeAnOrderController()
     {
         isStoreSelected = new SimpleBooleanProperty(false);
-        //isItemSelected = new SimpleBooleanProperty(false);
         isDatePickerSelected = new SimpleBooleanProperty(false);
         isCustomerSelected = new SimpleBooleanProperty(false);
         isNextClicked = new SimpleBooleanProperty(false);
+        isStaticSelected = new SimpleBooleanProperty(false);
+        isDynamicSelected = new SimpleBooleanProperty(false);
         isStaticSelected = new SimpleBooleanProperty(false);
 
 
     }
 
     public void chooseDate(ActionEvent actionEvent) {
-        isDatePickerSelected.set(true);
+        if(datePicker.getValue() == null)
+        {
+            isDynamicSelected.set(false);
+        }
+        else
+        {
+            isDatePickerSelected.set(true);
+        }
     }
 
 
@@ -116,18 +168,31 @@ public class MakeAnOrderController {
     }
 
     public void chooseDynamic(ActionEvent actionEvent) {
-
+        if(RadioButtonDynamic.isSelected())
+        {
+            isDatePickerSelected.set(true);
+            isDynamicSelected.set(true);
+        }
+        else
+        {
+            isDynamicSelected.set(false);
+        }
     }
 
     public void chooseStatic(ActionEvent actionEvent) {
-        isStaticSelected.set(true);
+        if(RadioButtonStatic.isSelected())
+        {
+            isStaticSelected.set(true);
+        }
+        else
+        {
+            isStaticSelected.set(false);
+        }
     }
 
     public void clickOnNextButton(ActionEvent actionEvent) throws IOException {
         isNextClicked.set(true);
         isNextClickedConsumer.accept(true);
-        //System.out.println(customer.getName());
-        //System.out.println("Order is statc:" + isOrderStatic);
     }
 
     public Customer getCustomer()
@@ -138,5 +203,16 @@ public class MakeAnOrderController {
     public boolean getStaticBoolean()
     {
         return isStaticSelected.getValue();
+    }
+
+    public Store getStore()
+    {
+        System.out.println("Inside getStore");
+        System.out.println(comboBoxStore.getValue().getName());
+        return comboBoxStore.getValue();
+    }
+
+    public void chooseStore(ActionEvent actionEvent) {
+        isStoreSelected.setValue(true);
     }
 }

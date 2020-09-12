@@ -19,6 +19,14 @@ public class AvailableItemInStore extends Item {
         this.pricePerUnit = new SimpleIntegerProperty(price);
     }
 
+    public AvailableItemInStore(Item item) {
+        super(item);
+    }
+
+    public AvailableItemInStore(AvailableItemInStore availableItemInStore) {
+        super(availableItemInStore);
+        this.pricePerUnit = availableItemInStore.pricePerUnit;
+    }
 
     public int getPricePerUnit()
     {

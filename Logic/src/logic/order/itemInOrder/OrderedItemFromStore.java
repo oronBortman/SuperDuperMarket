@@ -5,32 +5,42 @@ import logic.AvailableItemInStore;
 
 import java.util.Objects;
 
-public abstract class OrderedItem extends AvailableItemInStore {
+public abstract class OrderedItemFromStore extends AvailableItemInStore {
     private int amountOfItemOrderedByUnits;
 
     /*logic.Orders.orderItems.OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {
         super(serialNumber, name, purchaseCategory, price);
     }*/
 
-    public OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price, int amountOfItemOrderedByUnits) {
+    public OrderedItemFromStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price, int amountOfItemOrderedByUnits) {
         super(serialNumber, name, purchaseCategory, price);
         this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
 
-    public OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int amountOfItemOrderedByUnits) {
+    public OrderedItemFromStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int amountOfItemOrderedByUnits) {
         super(serialNumber, name, purchaseCategory);
         this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
 
-    public abstract double getTotalPriceOfItemOrderedByTypeOfMeasure();
-    public abstract double getTotalAmountOfItemOrderedByTypeOfMeasure();
+    public OrderedItemFromStore(Item item, int amountOfItemOrderedByUnits) {
+        super(item);
+        this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
+    }
 
-    public int getAmountOfItemOrderedByUnits()
+    public OrderedItemFromStore(AvailableItemInStore availableItemInStore, int amountOfItemOrderedByUnits) {
+        super(availableItemInStore);
+        this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
+    }
+
+    public abstract Double getTotalPriceOfItemOrderedByTypeOfMeasure();
+    public abstract Double getTotalAmountOfItemOrderedByTypeOfMeasure();
+
+    public Integer getAmountOfItemOrderedByUnits()
     {
         return amountOfItemOrderedByUnits;
     }
 
-    public int getTotalPriceOfItemOrderedByUnits()
+    public double getTotalPriceOfItemOrderedByUnits()
     {
         return amountOfItemOrderedByUnits * getPricePerUnit();
     }
@@ -38,8 +48,8 @@ public abstract class OrderedItem extends AvailableItemInStore {
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof OrderedItem)) return false;
-        OrderedItem that = (OrderedItem) o;
+        if (!(o instanceof OrderedItemFromStore)) return false;
+        OrderedItemFromStore that = (OrderedItemFromStore) o;
         return amountOfItemOrderedByUnits == that.amountOfItemOrderedByUnits;
     }
 

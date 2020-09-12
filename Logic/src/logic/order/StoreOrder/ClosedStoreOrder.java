@@ -2,7 +2,7 @@ package logic.order.StoreOrder;
 
 import logic.BusinessLogic;
 import logic.order.ClosedOrder;
-import logic.order.itemInOrder.OrderedItem;
+import logic.order.itemInOrder.OrderedItemFromStore;
 import logic.Store;
 
 import java.util.Date;
@@ -18,7 +18,7 @@ public class ClosedStoreOrder extends StoreOrder implements ClosedOrder {
     private double totalPriceOfItems;
 
 
-    public ClosedStoreOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed, Map<Integer, OrderedItem> orderedItems, Date date, boolean isOrderStatic) {
+    public ClosedStoreOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed, Map<Integer, OrderedItemFromStore> orderedItems, Date date, boolean isOrderStatic) {
         super(date, isOrderStatic);
         this.serialNumber = BusinessLogic.getCurrentOrderSerialIDInSDK();
         this.deliveryPrice = deliveryPrice;

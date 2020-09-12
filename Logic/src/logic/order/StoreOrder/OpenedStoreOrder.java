@@ -3,10 +3,9 @@ package logic.order.StoreOrder;
 import logic.SDMLocation;
 import logic.Store;
 import logic.order.OpenedOrder;
-import logic.order.itemInOrder.OrderedItem;
+import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.util.Date;
-import java.util.Map;
 
 public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
 
@@ -22,40 +21,42 @@ public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
     }
 
     @Override
-    public double calcTotalDeliveryPrice(SDMLocation inputLocation) {
-        //TODO
-        return 0;
-    }
-
-    public void addItemToItemsMapOfOrder(OrderedItem orderedItem)
-    {
-        getOrderedItems().put(orderedItem.getSerialNumber(), orderedItem);
-    }
-
-    public double calcDeliverPriceFromStore(SDMLocation inputLocation, Store store) {
-        SDMLocation storeLocation = store.getLocationOfShop();
-        int PPK = store.getPPK();
+    public Double calcTotalDeliveryPrice(SDMLocation inputLocation) {
+        SDMLocation storeLocation = storeUsed.getLocationOfShop();
+        int PPK = storeUsed.getPPK();
         double distanceBetweenTwoLocations = inputLocation.getAirDistanceToOtherLocation(storeLocation);
         return(PPK * distanceBetweenTwoLocations);
     }
 
+    public void addItemToItemsMapOfOrder(OrderedItemFromStore orderedItemFromStore)
+    {
+        getOrderedItems().put(orderedItemFromStore.getSerialNumber(), orderedItemFromStore);
+    }
+
+    /*public Double calcDeliverPriceFromStore(SDMLocation inputLocation, Store store) {
+        SDMLocation storeLocation = store.getLocationOfShop();
+        int PPK = store.getPPK();
+        double distanceBetweenTwoLocations = inputLocation.getAirDistanceToOtherLocation(storeLocation);
+        return(PPK * distanceBetweenTwoLocations);
+    }*/
+
 
     @Override
-    public double calcTotalPriceOfOrder(SDMLocation inputLocation)
+    public Double calcTotalPriceOfOrder(SDMLocation inputLocation)
     {
         return calcTotalPriceOfItems() + calcTotalDeliveryPrice(inputLocation);
     }
 
     @Override
-    public double calcTotalPriceOfItems()
+    public Double calcTotalPriceOfItems()
     {
-        return getOrderedItems().values().stream().mapToDouble(OrderedItem::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
+        return getOrderedItems().values().stream().mapToDouble(OrderedItemFromStore::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
     }
 
     @Override
-    public int calcTotalAmountOfItemsByUnit()
+    public Integer calcTotalAmountOfItemsByUnit()
     {
-        return getOrderedItems().values().stream().mapToInt(OrderedItem::getAmountOfItemOrderedByUnits).sum();
+        return new Integer(getOrderedItems().values().stream().mapToInt(OrderedItemFromStore::getAmountOfItemOrderedByUnits).sum());
     }
 
     /*public logic.Orders.orderItems.OrderedItem getItemInOrder(int serialIDOfItem)
@@ -65,7 +66,7 @@ public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
 
 
 
-    public int calcTotalAmountOfItemsType()
+    public Integer calcTotalAmountOfItemsType()
     {
         return getOrderedItems().size();
     }
@@ -73,11 +74,11 @@ public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
 
     public ClosedStoreOrder closeOrder(SDMLocation location)
     {
-        double totalPriceOfItems = calcTotalPriceOfItems();
-        double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice(location);
-        double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
-        int totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
-        int totalAmountOfItemsType = calcTotalAmountOfItemsType();
+        Double totalPriceOfItems = calcTotalPriceOfItems();
+        Double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice(location);
+        Double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
+        Integer totalAmountOfItemsByUnit = calcTotalAmountOfItemsByUnit();
+        Integer totalAmountOfItemsType = calcTotalAmountOfItemsType();
         ClosedStoreOrder closedStoreOrder = new ClosedStoreOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, storeUsed,getOrderedItems(), getDate(), isOrderStatic());
         getStoreUsed().addClosedOrderToHistory(closedStoreOrder);
         return closedStoreOrder;

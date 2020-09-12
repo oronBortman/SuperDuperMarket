@@ -2,7 +2,7 @@ package logic.order.StoreOrder;
 
 import logic.Store;
 import logic.order.Order;
-import logic.order.itemInOrder.OrderedItem;
+import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.util.Date;
 import java.util.HashMap;
@@ -11,19 +11,19 @@ import java.util.Map;
 public class StoreOrder extends Order {
 
     Store storeUsed;
-    private Map<Integer, OrderedItem> orderedItems;
+    private Map<Integer, OrderedItemFromStore> orderedItems;
 
     public StoreOrder(Store store, Date date, boolean isOrderStatic)
     {
         super(date, isOrderStatic);
         this.storeUsed = store;
-        orderedItems = new HashMap<Integer, OrderedItem>();
+        orderedItems = new HashMap<Integer, OrderedItemFromStore>();
     }
 
     public StoreOrder(Date date, boolean isOrderStatic)
     {
         super(date, isOrderStatic);
-        orderedItems = new HashMap<Integer, OrderedItem>();
+        orderedItems = new HashMap<Integer, OrderedItemFromStore>();
     }
     @Override
     public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem)
@@ -36,12 +36,12 @@ public class StoreOrder extends Order {
         return itemAlreadyExistsInOrder;
     }
 
-    public Map<Integer, OrderedItem> getOrderedItems()
+    public Map<Integer, OrderedItemFromStore> getOrderedItems()
     {
         return orderedItems;
     }
 
-    public OrderedItem getItemInOrder(int serialIDOfItem) {
+    public OrderedItemFromStore getItemInOrder(int serialIDOfItem) {
         return getOrderedItems().get(serialIDOfItem);
     }
 

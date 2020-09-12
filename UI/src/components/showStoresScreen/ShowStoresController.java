@@ -89,7 +89,7 @@ public class ShowStoresController {
 
     private void setItemsTable()
     {
-        final ObservableList<AvailableItemInStore> dataOfItems = FXCollections.observableList(comboBoxStores.getValue().getItemsList());
+        final ObservableList<AvailableItemInStore> dataOfItems = FXCollections.observableList(comboBoxStores.getValue().getAvailableItemsList());
 
         ItemSerialNumberCol.setCellValueFactory(new PropertyValueFactory<AvailableItemInStore, Integer>("serialNumber"));
         NameOfItemCol.setCellValueFactory(new PropertyValueFactory<AvailableItemInStore, String>("name"));

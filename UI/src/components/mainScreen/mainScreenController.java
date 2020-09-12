@@ -3,8 +3,9 @@ package components.mainScreen;
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
 import components.MakeAnOrder.MakeAnOrderController;
 import components.addItemToStoreScreen.AddItemToStoreContoller;
-import components.chooseAnItemForDynamicOrder.ChooseItemsForDynamicOrderController;
+import components.chooseAnItemForOrder.ChooseItemsForOrderController;
 import components.removeItemFromStoreScreen.RemoveItemFromStoreContoller;
+import components.showStoreStatusInDynamicOrder.ShowStoresStatusInDynamicOrderController;
 import components.showStoresScreen.*;
 import components.showItemsScreen.*;
 import commonUI.*;
@@ -19,10 +20,19 @@ import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import logic.*;
+import logic.order.CustomerOrder.OpenedCustomerOrder;
+import logic.order.StoreOrder.OpenedStoreOrder;
+import logic.order.itemInOrder.OrderedItemFromStore;
+import logic.order.itemInOrder.OrderedItemFromStoreByQuantity;
+import logic.order.itemInOrder.OrderedItemFromStoreByWeight;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.function.Consumer;
 
 public class mainScreenController {
@@ -77,7 +87,18 @@ public class mainScreenController {
                         {
                             Customer customer = makeAnOrderController.getCustomer();
                             boolean isOrderStatic = makeAnOrderController.getStaticBoolean();
-                            chooseItemsForDynamicOrder(customer, isOrderStatic);
+                            List<Item> itemsList;
+                            if(isOrderStatic)
+                            {
+                                Store store = makeAnOrderController.getStore();
+                                itemsList = store.getItemsList();
+                                chooseItemsForStaticOrder(customer, store, isOrderStatic, itemsList);
+                            }
+                            else
+                            {
+                                itemsList = businessLogic.getItemsList();
+                                chooseItemsForDynamicOrder(customer, isOrderStatic, itemsList);
+                            }
                         }
 
                     } catch (IOException e) {
@@ -91,17 +112,100 @@ public class mainScreenController {
 
     }
 
-    public void chooseItemsForDynamicOrder(Customer customer, Boolean isOrderStatic) throws IOException {
-        System.out.println(customer.getName());
-        System.out.println("Order is static:" + isOrderStatic);
+    public void chooseItemsForStaticOrder(Customer customer, Store store, Boolean isOrderStatic, List<Item> itemsList) throws IOException {
+
         FXMLLoader loader = new FXMLLoader();
-        URL chooseItemsForDynamicOrderFXML = getClass().getResource(SuperDuperMarketConstants.CHOOSE_ITEM_FOR_DYNAMIC_ORDER_RESOURCE_IDENTIFEIR);
-        loader.setLocation(chooseItemsForDynamicOrderFXML);
+        URL loaderFXML = getClass().getResource(SuperDuperMarketConstants.CHOOSE_ITEM_FOR_ORDER_RESOURCE_IDENTIFEIR);
+        loader.setLocation(loaderFXML);
         ScrollPane pane = loader.load();
-        ChooseItemsForDynamicOrderController chooseItemsForDynamicOrderController = loader.getController();
-        chooseItemsForDynamicOrderController.setBusinessLogic(businessLogic);
+        ChooseItemsForOrderController chooseItemsForOrderController = loader.getController();
+        chooseItemsForOrderController.setOrderStatic(isOrderStatic);
+        chooseItemsForOrderController.setItemsList(itemsList);
+        chooseItemsForOrderController.setBusinessLogic(businessLogic);
+        Date date = new Date();
+
+        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    if(chooseItemsForOrderController != null)
+                    {
+                        Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndWeight();
+                        Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndQuantity();
+                        OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(customer, date, store, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
+                        for( OpenedStoreOrder openedStoreOrder : openedCustomerOrder.getListOfOpenedStoreOrder())
+                        {
+                            for(Map.Entry<Integer, OrderedItemFromStore> entry : openedStoreOrder.getOrderedItems().entrySet())
+                            {
+                                System.out.println(entry.getValue().getName() + " " + entry.getValue().getPricePerUnit() + " " +  entry.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
+                            }
+                        }
+                    }
+
+                }
+            }
+        };
+        chooseItemsForOrderController.setProperties(chooseNext);
         System.out.println("Clicked on next");
+
         mainBorderPane.setCenter(pane);
+
+    }
+
+    public void chooseItemsForDynamicOrder(Customer customer, Boolean isOrderStatic, List<Item> itemsList) throws IOException {
+        //ChooseItemsForOrderController chooseItemsForOrderController = getChooseItemsForOrderController(customer,itemsList);
+
+        FXMLLoader loader = new FXMLLoader();
+        URL loaderFXML = getClass().getResource(SuperDuperMarketConstants.CHOOSE_ITEM_FOR_ORDER_RESOURCE_IDENTIFEIR);
+        loader.setLocation(loaderFXML);
+        ScrollPane pane = loader.load();
+        ChooseItemsForOrderController chooseItemsForOrderController = loader.getController();
+        chooseItemsForOrderController.setItemsList(itemsList);
+        chooseItemsForOrderController.setBusinessLogic(businessLogic);
+
+
+        Date date = new Date();
+        chooseItemsForOrderController.setOrderStatic(isOrderStatic);
+        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    if(chooseItemsForOrderController != null)
+                    {
+                        Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndWeight();
+                        Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndQuantity();
+
+                        OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedDynamicCustomerOrder(customer, date, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
+                        if(openedCustomerOrder != null)
+                        {
+                            try {
+                                showStoresStatusInDynamicOrder(openedCustomerOrder);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
+                    }
+                }
+            }
+        };
+        chooseItemsForOrderController.setProperties(chooseNext);
+        System.out.println("Clicked on next");
+
+        mainBorderPane.setCenter(pane);
+    }
+
+    @FXML
+    void showStoresStatusInDynamicOrder(OpenedCustomerOrder openedCustomerOrder) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        URL showStoresStatusInDynamicOrderFXML = getClass().getResource(SuperDuperMarketConstants.SHOW_STORES_STATUS_IN_DYNAMIC_ORDER);
+        loader.setLocation(showStoresStatusInDynamicOrderFXML);
+        ScrollPane gridPane = loader.load();
+        ShowStoresStatusInDynamicOrderController showStoresStatusInDynamicOrderController = loader.getController();
+        showStoresStatusInDynamicOrderController.setOpenedCustomerOrder(openedCustomerOrder);
+        showStoresStatusInDynamicOrderController.setBusinessLogic(businessLogic);
+        mainBorderPane.setCenter(gridPane);
     }
 
     @FXML

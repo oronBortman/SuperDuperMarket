@@ -99,10 +99,21 @@ public class Store {
         return !discountNameDMap.containsKey(nameOfDiscount);
     }
 
-    public List<AvailableItemInStore> getItemsList()
+    public List<AvailableItemInStore> getAvailableItemsList()
     {
         return new ArrayList<AvailableItemInStore>(ItemsSerialIDMap.values());
     }
+
+    public List<Item> getItemsList()
+    {
+        List<Item> list = new ArrayList<Item>();
+        for(AvailableItemInStore itemInStore : ItemsSerialIDMap.values())
+        {
+            list.add(itemInStore);
+        }
+        return list;
+    }
+
 
     private void addItemToShop(AvailableItemInStore availableItemInStore)
     {
