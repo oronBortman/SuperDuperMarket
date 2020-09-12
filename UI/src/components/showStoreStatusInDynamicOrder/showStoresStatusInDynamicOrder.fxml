@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.showStoreStatusInDynamicOrder.ShowStoresStatusInDynamicOrderController">
+   <content>
+      <BorderPane>
+         <center>
+            <TableView fx:id="listOfItemsTable" prefHeight="200.0" prefWidth="1250.0" BorderPane.alignment="CENTER">
+               <columns>
+                  <TableColumn id="StoreSerialNumberCol" fx:id="StoreSerialNumberCol" prefWidth="99.0" text="Serial Number" />
+                  <TableColumn id="NameOfStoreCol" fx:id="NameOfStoreCol" prefWidth="99.0" text="Name" />
+                  <TableColumn id="TypeOfMeasureCol" fx:id="locationCol" prefWidth="118.0" text="Location" />
+                  <TableColumn id="AmountOfStoresSellesItemCol" fx:id="DistanceFromCustomerCol" prefWidth="195.0" text="Distance from customer" />
+                  <TableColumn id="AveragePriceCol" fx:id="PPKCol" minWidth="40.0" prefWidth="123.0" text="PPK" />
+                  <TableColumn id="AmountSoledFromItemCol" fx:id="deliveryCostCol" minWidth="40.0" prefWidth="200.0" text="Delivery Cost" />
+                  <TableColumn id="AmountSoledFromItemCol" fx:id="amountOfItemsPurchasedCol" minWidth="40.0" prefWidth="200.0" text="Amount of items being purchased" />
+                  <TableColumn id="AmountSoledFromItemCol" fx:id="totalPriceOfItemsCol" minWidth="40.0" prefWidth="200.0" text="Total price of items being selled" />
+               </columns>
+            </TableView>
+         </center>
+         <top>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Label fx:id="listOfItems" text="List Of Stores">
+                     <font>
+                        <Font size="18.0" />
+                     </font>
+                  </Label>
+               </children>
+            </HBox>
+         </top>
+         <padding>
+            <Insets bottom="30.0" left="30.0" right="30.0" />
+         </padding>
+      </BorderPane>
+   </content>
+</ScrollPane>
