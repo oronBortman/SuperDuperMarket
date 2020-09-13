@@ -8,13 +8,13 @@ import java.util.List;
 
 public class ThenYouGetSDM {
 
-    private List<Offer> sdmOfferList;
+    private List<Offer> offerList;
     private String operator;
 
     public ThenYouGetSDM(ThenYouGet thenYouGet)
     {
         this.operator = thenYouGet.getOperator();
-        sdmOfferList = new ArrayList<Offer>();
+        offerList = new ArrayList<Offer>();
     }
 
     public void addOfferToListFromSDMOffer(SDMOffer sdmOffer)
@@ -22,8 +22,14 @@ public class ThenYouGetSDM {
         System.out.println("Inside addOfferToListFromSDMOffer");
 
         Offer sdmOfferToAdd = new Offer(sdmOffer);
-        sdmOfferList.add(sdmOfferToAdd);
+        offerList.add(sdmOfferToAdd);
     }
 
+    public List<Offer> getOfferList() {
+        return offerList;
+    }
 
+    public String getOperator() {
+        return operator;
+    }
 }

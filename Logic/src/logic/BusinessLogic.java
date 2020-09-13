@@ -283,6 +283,11 @@ public class BusinessLogic {
         store.addDiscountToStoreFromXML(sdmDiscount);
     }
 
+    public void getAllDiscountsFromOpenedCustomerOrder(OpenedCustomerOrder openedCustomerOrder)
+    {
+
+    }
+
     public boolean checkIfItemExistsInStores(int itemSerialID)
     {
         boolean itemIsBeingSelled=false;

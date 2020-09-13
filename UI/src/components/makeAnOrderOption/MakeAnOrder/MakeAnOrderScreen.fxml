@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="600.0" prefWidth="1050.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController">
+   <content>
+      <BorderPane fx:id="borderPane" minHeight="200.0" prefHeight="600.0" prefWidth="1050.0">
+         <top>
+            <HBox alignment="BOTTOM_CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="96.0" prefWidth="540.0">
+                     <children>
+                        <Separator layoutX="170.0" layoutY="68.0" prefHeight="36.0" prefWidth="200.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane minHeight="100.0" prefHeight="208.0" prefWidth="568.0">
+                     <children>
+                        <ComboBox fx:id="comboBoxCustomer" layoutX="31.0" layoutY="44.0" onAction="#chooseCustomer" prefWidth="150.0" promptText="Choose Customer" />
+                        <RadioButton fx:id="RadioButtonStatic" layoutX="121.0" layoutY="103.0" mnemonicParsing="false" onAction="#chooseStatic" text="Static" />
+                        <RadioButton fx:id="RadioButtonDynamic" layoutX="211.0" layoutY="103.0" mnemonicParsing="false" onAction="#chooseDynamic" text="Dynamic" />
+                        <Label layoutX="31.0" layoutY="104.0" text="Order type" />
+                        <DatePicker fx:id="datePicker" layoutX="365.0" layoutY="44.0" onAction="#chooseDate" />
+                        <Label layoutX="429.0" layoutY="14.0" text="Pick Date" />
+                        <ComboBox fx:id="comboBoxStore" layoutX="31.0" layoutY="145.0" onAction="#chooseStore" prefWidth="150.0" promptText="Choose Store" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </center>
+         <bottom>
+            <HBox alignment="BOTTOM_RIGHT" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+               <children>
+                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#clickOnNextButton" prefWidth="100.0" text="Next" />
+               </children>
+               <padding>
+                  <Insets bottom="30.0" right="30.0" />
+               </padding>
+            </HBox>
+         </bottom>
+      </BorderPane>
+   </content>
+</ScrollPane>

@@ -2,25 +2,24 @@ package logic;
 
 import exceptions.DuplicateDiscountNameException;
 import exceptions.ItemIDNotExistInAStoreException;
-import exceptions.ItemNotExistInStoresException;
-import javafx.beans.property.SimpleIntegerProperty;
-import javafx.beans.property.SimpleStringProperty;
 import jaxb.schema.generated.*;
 import logic.discount.Discount;
-import logic.discount.Offer;
+import logic.discount.IfYouBuySDM;
 import logic.discount.ThenYouGetSDM;
 import logic.order.ClosedOrder;
 import logic.order.GeneralMethods;
 import logic.order.StoreOrder.ClosedStoreOrder;
+import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class Store {
     private Integer serialNumber;
     private String name;
     private Map<Integer, AvailableItemInStore> ItemsSerialIDMap;
     private Map<Integer, ClosedStoreOrder> ordersSerialIDMap;
-    private Map<Integer, Discount> discountNameDMap;
+    private Map<String, Discount> discountNameDMap;
 
     private Integer PPK;
     private SDMLocation SDMLocationOfShop;
@@ -29,7 +28,7 @@ public class Store {
     {
         ItemsSerialIDMap = new HashMap<Integer, AvailableItemInStore>();
         ordersSerialIDMap = new HashMap<Integer, ClosedStoreOrder>();
-        discountNameDMap = new HashMap<Integer, Discount>();
+        discountNameDMap = new HashMap<String, Discount>();
 
         this.serialNumber = serialNumber;
         this.name = name;
@@ -41,7 +40,7 @@ public class Store {
     {
         ItemsSerialIDMap = new HashMap<Integer, AvailableItemInStore>();
         ordersSerialIDMap = new HashMap<Integer, ClosedStoreOrder>();
-        discountNameDMap = new HashMap<Integer, Discount>();
+        discountNameDMap = new HashMap<String, Discount>();
 
         this.serialNumber = shop.getId();
         this.name = shop.getName();
@@ -50,29 +49,34 @@ public class Store {
         this.SDMLocationOfShop = location;
     }
 
-    public void addDiscountToStoreFromXML(SDMDiscount discount) throws DuplicateDiscountNameException, ItemIDNotExistInAStoreException {
-        IfYouBuy ifYouBuySDM = discount.getIfYouBuy();
-        String discountName = discount.getName();
-        ThenYouGet thanYouGetS = discount.getThenYouGet();
+    public void addDiscountToStoreFromXML(SDMDiscount discountFromXML) throws DuplicateDiscountNameException, ItemIDNotExistInAStoreException {
+        IfYouBuy ifYouBuy = discountFromXML.getIfYouBuy();
+        String discountName = discountFromXML.getName();
+        ThenYouGet thanYouGet = discountFromXML.getThenYouGet();
         System.out.println("inside addDiscountToStoreFromXML");
         if(checkIfDiscountHasUniqueName(discountName) == false)
         {
             throw new DuplicateDiscountNameException(discountName, name);
         }
-        else if(checkIfItemIdExists(ifYouBuySDM.getItemId()) == false)
+        else if(checkIfItemIdExists(ifYouBuy.getItemId()) == false)
         {
-            throw new ItemIDNotExistInAStoreException(ifYouBuySDM.getItemId(), name);
+            throw new ItemIDNotExistInAStoreException(ifYouBuy.getItemId(), name);
         }
         else
         {
-
-            addOffersToThenYouGet(thanYouGetS);
+            IfYouBuySDM ifYouBuySDM = new IfYouBuySDM(ifYouBuy);
+            ThenYouGetSDM thenYouGetSDM = addOffersToThenYouGet(thanYouGet);
             System.out.println("suceed adding offer to thenYouGet");
+            discountNameDMap.put(discountName, new Discount(discountName, ifYouBuySDM, thenYouGetSDM));
         }
-
     }
 
-    public void addOffersToThenYouGet(ThenYouGet thenYouGet) throws ItemIDNotExistInAStoreException {
+    public List<Discount> generateListOfDiscountsThatContainsItemsFromList(Collection<Integer> listOfItemsSerialID)
+    {
+        return (discountNameDMap.values().stream().filter(x -> x.checkIfDiscountContainsItemFromListOfItems(listOfItemsSerialID)).collect(Collectors.toList()));
+    }
+
+    public ThenYouGetSDM addOffersToThenYouGet(ThenYouGet thenYouGet) throws ItemIDNotExistInAStoreException {
         ThenYouGetSDM thenYouGetSDM = new ThenYouGetSDM(thenYouGet);
         List<SDMOffer> sdmOfferList = thenYouGet.getSDMOffer();
         System.out.println("Inside addOffersToThenYouGet method");
@@ -89,9 +93,9 @@ public class Store {
             {
                 thenYouGetSDM.addOfferToListFromSDMOffer(sdmOffer);
                 System.out.println("Succeed Inside sdmOffer");
-
             }
         }
+        return thenYouGetSDM;
     }
 
     public boolean checkIfDiscountHasUniqueName(String nameOfDiscount)

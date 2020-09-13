@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<FlowPane hgap="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="165.0" prefWidth="148.0" style="-fx-border-color: gray; -fx-border-width: 5;" vgap="2.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.Item.QuantityItem.QuantityItemController">
+   <children>
+      <Pane prefHeight="156.0" prefWidth="139.0">
+         <children>
+            <Label fx:id="itemNameLabel" layoutX="30.0" layoutY="24.0" text="Item name">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="priceLabel" layoutX="21.0" layoutY="69.0" text="Price:" />
+            <Label fx:id="priceValueLabel" layoutX="60.0" layoutY="69.0" text="Label" />
+            <Button fx:id="minusButton" layoutX="30.0" layoutY="109.0" mnemonicParsing="false" onAction="#clickedOnMinusButton" prefHeight="27.0" prefWidth="30.0" text="-" />
+            <Button fx:id="plusButton" layoutX="90.0" layoutY="109.0" mnemonicParsing="false" onAction="#clickedOnPlusButton" prefHeight="27.0" prefWidth="31.0" text="+" />
+            <Label fx:id="amountLabel" layoutX="71.0" layoutY="114.0" text="2" />
+         </children>
+      </Pane>
+   </children>
+</FlowPane>

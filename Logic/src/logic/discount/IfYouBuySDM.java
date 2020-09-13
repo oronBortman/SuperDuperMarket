@@ -14,4 +14,16 @@ public class IfYouBuySDM {
         this.itemId = ifYouBuy.getItemId();
     }
 
+    public boolean checkItemIDEqualTo(int itemId)
+    {
+        return this.itemId == itemId;
+    }
+
+    public int getItemId() {
+        return itemId;
+    }
+
+    public double getQuantity() {
+        return quantity;
+    }
 }

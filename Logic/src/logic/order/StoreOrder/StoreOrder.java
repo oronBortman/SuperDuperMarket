@@ -11,38 +11,39 @@ import java.util.Map;
 public class StoreOrder extends Order {
 
     Store storeUsed;
-    private Map<Integer, OrderedItemFromStore> orderedItems;
+    private Map<Integer, OrderedItemFromStore> orderedItemsNotFromSale;
+    private Map<String, OrderedItemFromStore> orderedItemsFromSale;
 
     public StoreOrder(Store store, Date date, boolean isOrderStatic)
     {
         super(date, isOrderStatic);
         this.storeUsed = store;
-        orderedItems = new HashMap<Integer, OrderedItemFromStore>();
+        orderedItemsNotFromSale = new HashMap<Integer, OrderedItemFromStore>();
     }
 
     public StoreOrder(Date date, boolean isOrderStatic)
     {
         super(date, isOrderStatic);
-        orderedItems = new HashMap<Integer, OrderedItemFromStore>();
+        orderedItemsNotFromSale = new HashMap<Integer, OrderedItemFromStore>();
     }
     @Override
     public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem)
     {
         boolean itemAlreadyExistsInOrder=false;
-        if(orderedItems != null)
+        if(orderedItemsNotFromSale != null)
         {
-            itemAlreadyExistsInOrder = orderedItems.containsKey(serialIDOfItem);
+            itemAlreadyExistsInOrder = orderedItemsNotFromSale.containsKey(serialIDOfItem);
         }
         return itemAlreadyExistsInOrder;
     }
 
-    public Map<Integer, OrderedItemFromStore> getOrderedItems()
+    public Map<Integer, OrderedItemFromStore> getOrderedItemsNotFromSale()
     {
-        return orderedItems;
+        return orderedItemsNotFromSale;
     }
 
     public OrderedItemFromStore getItemInOrder(int serialIDOfItem) {
-        return getOrderedItems().get(serialIDOfItem);
+        return getOrderedItemsNotFromSale().get(serialIDOfItem);
     }
 
     public Store getStoreUsed() {
@@ -52,9 +53,9 @@ public class StoreOrder extends Order {
     public int getAmountOfCertainItemByUnit(int serialId)
     {
         int amountOfCertainItemByUnit;
-        if(orderedItems.containsKey(serialId))
+        if(orderedItemsNotFromSale.containsKey(serialId))
         {
-            amountOfCertainItemByUnit = orderedItems.get(serialId).getAmountOfItemOrderedByUnits();
+            amountOfCertainItemByUnit = orderedItemsNotFromSale.get(serialId).getAmountOfItemOrderedByUnits();
         }
         else
         {
@@ -67,9 +68,9 @@ public class StoreOrder extends Order {
     public double getAmountOfCertainItemByTypeOfMeasure(int serialId)
     {
         double amountOfCertainItemByUnit;
-        if(orderedItems.containsKey(serialId))
+        if(orderedItemsNotFromSale.containsKey(serialId))
         {
-            amountOfCertainItemByUnit = orderedItems.get(serialId).getTotalAmountOfItemOrderedByTypeOfMeasure();
+            amountOfCertainItemByUnit = orderedItemsNotFromSale.get(serialId).getTotalAmountOfItemOrderedByTypeOfMeasure();
         }
         else
         {

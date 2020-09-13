@@ -1,16 +1,17 @@
 package components.mainScreen;
 
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
-import components.MakeAnOrder.MakeAnOrderController;
-import components.addItemToStoreScreen.AddItemToStoreContoller;
-import components.chooseAnItemForOrder.ChooseItemsForOrderController;
-import components.removeItemFromStoreScreen.RemoveItemFromStoreContoller;
-import components.showStoreStatusInDynamicOrder.ShowStoresStatusInDynamicOrderController;
-import components.showStoresScreen.*;
-import components.showItemsScreen.*;
+import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
+import components.makeAnOrderOption.salesScreen.SalesScreenController;
+import components.updateItemInStoreOption.addItemToStoreScreen.AddItemToStoreContoller;
+import components.makeAnOrderOption.chooseAnItemForOrder.ChooseItemsForOrderController;
+import components.updateItemInStoreOption.removeItemFromStoreScreen.RemoveItemFromStoreContoller;
+import components.makeAnOrderOption.showStoreStatusInDynamicOrder.ShowStoresStatusInDynamicOrderController;
+import components.showOption.showStoresScreen.*;
+import components.showOption.showItemsScreen.*;
 import commonUI.*;
-import components.showUsersScreen.ShowUsersController;
-import components.updatePriceOfItemInStoreScreen.UpdateItemInStoreController;
+import components.showOption.showUsersScreen.ShowUsersController;
+import components.updateItemInStoreOption.updatePriceOfItemInStoreScreen.UpdateItemInStoreController;
 import exceptions.DuplicateSerialIDException;
 import exceptions.SerialIDNotExistException;
 import javafx.event.ActionEvent;
@@ -23,14 +24,11 @@ import logic.*;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
-import logic.order.itemInOrder.OrderedItemFromStoreByQuantity;
-import logic.order.itemInOrder.OrderedItemFromStoreByWeight;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URL;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -136,7 +134,7 @@ public class mainScreenController {
                         OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(customer, date, store, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
                         for( OpenedStoreOrder openedStoreOrder : openedCustomerOrder.getListOfOpenedStoreOrder())
                         {
-                            for(Map.Entry<Integer, OrderedItemFromStore> entry : openedStoreOrder.getOrderedItems().entrySet())
+                            for(Map.Entry<Integer, OrderedItemFromStore> entry : openedStoreOrder.getOrderedItemsNotFromSale().entrySet())
                             {
                                 System.out.println(entry.getValue().getName() + " " + entry.getValue().getPricePerUnit() + " " +  entry.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
                             }
@@ -205,6 +203,38 @@ public class mainScreenController {
         ShowStoresStatusInDynamicOrderController showStoresStatusInDynamicOrderController = loader.getController();
         showStoresStatusInDynamicOrderController.setOpenedCustomerOrder(openedCustomerOrder);
         showStoresStatusInDynamicOrderController.setBusinessLogic(businessLogic);
+
+        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    try {
+                        salesScreen(openedCustomerOrder);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        showStoresStatusInDynamicOrderController.setProperties(chooseNext);
+        System.out.println("Clicked on next");
+
+
+        mainBorderPane.setCenter(gridPane);
+    }
+
+    @FXML
+    void salesScreen(OpenedCustomerOrder openedCustomerOrder) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        URL salesScreenFXML = getClass().getResource(SuperDuperMarketConstants.SALES_SCREEN);
+        loader.setLocation(salesScreenFXML);
+        ScrollPane gridPane = loader.load();
+        SalesScreenController salesScreenController = loader.getController();
+        salesScreenController.setOpenedCustomerOrder(openedCustomerOrder);
+        salesScreenController.setBusinessLogic(businessLogic);
+        salesScreenController.setDiscounts(openedCustomerOrder.getListOfDiscounts());
         mainBorderPane.setCenter(gridPane);
     }
 
