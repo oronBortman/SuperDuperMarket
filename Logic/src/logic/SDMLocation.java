@@ -5,8 +5,8 @@ import java.util.Objects;
 import java.util.Set;
 
 public class SDMLocation {
-    private int x;
-    private int y;
+    private Integer x;
+    private Integer y;
 
     public SDMLocation(int coordinateX, int coordinateY) {
         this.x = coordinateX;
@@ -39,10 +39,10 @@ public class SDMLocation {
         return(coordinate >= 1 && coordinate <= 50);
     }
     
-    public int getX(){ 
+    public Integer getX(){
         return this.x;
     }
-    public int getY(){
+    public Integer getY(){
         return this.y;
     }
 

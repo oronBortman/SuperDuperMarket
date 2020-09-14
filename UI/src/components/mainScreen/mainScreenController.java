@@ -17,16 +17,28 @@ import components.updateItemInStoreOption.updatePriceOfItemInStoreScreen.UpdateI
 import exceptions.DuplicateSerialIDException;
 import exceptions.SerialIDNotExistException;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
+import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Label;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.ScrollPane;
-import javafx.scene.layout.BorderPane;
+import javafx.scene.control.Tooltip;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import logic.*;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
+import javafx.application.Application;
+import javafx.scene.Scene;
+import javafx.scene.layout.GridPane;
+import javafx.stage.Stage;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -333,9 +345,162 @@ public class mainScreenController {
         mainBorderPane.setCenter(gridPane);
     }
 
+    ImageView generateUserImage()
+    {
+        ImageView userImage = new ImageView("/components/user.png");
+        userImage.setFitHeight(40);
+        userImage.setFitWidth(40);
+        return userImage;
+    }
+    ImageView generateStoreImage()
+    {
+        ImageView storeImage = new ImageView("/components/shop.png");
+        storeImage.setFitHeight(40);
+        storeImage.setFitWidth(40);
+        return storeImage;
+    }
     @FXML
     void showMapOfStoresAndOrders(ActionEvent event) {
+        ScrollPane scrollPane = new ScrollPane();
+        scrollPane.setFitToHeight(true);
+        scrollPane.setFitToWidth(true);
+        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
+        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
 
+        int maxCoordinateX = businessLogic.getMaxCoordinateXOfLocationOfUsersAndStores();
+        System.out.println("Max x:" + maxCoordinateX);
+        int maxCoordinateY = businessLogic.getMaxCoordinateYOfLocationOfUsersAndStores();
+        System.out.println("Max y:" + maxCoordinateY);
+        GridPane gridPane = gridPaneForceColsAndRows(maxCoordinateX,maxCoordinateY);
+        System.out.println("A");
+
+        for(Integer i=1;i<=maxCoordinateX;i++)
+        {
+            gridPane.add(new Label(i.toString()),i,0);
+        }
+
+        for(Integer i=1;i<=maxCoordinateY;i++)
+        {
+            gridPane.add(new Label(i.toString()),0,i);
+        }
+
+        for(Customer customer : businessLogic.getUsersList())
+        {
+            final Tooltip tooltip = new Tooltip();
+            tooltip.setText("Name: " + customer.getName() +
+                    "\nLocation:" + "(" + customer.getLocation().getX() + "," +
+                    customer.getLocation().getY() + ")");
+
+            int coordinateX = customer.getLocation().getX();
+            int coordinateY = customer.getLocation().getY();
+            System.out.println("Corrdinate x:"+coordinateX);
+            System.out.println("Corrdinate y:"+coordinateY);
+            ImageView imageView = generateUserImage();
+            //Tooltip.install(imageView, new Tooltip("AAA"));
+            HBox hbox = new HBox(imageView);
+            hbox.setMinHeight(40);
+            hbox.setPrefHeight(40);
+            hbox.setMinWidth(40);
+            hbox.setPrefHeight(40);
+            hbox.setFillHeight(true);
+            HBox.setHgrow(imageView,Priority.ALWAYS);
+
+            imageView.fitWidthProperty().bind(hbox.widthProperty());
+            imageView.fitHeightProperty().bind(hbox.heightProperty());
+
+            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent t) {
+                    Node  node =(Node)t.getSource();
+                    tooltip.show(node, primaryStage.getX()+t.getSceneX(), primaryStage.getY()+t.getSceneY());
+                }
+            });
+
+            imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent t) {
+                    tooltip.hide();
+                }
+            });
+
+            gridPane.add(hbox,coordinateX,coordinateY);
+        }
+
+        System.out.println("Finished with users");
+
+        for(Store store : businessLogic.getStoresList())
+        {
+            final Tooltip tooltip = new Tooltip();
+            tooltip.setText("Serial ID: " + store.getSerialNumber() + "\nName: " + store.getName() +
+                    "\nLocation:" + "(" + store.getLocationOfShop().getX() + "," +
+                    store.getLocationOfShop().getY() + ")");
+
+            int coordinateX = store.getLocationOfShop().getX();
+            int coordinateY = store.getLocationOfShop().getY();
+            System.out.println("Corrdinate x:"+coordinateX);
+            System.out.println("Corrdinate y:"+coordinateY);
+
+            ImageView imageView = generateStoreImage();
+            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent t) {
+                    Node  node =(Node)t.getSource();
+                    tooltip.show(node, primaryStage.getX()+t.getSceneX(), primaryStage.getY()+t.getSceneY());
+                }
+            });
+
+            imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
+                @Override
+                public void handle(MouseEvent t) {
+                    tooltip.hide();
+                }
+            });
+
+            HBox hbox = new HBox(imageView);
+            hbox.setMinHeight(40);
+            hbox.setPrefHeight(40);
+            hbox.setMinWidth(40);
+            hbox.setPrefHeight(40);
+            hbox.setFillHeight(true);
+            HBox.setHgrow(imageView,Priority.ALWAYS);
+
+            imageView.fitWidthProperty().bind(hbox.widthProperty());
+            imageView.fitHeightProperty().bind(hbox.heightProperty());
+
+            gridPane.add(hbox,coordinateX,coordinateY);
+        }
+
+        scrollPane.setContent(gridPane);
+
+        mainBorderPane.setCenter(scrollPane);
+
+
+    }
+
+    public GridPane gridPaneForceColsAndRows(int numCols, int numRows) {
+        GridPane gridPane = new GridPane();
+
+        gridPane.setGridLinesVisible(true);
+        double widht=100.0;
+        double hight=100.0;
+            for (int i = 0; i <= numCols+1; i++)
+            {
+
+                ColumnConstraints colConst = new ColumnConstraints();
+                colConst.setPercentWidth(widht / numCols);
+                if(i==0 || i==numCols+1) {
+                }
+                else {  }
+                gridPane.getColumnConstraints().add(colConst);
+            }
+            for (int i = 0; i <= numRows+1; i++) {
+                if(i==0 || i==numCols+1) {}
+                else {}
+                RowConstraints rowConst = new RowConstraints();
+                rowConst.setPercentHeight(hight / numRows);
+                gridPane.getRowConstraints().add(rowConst);
+            }
+            return gridPane;
     }
 
     @FXML
