@@ -127,18 +127,14 @@ public class SummeryOfOrderController {
         Boolean clear = false;
         alert.setTitle("Order confirmation");
         alert.setHeaderText("Are you sure you want to approve the order?");
-        //ButtonType cancelButtonType = new ButtonType("Cancel", ButtonBar.ButtonData.CANCEL_CLOSE);
-        //alert.getDialogPane().getButtonTypes().add(cancelButtonType);
 
         Optional<ButtonType> result = alert.showAndWait();
-        if(result.isPresent() && result.get() == ButtonType.YES)
+        if(result.isPresent() && result.get() == yes)
         {
-            System.out.println("Clicked on ok");
             isYesClickedConsumer.accept(true);
         }
-        else if(result.isPresent() && result.get() == ButtonType.NO)
+        else if(result.isPresent() && result.get() == no)
         {
-            System.out.println("Clicked on no");
             isNoClickedConsumer.accept(true);
         }
     }
