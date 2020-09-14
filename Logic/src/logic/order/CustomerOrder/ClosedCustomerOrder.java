@@ -44,14 +44,14 @@ public class ClosedCustomerOrder extends Order implements ClosedOrder {
         return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.getTotalPriceOfOrder()).sum();
     }
 
-    public int getTotalAmountOfItemsByUnitOfStoreOrderBySerialIDOfStore(int serialID)
+    public Double getTotalAmountOfItemsByUnitOfStoreOrderBySerialIDOfStore(int serialID)
     {
         return closedStoresOrderMapByStoreSerialID.get(serialID).getTotalAmountOfItemsByUnit();
     }
 
-    public int getTotalAmountOfItemsByUnitOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
+    public Double getTotalAmountOfItemsByUnitOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
     {
-        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToInt(x->x.getTotalAmountOfItemsByUnit()).sum();
+        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.getTotalAmountOfItemsByUnit()).sum();
     }
 
 

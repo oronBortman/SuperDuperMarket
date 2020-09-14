@@ -12,20 +12,25 @@ public class StoreOrder extends Order {
 
     Store storeUsed;
     private Map<Integer, OrderedItemFromStore> orderedItemsNotFromSale;
-    private Map<String, OrderedItemFromStore> orderedItemsFromSale;
+    private Map<String, Map<Integer, OrderedItemFromStore>> orderedItemsFromSale;
 
     public StoreOrder(Store store, Date date, boolean isOrderStatic)
     {
         super(date, isOrderStatic);
         this.storeUsed = store;
         orderedItemsNotFromSale = new HashMap<Integer, OrderedItemFromStore>();
+        orderedItemsFromSale = new HashMap<String,Map<Integer, OrderedItemFromStore>>();
     }
 
     public StoreOrder(Date date, boolean isOrderStatic)
     {
         super(date, isOrderStatic);
         orderedItemsNotFromSale = new HashMap<Integer, OrderedItemFromStore>();
+        orderedItemsFromSale = new HashMap<String,Map<Integer, OrderedItemFromStore>>();
     }
+
+
+
     @Override
     public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem)
     {
@@ -42,6 +47,15 @@ public class StoreOrder extends Order {
         return orderedItemsNotFromSale;
     }
 
+    public Map<String, Map<Integer, OrderedItemFromStore>> getOrderedItemsFromSale() {
+        return orderedItemsFromSale;
+    }
+
+    public Map<Integer, OrderedItemFromStore> getOrderedItemsMapFromSaleByDiscountName(String discountName)
+    {
+        return orderedItemsFromSale.get(discountName);
+    }
+
     public OrderedItemFromStore getItemInOrder(int serialIDOfItem) {
         return getOrderedItemsNotFromSale().get(serialIDOfItem);
     }
@@ -50,16 +64,16 @@ public class StoreOrder extends Order {
         return storeUsed;
     }
 
-    public int getAmountOfCertainItemByUnit(int serialId)
+    public Double getAmountOfCertainItemByUnit(int serialId)
     {
-        int amountOfCertainItemByUnit;
+        Double amountOfCertainItemByUnit;
         if(orderedItemsNotFromSale.containsKey(serialId))
         {
             amountOfCertainItemByUnit = orderedItemsNotFromSale.get(serialId).getAmountOfItemOrderedByUnits();
         }
         else
         {
-            amountOfCertainItemByUnit = 0;
+            amountOfCertainItemByUnit = 0.0;
         }
         return amountOfCertainItemByUnit;
     }

@@ -227,14 +227,28 @@ public class mainScreenController {
 
     @FXML
     void salesScreen(OpenedCustomerOrder openedCustomerOrder) throws IOException {
+        System.out.println("A");
         FXMLLoader loader = new FXMLLoader();
+        System.out.println("B");
+
         URL salesScreenFXML = getClass().getResource(SuperDuperMarketConstants.SALES_SCREEN);
+        System.out.println("C");
+
         loader.setLocation(salesScreenFXML);
+        System.out.println("D");
+
         ScrollPane gridPane = loader.load();
+        System.out.println("E");
+
         SalesScreenController salesScreenController = loader.getController();
+        System.out.println("F");
+
         salesScreenController.setOpenedCustomerOrder(openedCustomerOrder);
+        System.out.println("G");
+
         salesScreenController.setBusinessLogic(businessLogic);
-        salesScreenController.setDiscounts(openedCustomerOrder.getListOfDiscounts());
+        System.out.println("H");
+
         mainBorderPane.setCenter(gridPane);
     }
 

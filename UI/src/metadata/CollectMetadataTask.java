@@ -22,7 +22,7 @@ public class CollectMetadataTask extends Task<Boolean> {
     private List<SDMCustomer> customers;
     private Consumer<String> errorMessage;
 
-    private final int SLEEP_TIME = 1;
+    private final int SLEEP_TIME = 0;
 
     public CollectMetadataTask(String fileName, Consumer<Runnable> onCancel, BusinessLogic businessLogic) {
         this.fileName = fileName;
@@ -153,7 +153,7 @@ public class CollectMetadataTask extends Task<Boolean> {
     public void readItemsToStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, ItemNotExistInStoresException {
         int counter = 0;
         updateProgress(counter, 1);
-        SuperDuperMarketUtils.sleepForAWhile(1);
+        SuperDuperMarketUtils.sleepForAWhile(0);
         for (SDMStore store : stores) {
             try {
                 readItemsToAStoreFromXML(store);
@@ -169,7 +169,7 @@ public class CollectMetadataTask extends Task<Boolean> {
                 onCancel.accept(null);
                 throw exception;
             }
-            SuperDuperMarketUtils.sleepForAWhile(1);
+            SuperDuperMarketUtils.sleepForAWhile(0);
         }
         try {
             businessLogic.checkIfThereIsItemNotInStore();
@@ -183,14 +183,14 @@ public class CollectMetadataTask extends Task<Boolean> {
 
     public void readItemsToAStoreFromXML(SDMStore store) throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, DuplicateStoreSerialIDException {
         int counter = 0;
-        SuperDuperMarketUtils.sleepForAWhile(1);
+        SuperDuperMarketUtils.sleepForAWhile(0);
         updateMessage("Reading items to the store " + store.getName() + "...");
         SDMPrices pricesInStore = store.getSDMPrices();
         //TODO
         //What to do if price is empty?
         List<SDMSell> sdmSellList = pricesInStore.getSDMSell();
         updateProgress(counter, sdmSellList.size());
-        SuperDuperMarketUtils.sleepForAWhile(1);
+        SuperDuperMarketUtils.sleepForAWhile(0);
 
         for (SDMSell sdmSell : sdmSellList) {
             businessLogic.addItemToStoreFromSDMSell(sdmSell, store.getId());
@@ -202,7 +202,7 @@ public class CollectMetadataTask extends Task<Boolean> {
             System.out.println(counter);
             counter++;
             updateProgress(counter, sdmSellList.size());
-            SuperDuperMarketUtils.sleepForAWhile(1);
+            SuperDuperMarketUtils.sleepForAWhile(0);
         }
     }
 
@@ -221,7 +221,7 @@ public class CollectMetadataTask extends Task<Boolean> {
                 System.out.println(counter);
                 counter++;
                 updateProgress(counter, stores.size());
-                SuperDuperMarketUtils.sleepForAWhile(1);
+                SuperDuperMarketUtils.sleepForAWhile(0);
             } catch (Exception exception) {
                 cancelled();
                 SuperDuperMarketUtils.log("Task was canceled !");
@@ -235,7 +235,7 @@ public class CollectMetadataTask extends Task<Boolean> {
 
     public void readDiscountsToAStoreFromXML(SDMStore store) throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, DuplicateStoreSerialIDException, ItemNotExistInStoresException, DuplicateDiscountNameException, ItemIDNotExistInAStoreException {
         int counter = 0;
-        SuperDuperMarketUtils.sleepForAWhile(1000);
+        SuperDuperMarketUtils.sleepForAWhile(0);
         System.out.println(("Reading discounts to the store " + store.getName() + "..."));
         updateMessage("Reading discounts to the store " + store.getName() + "...");
         //TODO
@@ -266,7 +266,7 @@ public class CollectMetadataTask extends Task<Boolean> {
                     System.out.println("Succeed in reading the discount " + sdmDiscount.getName() + " to the store " + store.getName());
                     counter++;
                     updateProgress(counter, sdmDiscountList.size());
-                    SuperDuperMarketUtils.sleepForAWhile(1);
+                    SuperDuperMarketUtils.sleepForAWhile(0);
                 }
             }
         }

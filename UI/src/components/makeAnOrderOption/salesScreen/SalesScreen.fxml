@@ -13,7 +13,6 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.text.Font?>
 
-
 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.salesScreen.SalesScreenController">
    <content>
       <BorderPane>
@@ -32,7 +31,7 @@
                   <Separator layoutX="14.0" layoutY="389.0" prefHeight="3.0" prefWidth="558.0" />
                   <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="24.0" layoutY="450.0" vbarPolicy="ALWAYS">
                      <content>
-                        <TableView prefHeight="136.0" prefWidth="538.0">
+                        <TableView fx:id="tableViewSales" prefHeight="136.0" prefWidth="538.0">
                           <columns>
                             <TableColumn fx:id="salesTableNameCol" prefWidth="75.0" text="Name" />
                             <TableColumn fx:id="salesTableSerialIDCol" prefWidth="75.0" text="SerialID" />
@@ -46,12 +45,12 @@
                   </ScrollPane>
                   <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="24.0" layoutY="659.0" vbarPolicy="ALWAYS">
                      <content>
-                        <TableView prefHeight="194.0" prefWidth="521.0">
+                        <TableView fx:id="tableViewCart" prefHeight="194.0" prefWidth="521.0">
                           <columns>
                             <TableColumn fx:id="cartTableNameCol" prefWidth="75.0" text="Name" />
                             <TableColumn fx:id="cartTableSerialIDCol" prefWidth="75.0" text="SerialID" />
-                              <TableColumn prefWidth="75.0" text="Amount" />
-                              <TableColumn fx:id="cartTableAmountCol" prefWidth="75.0" text="Price" />
+                              <TableColumn fx:id="cartTableAmountCol" prefWidth="75.0" text="Amount" />
+                              <TableColumn fx:id="cartTablePriceCol" prefWidth="75.0" text="Price" />
                               <TableColumn fx:id="cartTableTotalPriceCol" prefWidth="75.0" text="Total price" />
                           </columns>
                         </TableView>

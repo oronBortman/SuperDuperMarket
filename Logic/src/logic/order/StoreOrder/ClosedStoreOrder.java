@@ -13,12 +13,12 @@ public class ClosedStoreOrder extends StoreOrder implements ClosedOrder {
     private Integer serialNumber;
     private double deliveryPrice;
     private double totalPriceOfOrder;
-    private int totalAmountOfItemsByUnit;
+    private Double totalAmountOfItemsByUnit;
     private int totalAmountOfItemTypes;
     private double totalPriceOfItems;
 
 
-    public ClosedStoreOrder(double deliveryPrice, double totalPriceOfOrder, int totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed, Map<Integer, OrderedItemFromStore> orderedItems, Date date, boolean isOrderStatic) {
+    public ClosedStoreOrder(double deliveryPrice, double totalPriceOfOrder, Double totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed, Map<Integer, OrderedItemFromStore> orderedItems, Date date, boolean isOrderStatic) {
         super(date, isOrderStatic);
         this.serialNumber = BusinessLogic.getCurrentOrderSerialIDInSDK();
         this.deliveryPrice = deliveryPrice;
@@ -45,7 +45,7 @@ public class ClosedStoreOrder extends StoreOrder implements ClosedOrder {
         return totalPriceOfOrder;
     }
 
-    public int getTotalAmountOfItemsByUnit() {
+    public Double getTotalAmountOfItemsByUnit() {
         return totalAmountOfItemsByUnit;
     }
 

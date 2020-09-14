@@ -3,62 +3,118 @@ package logic.order.CustomerOrder;
 import logic.SDMLocation;
 import logic.Store;
 import logic.discount.Discount;
+import logic.discount.Offer;
 import logic.order.OpenedOrder;
 import logic.order.Order;
 import logic.order.StoreOrder.ClosedStoreOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
+import logic.order.itemInOrder.OrderedItemFromSale;
+import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class OpenedCustomerOrder extends Order implements OpenedOrder {
 
     Map<Store, OpenedStoreOrder> openedStoresOrderMap;
     SDMLocation customerLocation;
-    Map<Integer, Integer> itemsAmountLeftToUseInSalesMap;
-    Map<String, Discount> availableDiscountsMap;
+    //Map<Integer, Integer> itemsAmountLeftToUseInSalesMap;
+    //Map<String, Discount> availableDiscountsMap;
 
     public OpenedCustomerOrder(Date date, SDMLocation customerLocation, boolean isOrderStatic) {
         super(date, isOrderStatic);
         this.customerLocation = customerLocation;
         openedStoresOrderMap = new HashMap<Store, OpenedStoreOrder>();
-        itemsAmountLeftToUseInSalesMap = new HashMap<Integer, Integer>() ;
-        availableDiscountsMap = new HashMap<String, Discount>();
+        //itemsAmountLeftToUseInSalesMap = new HashMap<Integer, Integer>() ;
+        //availableDiscountsMap = new HashMap<String, Discount>();
     }
 
-    public void updateInStoreOrderDiscountApply(String discountName)
+    public void generateListOfSales()
     {
 
     }
-
-    public void getStoreThatContainsDiscount(String discountName)
+    public List<OrderedItemFromSale>  generateListOfOrderedItemFromSaleWithDiscountName()
     {
-
+        List<OrderedItemFromSale> orderedItemFromSaleListWithDiscountNames = new ArrayList<>();
+        for(OpenedStoreOrder openedStoreOrder : openedStoresOrderMap.values())
+        {
+            orderedItemFromSaleListWithDiscountNames = Stream.concat(orderedItemFromSaleListWithDiscountNames.stream(), openedStoreOrder.generateListOfOrderedItemFromSaleWithDiscountName().stream()).collect(Collectors.toList());
+        }
+        return orderedItemFromSaleListWithDiscountNames;
     }
 
-    public List<Discount> getListOfDiscounts()
+    public List<OrderedItemFromStore> generateListsOfItemNotFromSale()
+    {
+        List<OrderedItemFromStore> orderedItemNotFromSaleFromStoresList = new ArrayList<OrderedItemFromStore>();
+        for(OpenedStoreOrder openedStoreOrder : openedStoresOrderMap.values())
+        {
+            List<OrderedItemFromStore> orderedItemFromStoreListNotFromSale = openedStoreOrder.generateListOfOrdereItemsNotFromSale();
+            orderedItemNotFromSaleFromStoresList = Stream.concat(orderedItemNotFromSaleFromStoresList.stream(), orderedItemFromStoreListNotFromSale.stream()).collect(Collectors.toList());;
+        }
+        return orderedItemNotFromSaleFromStoresList;
+    }
+
+    public void initializeAvailableDiscountMapInOpenedStoreOrders()
+    {
+        for(Map.Entry<Store, OpenedStoreOrder> openedStoreOrderEntry : openedStoresOrderMap.entrySet())
+        {
+            openedStoreOrderEntry.getValue().initializeDiscountInStoresThatValidInOrder();
+        }
+    }
+
+    public void initializeItemsAmountLeftToUseInSalesMapInOpenedStoreOrders()
+    {
+        for(Map.Entry<Store, OpenedStoreOrder> openedStoreOrderEntry : openedStoresOrderMap.entrySet())
+        {
+            openedStoreOrderEntry.getValue().initializeItemsAmountLeftToUseInStoresThatValidInOrder();
+        }
+    }
+
+    public OpenedStoreOrder getOpenedStoreOrderThatContainsDiscountByName(String discountName)
+    {
+        OpenedStoreOrder openedStoreOrder = null;
+        for(Map.Entry<Store, OpenedStoreOrder> openedStoreOrderEntry : openedStoresOrderMap.entrySet())
+        {
+            List<Discount> listOfDiscountsFromCertainStore = openedStoreOrderEntry.getValue().generateDiscountsFromStoreByOrderedItems();
+            for(Discount discount : listOfDiscountsFromCertainStore)
+            {
+                if(discount.getName().equals(discountName))
+                {
+                    openedStoreOrder = openedStoreOrderEntry.getValue();
+                }
+            }
+        }
+        return openedStoreOrder;
+    }
+
+    public void applyDiscountOneOf(String discountName, Offer offer)
+    {
+        OpenedStoreOrder openedStoreOrder = getOpenedStoreOrderThatContainsDiscountByName(discountName);
+        openedStoreOrder.applyOneOfDiscountOnStore(discountName, offer);
+    }
+
+    public void applyDiscountAllOrNothing(String discountName)
+    {
+        OpenedStoreOrder openedStoreOrder = getOpenedStoreOrderThatContainsDiscountByName(discountName);
+        openedStoreOrder.applyAllOrNothingDiscountOnStore(discountName);
+    }
+
+
+    public List<Discount> generateListOfDiscounts()
     {
         List<Discount> listOfDiscounts = new ArrayList<Discount>();
         for(Map.Entry<Store, OpenedStoreOrder> openedStoreOrderEntry : openedStoresOrderMap.entrySet())
         {
-            List<Discount> listOfDiscountsFromCertainStore = openedStoreOrderEntry.getValue().generateDiscountsFromStoreByOrderedItems();
+            List<Discount> listOfDiscountsFromCertainStore = openedStoreOrderEntry.getValue().generateListOfDiscountsInStoresThatAreValidInOrder();
             for(Discount discount : listOfDiscountsFromCertainStore)
                 listOfDiscounts.add(discount);
         }
         return listOfDiscounts;
     }
 
-    public void initializeAvailableDiscountsFromStores()
-    {
-        for(Map.Entry<Store, OpenedStoreOrder> openedStoreOrderEntry : openedStoresOrderMap.entrySet())
-        {
-            List<Discount> listOfDiscounts = openedStoreOrderEntry.getValue().generateDiscountsFromStoreByOrderedItems();
-            for(Discount discount : listOfDiscounts)
-                availableDiscountsMap.put(discount.getName(), discount);
-        }
-    }
 
-    public boolean checkIfThereAreDiscountsLeft()
+    /*public boolean checkIfThereAreDiscountsLeft()
     {
         return itemsAmountLeftToUseInSalesMap.size() == 0;
     }
@@ -69,7 +125,7 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
     public int getHowMuchLeftToUseFromItemInSale(int itemSerialID)
     {
         return itemsAmountLeftToUseInSalesMap.get(itemSerialID);
-    }
+    }*/
 
     public Map<Store, OpenedStoreOrder> getOpenedStoresOrderMap() {
         return openedStoresOrderMap;
@@ -97,13 +153,13 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
     }
 
     @Override
-    public Double calcTotalPriceOfItems() {
+    public Double calcTotalPriceOfItemsNotFromSale() {
         return 0.0;
     }
 
     @Override
-    public Integer calcTotalAmountOfItemsByUnit() {
-        return 0;
+    public Double calcTotalAmountOfItemsNotFromSaleByUnit() {
+        return 0.0;
     }
 
     @Override
@@ -112,7 +168,7 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
     }
 
     @Override
-    public Integer calcTotalAmountOfItemsType() {
+    public Integer calcTotalAmountOfItemsTypeNotFromSale() {
         return 0;
     }
 

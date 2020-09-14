@@ -6,28 +6,28 @@ import logic.AvailableItemInStore;
 import java.util.Objects;
 
 public abstract class OrderedItemFromStore extends AvailableItemInStore {
-    private int amountOfItemOrderedByUnits;
+    private Double amountOfItemOrderedByUnits;
 
     /*logic.Orders.orderItems.OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {
         super(serialNumber, name, purchaseCategory, price);
     }*/
 
-    public OrderedItemFromStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price, int amountOfItemOrderedByUnits) {
+    public OrderedItemFromStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price, Double amountOfItemOrderedByUnits) {
         super(serialNumber, name, purchaseCategory, price);
         this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
 
-    public OrderedItemFromStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int amountOfItemOrderedByUnits) {
+    public OrderedItemFromStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, Double amountOfItemOrderedByUnits) {
         super(serialNumber, name, purchaseCategory);
         this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
 
-    public OrderedItemFromStore(Item item, int amountOfItemOrderedByUnits) {
+    public OrderedItemFromStore(Item item, Double amountOfItemOrderedByUnits) {
         super(item);
         this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
 
-    public OrderedItemFromStore(AvailableItemInStore availableItemInStore, int amountOfItemOrderedByUnits) {
+    public OrderedItemFromStore(AvailableItemInStore availableItemInStore, Double amountOfItemOrderedByUnits) {
         super(availableItemInStore);
         this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
@@ -35,12 +35,12 @@ public abstract class OrderedItemFromStore extends AvailableItemInStore {
     public abstract Double getTotalPriceOfItemOrderedByTypeOfMeasure();
     public abstract Double getTotalAmountOfItemOrderedByTypeOfMeasure();
 
-    public Integer getAmountOfItemOrderedByUnits()
+    public Double getAmountOfItemOrderedByUnits()
     {
         return amountOfItemOrderedByUnits;
     }
 
-    public double getTotalPriceOfItemOrderedByUnits()
+    public Double getTotalPriceOfItemOrderedByUnits()
     {
         return amountOfItemOrderedByUnits * getPricePerUnit();
     }
@@ -58,8 +58,12 @@ public abstract class OrderedItemFromStore extends AvailableItemInStore {
         return Objects.hash(amountOfItemOrderedByUnits);
     }
 
-    public void setAmountOfItemOrderedByUnits(int amountOfItemOrderedByUnits)
+    public void setAmountOfItemOrderedByUnits(Double amountOfItemOrderedByUnits)
     {
         this.amountOfItemOrderedByUnits = amountOfItemOrderedByUnits;
     }
+
+    public abstract void addQuantity(Double quantity);
+
+
 }

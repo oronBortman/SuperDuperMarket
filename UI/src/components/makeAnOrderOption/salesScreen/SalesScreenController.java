@@ -1,31 +1,65 @@
 package components.makeAnOrderOption.salesScreen;
 
-import exceptions.DuplicateSerialIDException;
-import exceptions.SerialIDNotExistException;
+import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import logic.BusinessLogic;
-import logic.Customer;
 import logic.common.SuperDuperMarketConstants;
 import logic.discount.Discount;
 import logic.discount.IfYouBuySDM;
 import logic.discount.Offer;
 import logic.discount.ThenYouGetSDM;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
-import logic.order.StoreOrder.OpenedStoreOrder;
+import logic.order.itemInOrder.OrderedItemFromSale;
+import logic.order.itemInOrder.OrderedItemFromStore;
 
-import javax.xml.bind.JAXBException;
 import java.util.List;
 
 public class SalesScreenController {
 
+    @FXML private ListView<Discount> listViewSales;
+    @FXML private ComboBox<Discount> comboBoxChooseSale;
+    @FXML private Button buttonAdd;
+    @FXML private ComboBox<Offer> comboBoxChooseItem;
+
+    @FXML private TableView tableViewSales;
+    @FXML private TableColumn<OrderedItemFromSale, String> salesTableNameCol;
+    @FXML private TableColumn<OrderedItemFromSale, String>salesTableSerialIDCol;
+    @FXML private TableColumn<OrderedItemFromSale, String> salesTableAmountCol;
+    @FXML private TableColumn<OrderedItemFromSale, String> salesTablePriceCol;
+    @FXML private TableColumn<OrderedItemFromSale, String> salesTableTotalPriceCol;
+    @FXML private TableColumn<OrderedItemFromSale, String> salesTableSaleNameCol;
+
+    @FXML private TableView tableViewCart;
+    @FXML private TableColumn<OrderedItemFromStore, String> cartTableNameCol;
+    @FXML private TableColumn<OrderedItemFromStore, String>  cartTablePriceCol;
+    @FXML private TableColumn<OrderedItemFromStore, String> cartTableSerialIDCol;
+    @FXML private TableColumn<OrderedItemFromStore, String> cartTableAmountCol;
+    @FXML private TableColumn<OrderedItemFromStore, String> cartTableTotalPriceCol;
+
     BusinessLogic businessLogic;
     OpenedCustomerOrder openedCustomerOrder;
+
+    SimpleBooleanProperty saleChosen;
+    SimpleBooleanProperty saleChosenIsOneOf;
+    SimpleBooleanProperty itemChosen;
+    SimpleBooleanProperty itemComboBoxIsVisible;
+
+    public SalesScreenController()
+    {
+         saleChosen = new SimpleBooleanProperty(false);
+         itemChosen = new SimpleBooleanProperty(false);
+         itemComboBoxIsVisible = new SimpleBooleanProperty(false);
+         saleChosenIsOneOf = new SimpleBooleanProperty(false);
+    }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
@@ -33,14 +67,43 @@ public class SalesScreenController {
 
     public void setOpenedCustomerOrder(OpenedCustomerOrder openedCustomerOrder) {
         this.openedCustomerOrder = openedCustomerOrder;
+        openedCustomerOrder.initializeAvailableDiscountMapInOpenedStoreOrders();
+        openedCustomerOrder.initializeItemsAmountLeftToUseInSalesMapInOpenedStoreOrders();
+        setDiscounts(openedCustomerOrder.generateListOfDiscounts());
+        setCartTableData();
+        setSalesTableData();
     }
 
     public void setDiscounts(List<Discount> discountList)
     {
+        listViewSales.getItems().clear();
+        comboBoxChooseSale.getItems().clear();
         for(Discount discount : discountList)
         {
             listViewSales.getItems().add(discount);
+            comboBoxChooseSale.getItems().add(discount);
         }
+    }
+
+    public void initializeComboBoxSales()
+    {
+        comboBoxChooseSale.setConverter(new StringConverter<Discount>() {
+            @Override
+            public String toString(Discount object) {
+                return object.getName();
+            }
+
+            @Override
+            public Discount fromString(String string) {
+                return comboBoxChooseSale.getItems().stream().filter(ap ->
+                        ap.getName().equals(string)).findFirst().orElse(null);
+            }
+        });
+
+    }
+
+    public void initializeListViewSales()
+    {
         listViewSales.setCellFactory(param -> new ListCell<Discount>() {
             @Override
             protected void updateItem(Discount discount, boolean empty) {
@@ -61,15 +124,50 @@ public class SalesScreenController {
         });
     }
 
+    public void initializeComboBoxItems()
+    {
+        comboBoxChooseItem.setConverter(new StringConverter<Offer>() {
+            @Override
+            public String toString(Offer object) {
+                return object.getQuantity() + " of " + businessLogic.getItemBySerialID(object.getItemId()).getName() + " for " + object.getForAdditional() + "$";
+            }
+
+            @Override
+            public Offer fromString(String string) {
+                return null;
+            }
+        });
+
+
+        comboBoxChooseItem.visibleProperty().bind(
+                Bindings.and(
+                        saleChosen,
+                        saleChosenIsOneOf
+                )
+        );
+
+        itemComboBoxIsVisible.bind(comboBoxChooseItem.visibleProperty());
+    }
+
     public void initialize() {
 
+        initializeListViewSales();
+        initializeComboBoxSales();
+        initializeComboBoxItems();
+        initializeSalesCols();
+        initializetCartCols();
+
+        buttonAdd.disableProperty().bind(
+                Bindings.or(
+                        saleChosen.not(),
+                        comboBoxChooseItem.visibleProperty().and(itemChosen.not())));
     }
 
     private String message(String nameOfSale, Double quantity, Integer itemID, List<Offer> offerList, String operator)
     {
         String message = "Name of sale: " + nameOfSale + "\n" +
                 "Buy: " + quantity + " of " + businessLogic.getItemBySerialID(itemID).getName() + "\n" +
-                "Get: ";
+                "Get:\n";
         message = message.concat(getStringByOperator(offerList, operator));
         return message;
     }
@@ -96,60 +194,153 @@ public class SalesScreenController {
     }
 
     @FXML
-    private ListView<Discount> listViewSales;
+    void addAction(ActionEvent event)
+    {
+        Discount discount = comboBoxChooseSale.getValue();
+        System.out.println("Clicked on add action");
+        if(discount != null)
+        {
+            String operator = discount.getThenYouGet().getOperator();
+            System.out.println("discount not null");
+            if(operator.equals(SuperDuperMarketConstants.ONE_OF))
+            {
+                Offer offer = comboBoxChooseItem.getValue();
+                if(offer != null)
+                {
+                    System.out.println("ONE-OF!!!!!");
+                    openedCustomerOrder.applyDiscountOneOf(discount.getName(), offer);
+                }
+                saleChosen.set(false);
+                saleChosenIsOneOf.set(false);
+            }
+            else if(operator.equals(SuperDuperMarketConstants.ALL_OR_NOTHING) || operator.equals("IRRELEVANT"))
+            {
+                System.out.println("ALL-OR-NOTHING!!!!!");
+                openedCustomerOrder.applyDiscountAllOrNothing(discount.getName());
+            }
+            else
+            {
 
-    @FXML
-    private ComboBox<?> comboBoxChooseSale;
+            }
+        }
+        setDiscounts(openedCustomerOrder.generateListOfDiscounts());
+        setSalesTableData();
+    }
 
-    @FXML
-    private Button buttonAdd;
+    void setSalesTableData()
+    {
+        final ObservableList<OrderedItemFromSale> orderedItemFromSaleList = FXCollections.observableList(openedCustomerOrder.generateListOfOrderedItemFromSaleWithDiscountName());
+        tableViewSales.setItems(orderedItemFromSaleList);
+    }
+    void initializetCartCols()
+    {
+        cartTableNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getName());
+            }
+        });
 
-    @FXML
-    private ComboBox<?> comboBoxChooseItem;
+        cartTableSerialIDCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getSerialNumber().toString());
+            }
+        });
 
-    @FXML
-    private TableColumn<?, ?> salesTableNameCol;
+        cartTableAmountCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
+            }
+        });
 
-    @FXML
-    private TableColumn<?, ?> salesTableSerialIDCol;
+        cartTablePriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getPricePerUnit().toString());
+            }
+        });
+        cartTableTotalPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getTotalPriceOfItemOrderedByTypeOfMeasure().toString());
+            }
+        });
+    }
 
-    @FXML
-    private TableColumn<?, ?> salesTableAmountCol;
+    void initializeSalesCols()
+    {
+        salesTableNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getOrderedItemFromStore().getName());
+            }
+        });
+        salesTableSerialIDCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getOrderedItemFromStore().getSerialNumber().toString());
+            }
+        });
+        salesTableAmountCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getOrderedItemFromStore().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
+            }
+        });
+        salesTablePriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getOrderedItemFromStore().getPricePerUnit().toString());
+            }
+        });
+        salesTableTotalPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getOrderedItemFromStore().getTotalPriceOfItemOrderedByTypeOfMeasure().toString());
+            }
+        });
+        salesTableSaleNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
+            @Override
+            public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getSaleName());
+            }
+        });
 
-    @FXML
-    private TableColumn<?, ?> salesTablePriceCol;
-
-    @FXML
-    private TableColumn<?, ?> salesTableTotalPriceCol;
-
-    @FXML
-    private TableColumn<?, ?> salesTableSaleNameCol;
-
-    @FXML
-    private TableColumn<?, ?> cartTableNameCol;
-
-    @FXML
-    private TableColumn<?, ?> cartTableSerialIDCol;
-
-    @FXML
-    private TableColumn<?, ?> cartTableAmountCol;
-
-    @FXML
-    private TableColumn<?, ?> cartTableTotalPriceCol;
-
-    @FXML
-    void addAction(ActionEvent event) {
 
     }
 
-    @FXML
-    void chooseItem(ActionEvent event) {
-
+    void setCartTableData()
+    {
+        final ObservableList<OrderedItemFromStore> dataOfItems = FXCollections.observableList(openedCustomerOrder.generateListsOfItemNotFromSale());
+        tableViewCart.setItems(dataOfItems);
     }
 
     @FXML
-    void chooseSale(ActionEvent event) {
+    void chooseItem(ActionEvent event)
+    {
+        itemChosen.set(true);
+    }
 
+    @FXML
+    void chooseSale(ActionEvent event)
+    {
+        if(comboBoxChooseSale.getValue() != null)
+        {
+            saleChosen.set(true);
+            Discount discount = comboBoxChooseSale.getValue();
+            if(discount.getThenYouGet().getOperator().equals(SuperDuperMarketConstants.ONE_OF))
+            {
+                saleChosenIsOneOf.set(true);
+                comboBoxChooseItem.setItems(FXCollections.observableList(discount.getThenYouGet().getOfferList()));
+
+            }
+            else
+            {
+                saleChosenIsOneOf.set(false);
+            }
+        }
     }
 
 }

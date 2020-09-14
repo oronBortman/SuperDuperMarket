@@ -9,9 +9,9 @@ public interface OpenedOrder {
 
     public Double calcTotalPriceOfOrder(SDMLocation inputLocation);
 
-    public abstract Double calcTotalPriceOfItems();
+    public abstract Double calcTotalPriceOfItemsNotFromSale();
 
-    public abstract Integer calcTotalAmountOfItemsByUnit();
+    public abstract Double calcTotalAmountOfItemsNotFromSaleByUnit();
     /*public logic.Orders.orderItems.OrderedItem getItemInOrder(int serialIDOfItem)
     {
         return getOrderedItems().get(serialIDOfItem);
@@ -19,5 +19,5 @@ public interface OpenedOrder {
 
     public abstract boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem);
 
-    public abstract Integer calcTotalAmountOfItemsType();
+    public abstract Integer calcTotalAmountOfItemsTypeNotFromSale();
 }

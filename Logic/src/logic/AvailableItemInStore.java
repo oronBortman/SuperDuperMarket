@@ -3,11 +3,11 @@ package logic;
 import javafx.beans.property.SimpleIntegerProperty;
 
 public class AvailableItemInStore extends Item {
-    private SimpleIntegerProperty pricePerUnit;
+    private Integer pricePerUnit;
 
-    public AvailableItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int pricePerUnit) {
+    public AvailableItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, Integer pricePerUnit) {
         super(serialNumber, name, purchaseCategory);
-        this.pricePerUnit = new SimpleIntegerProperty(pricePerUnit);
+        this.pricePerUnit = pricePerUnit;
     }
 
    public AvailableItemInStore(Integer serialNumber, String name, TypeOfMeasure purchaseCategory) {
@@ -16,7 +16,7 @@ public class AvailableItemInStore extends Item {
 
     public AvailableItemInStore(Item item, int price) {
         super(item);
-        this.pricePerUnit = new SimpleIntegerProperty(price);
+        this.pricePerUnit = price;
     }
 
     public AvailableItemInStore(Item item) {
@@ -28,9 +28,9 @@ public class AvailableItemInStore extends Item {
         this.pricePerUnit = availableItemInStore.pricePerUnit;
     }
 
-    public int getPricePerUnit()
+    public Integer getPricePerUnit()
     {
-        return pricePerUnit.getValue();
+        return pricePerUnit;
     }
-    public void setPricePerUnit(int pricePerUnit) {this.pricePerUnit = new SimpleIntegerProperty(pricePerUnit);}
+    public void setPricePerUnit(Integer pricePerUnit) {this.pricePerUnit = pricePerUnit;}
 }

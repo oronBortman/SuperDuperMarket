@@ -6,7 +6,7 @@ import java.util.Objects;
 
 public class OrderedItemFromStoreByWeight extends OrderedItemFromStore {
     private double amountOfItemOrderedByWeight;
-    private static final int amountOfItemOrderedByUnitsInItemWithWeight = 1;
+    private static final double amountOfItemOrderedByUnitsInItemWithWeight = 1;
     public OrderedItemFromStoreByWeight(Integer serialNumber, String name, int price, double amountOfItemOrderedByWeight) {
         super(serialNumber, name, TypeOfMeasure.Weight, price, amountOfItemOrderedByUnitsInItemWithWeight);
         this.amountOfItemOrderedByWeight = amountOfItemOrderedByWeight;
@@ -30,6 +30,11 @@ public class OrderedItemFromStoreByWeight extends OrderedItemFromStore {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), amountOfItemOrderedByWeight);
+    }
+
+    @Override
+    public void addQuantity(Double quantity) {
+        this.amountOfItemOrderedByWeight += quantity;
     }
 
     OrderedItemFromStoreByWeight(Integer serialNumber, String name, double amountOfItemOrderedByWeight) {

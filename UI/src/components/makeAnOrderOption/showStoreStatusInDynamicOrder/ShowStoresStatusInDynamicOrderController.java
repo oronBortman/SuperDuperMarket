@@ -2,7 +2,6 @@ package components.makeAnOrderOption.showStoreStatusInDynamicOrder;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
-import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -143,7 +142,7 @@ public class ShowStoresStatusInDynamicOrderController {
         amountOfItemsPurchasedCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalAmountOfItemsType().toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalAmountOfItemsTypeNotFromSale().toString());
             }
         });
 
@@ -151,7 +150,7 @@ public class ShowStoresStatusInDynamicOrderController {
         totalPriceOfItemsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalPriceOfItems().toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalPriceOfItemsNotFromSale().toString());
             }
         });
 

@@ -76,6 +76,11 @@ public class Store {
         return (discountNameDMap.values().stream().filter(x -> x.checkIfDiscountContainsItemFromListOfItems(listOfItemsSerialID)).collect(Collectors.toList()));
     }
 
+    public Discount getDiscountFromStoreByName(String discountName)
+    {
+        return discountNameDMap.get(discountName);
+    }
+
     public ThenYouGetSDM addOffersToThenYouGet(ThenYouGet thenYouGet) throws ItemIDNotExistInAStoreException {
         ThenYouGetSDM thenYouGetSDM = new ThenYouGetSDM(thenYouGet);
         List<SDMOffer> sdmOfferList = thenYouGet.getSDMOffer();
@@ -199,9 +204,9 @@ public class Store {
     {
         return ItemsSerialIDMap;
     }
-    public int getAmountOfItemSoledByUnit(Integer itemID)
+    public double getAmountOfItemSoledByUnit(Integer itemID)
     {
-        return ordersSerialIDMap.values().stream().mapToInt(closedStoreOrder -> closedStoreOrder.getAmountOfCertainItemByUnit(itemID)).sum();
+        return ordersSerialIDMap.values().stream().mapToDouble(closedStoreOrder -> closedStoreOrder.getAmountOfCertainItemByUnit(itemID)).sum();
     }
     public double getAmountOfItemSoledByTypeOfMeasure(Integer itemID)
     {
