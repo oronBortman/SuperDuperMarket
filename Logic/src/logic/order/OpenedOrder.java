@@ -5,7 +5,7 @@ import logic.SDMLocation;
 public interface OpenedOrder {
 
     //TODO
-    public abstract Double calcTotalDeliveryPrice(SDMLocation inputLocation);
+    public abstract Double calcTotalDeliveryPrice();
 
     public Double calcTotalPriceOfOrder(SDMLocation inputLocation);
 

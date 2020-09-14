@@ -8,7 +8,7 @@ import logic.Store;
 import java.util.Date;
 import java.util.Map;
 
-public class ClosedStoreOrder extends StoreOrder implements ClosedOrder {
+public class ClosedStoreOrder extends StoreOrder{
 
     private Integer serialNumber;
     private double deliveryPrice;

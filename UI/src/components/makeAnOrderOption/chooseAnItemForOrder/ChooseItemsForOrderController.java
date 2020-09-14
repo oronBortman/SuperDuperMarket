@@ -65,7 +65,6 @@ public class ChooseItemsForOrderController {
         for(Item item : itemsList)
         {
             System.out.println(item.getName() + "!!!!!!");
-//item.getClass() == OrderedItemByQuantity.class
             if(item.getTypeOfMeasure() == Item.TypeOfMeasure.Quantity)
             {
                 System.out.println("Adding quantity item");

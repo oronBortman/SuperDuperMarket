@@ -135,7 +135,7 @@ public class ShowStoresStatusInDynamicOrderController {
                 Store store = param.getValue().getStoreUsed();
                 SDMLocation storeLocation = store.getLocationOfShop();
                 SDMLocation customerLocation = openedCustomerOrder.getCustomerLocation();
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalDeliveryPrice(customerLocation).toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalDeliveryPrice().toString());
             }
         });
 

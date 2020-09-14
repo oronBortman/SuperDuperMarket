@@ -33,9 +33,9 @@
           <center>
               <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" BorderPane.alignment="CENTER">
                   <children>
-                  <ScrollPane prefHeight="208.0" prefWidth="518.0">
+                  <ScrollPane hbarPolicy="ALWAYS" prefHeight="208.0" prefWidth="518.0" vbarPolicy="ALWAYS">
                      <content>
-                        <FlowPane id="flowPaneItems" fx:id="flowPaneItems" prefHeight="228.0" prefWidth="514.0" />
+                        <FlowPane id="flowPaneItems" fx:id="flowPaneItems" prefHeight="396.0" prefWidth="516.0" />
                      </content>
                   </ScrollPane>
                   </children>

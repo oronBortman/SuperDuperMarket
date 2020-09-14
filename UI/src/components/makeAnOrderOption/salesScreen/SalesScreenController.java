@@ -22,6 +22,7 @@ import logic.order.itemInOrder.OrderedItemFromSale;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.util.List;
+import java.util.function.Consumer;
 
 public class SalesScreenController {
 
@@ -29,6 +30,7 @@ public class SalesScreenController {
     @FXML private ComboBox<Discount> comboBoxChooseSale;
     @FXML private Button buttonAdd;
     @FXML private ComboBox<Offer> comboBoxChooseItem;
+    @FXML private Button buttonNext;
 
     @FXML private TableView tableViewSales;
     @FXML private TableColumn<OrderedItemFromSale, String> salesTableNameCol;
@@ -47,11 +49,19 @@ public class SalesScreenController {
 
     BusinessLogic businessLogic;
     OpenedCustomerOrder openedCustomerOrder;
+    Consumer<Boolean> isNextClickedConsumer;
 
     SimpleBooleanProperty saleChosen;
     SimpleBooleanProperty saleChosenIsOneOf;
     SimpleBooleanProperty itemChosen;
     SimpleBooleanProperty itemComboBoxIsVisible;
+    SimpleBooleanProperty isNextClicked;
+
+
+    public void setProperties(Consumer<Boolean> isNextClicked)
+    {
+        this.isNextClickedConsumer = isNextClicked;
+    }
 
     public SalesScreenController()
     {
@@ -59,6 +69,7 @@ public class SalesScreenController {
          itemChosen = new SimpleBooleanProperty(false);
          itemComboBoxIsVisible = new SimpleBooleanProperty(false);
          saleChosenIsOneOf = new SimpleBooleanProperty(false);
+         isNextClicked = new SimpleBooleanProperty(false);;
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -161,6 +172,8 @@ public class SalesScreenController {
                 Bindings.or(
                         saleChosen.not(),
                         comboBoxChooseItem.visibleProperty().and(itemChosen.not())));
+
+
     }
 
     private String message(String nameOfSale, Double quantity, Integer itemID, List<Offer> offerList, String operator)
@@ -341,6 +354,12 @@ public class SalesScreenController {
                 saleChosenIsOneOf.set(false);
             }
         }
+    }
+    @FXML
+    void clickedOnNextButton(ActionEvent event)
+    {
+        isNextClicked.set(true);
+        isNextClickedConsumer.accept(true);
     }
 
 }

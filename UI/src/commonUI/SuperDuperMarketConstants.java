@@ -22,6 +22,8 @@ public class SuperDuperMarketConstants {
     public static final String QUANTITY_ITEM_RESOURCE_IDENTIFEIR = "/components/makeAnOrderOption/Item/QuantityItem/QuantityItem.fxml";
     public static final String WEIGHT_ITEM_RESOURCE_IDENTIFEIR = "/components/makeAnOrderOption/Item/WeightItem/WeightItem.fxml";
     public static final String SHOW_STORES_STATUS_IN_DYNAMIC_ORDER = "/components/makeAnOrderOption/showStoreStatusInDynamicOrder/showStoresStatusInDynamicOrder.fxml";
+    public static final String SUMMERY_OF_ORDER = "/components/makeAnOrderOption/SummeryOfOrder/SummeryOfOrder.fxml";
+    public static final String SHOW_SUMMERY_OF_ORDER_IN_STORE = "/components/makeAnOrderOption/ShowSummeryOfOrderInStore/showSummeryOfOrderInStore.fxml";
     public static final String SALES_SCREEN = "/components/makeAnOrderOption/salesScreen/SalesScreen.fxml";
 
 }

@@ -7,7 +7,7 @@ import logic.order.StoreOrder.ClosedStoreOrder;
 import java.util.Date;
 import java.util.Map;
 
-public class ClosedCustomerOrder extends Order implements ClosedOrder {
+public class ClosedCustomerOrder extends Order {
 
     Integer SerialNumber;
     Map<Integer, ClosedStoreOrder> closedStoresOrderMapByStoreSerialID;
@@ -76,12 +76,10 @@ public class ClosedCustomerOrder extends Order implements ClosedOrder {
 
     }
 
-    @Override
     public Integer getSerialNumber() {
         return SerialNumber;
     }
 
-    @Override
     public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem) {
         return false;
     }

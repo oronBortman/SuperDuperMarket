@@ -1,5 +1,7 @@
 package logic.order.StoreOrder;
 
+import logic.Customer;
+import logic.SDMLocation;
 import logic.Store;
 import logic.order.Order;
 import logic.order.itemInOrder.OrderedItemFromStore;
@@ -10,25 +12,31 @@ import java.util.Map;
 
 public class StoreOrder extends Order {
 
+    SDMLocation customerLocation;
     Store storeUsed;
     private Map<Integer, OrderedItemFromStore> orderedItemsNotFromSale;
     private Map<String, Map<Integer, OrderedItemFromStore>> orderedItemsFromSale;
 
-    public StoreOrder(Store store, Date date, boolean isOrderStatic)
+    public StoreOrder(Store store, Date date, boolean isOrderStatic, SDMLocation customerLocation)
     {
         super(date, isOrderStatic);
+        this.customerLocation = customerLocation;
         this.storeUsed = store;
         orderedItemsNotFromSale = new HashMap<Integer, OrderedItemFromStore>();
         orderedItemsFromSale = new HashMap<String,Map<Integer, OrderedItemFromStore>>();
     }
 
-    public StoreOrder(Date date, boolean isOrderStatic)
+    public StoreOrder(Date date, boolean isOrderStatic, SDMLocation customerLocation)
     {
         super(date, isOrderStatic);
+        this.customerLocation=customerLocation;
         orderedItemsNotFromSale = new HashMap<Integer, OrderedItemFromStore>();
         orderedItemsFromSale = new HashMap<String,Map<Integer, OrderedItemFromStore>>();
     }
 
+    public StoreOrder(Date date, boolean isOrderStatic) {
+        super(date, isOrderStatic);
+    }
 
 
     @Override

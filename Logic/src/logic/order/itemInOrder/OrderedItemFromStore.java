@@ -5,7 +5,7 @@ import logic.AvailableItemInStore;
 
 import java.util.Objects;
 
-public abstract class OrderedItemFromStore extends AvailableItemInStore {
+public abstract class OrderedItemFromStore extends AvailableItemInStore implements OrderedItem {
     private Double amountOfItemOrderedByUnits;
 
     /*logic.Orders.orderItems.OrderedItem(Integer serialNumber, String name, TypeOfMeasure purchaseCategory, int price) {

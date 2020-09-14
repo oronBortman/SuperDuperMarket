@@ -4,7 +4,7 @@ import logic.AvailableItemInStore;
 
 import java.util.Objects;
 
-public class OrderedItemFromStoreByWeight extends OrderedItemFromStore {
+public class OrderedItemFromStoreByWeight extends OrderedItemFromStore implements OrderedItem{
     private double amountOfItemOrderedByWeight;
     private static final double amountOfItemOrderedByUnitsInItemWithWeight = 1;
     public OrderedItemFromStoreByWeight(Integer serialNumber, String name, int price, double amountOfItemOrderedByWeight) {

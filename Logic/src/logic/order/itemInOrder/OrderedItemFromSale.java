@@ -1,6 +1,6 @@
 package logic.order.itemInOrder;
 
-public class OrderedItemFromSale {
+public class OrderedItemFromSale implements  OrderedItem{
     String saleName;
     OrderedItemFromStore orderedItemFromStore;
 

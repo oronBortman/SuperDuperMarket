@@ -1,44 +1,39 @@
 package logic.order.StoreOrder;
 
-import logic.AvailableItemInStore;
-import logic.Item;
-import logic.SDMLocation;
-import logic.Store;
+import logic.*;
 import logic.discount.Discount;
 import logic.discount.IfYouBuySDM;
 import logic.discount.Offer;
 import logic.order.OpenedOrder;
-import logic.order.itemInOrder.OrderedItemFromSale;
-import logic.order.itemInOrder.OrderedItemFromStore;
-import logic.order.itemInOrder.OrderedItemFromStoreByQuantity;
-import logic.order.itemInOrder.OrderedItemFromStoreByWeight;
+import logic.order.itemInOrder.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toCollection;
 
-public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
+public class OpenedStoreOrder extends StoreOrder{
 
     Map<String, Discount> discountsInStoresThatAreValidInOrder = new HashMap<String, Discount>();
     Map<Integer, Double> itemsAmountLeftToUseInSalesMap = new HashMap<Integer, Double>();
 
-    public OpenedStoreOrder(Store store, Date date, boolean isOrderStatic)
+    public OpenedStoreOrder(Store store, Date date, boolean isOrderStatic, SDMLocation customerLocation)
     {
-        super(store, date, isOrderStatic);
+        super(store, date, isOrderStatic, customerLocation);
+
     }
 
-    public OpenedStoreOrder(Date date, boolean isOrderStatic)
-    {
-        super(date, isOrderStatic);
-    }
-
-    @Override
-    public Double calcTotalDeliveryPrice(SDMLocation inputLocation) {
+    public Double calcTotalDeliveryPrice() {
         SDMLocation storeLocation = storeUsed.getLocationOfShop();
         int PPK = storeUsed.getPPK();
-        double distanceBetweenTwoLocations = inputLocation.getAirDistanceToOtherLocation(storeLocation);
+        double distanceBetweenTwoLocations = customerLocation.getAirDistanceToOtherLocation(storeLocation);
         return(PPK * distanceBetweenTwoLocations);
+    }
+
+    public Double calcDistanceToCustomer()
+    {
+        return customerLocation.getAirDistanceToOtherLocation(storeUsed.getLocationOfShop());
     }
 
     public Map<Integer, Double> getItemsAmountLeftToUseInSalesMap() {
@@ -68,6 +63,11 @@ public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
             }
         }
         return orderedItemFromSaleListWithDiscountNames;
+    }
+
+    public List<OrderedItem> generateListOfGeneralOrderedItems()
+    {
+        return Stream.concat(generateListOfOrderedItemFromSaleWithDiscountName().stream(), generateListOfOrdereItemsNotFromSale().stream()).collect(Collectors.toList());
     }
 
     public List<Discount> generateListOfDiscountsInStoresThatAreValidInOrder() {
@@ -246,13 +246,11 @@ public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
     }*/
 
 
-    @Override
     public Double calcTotalPriceOfOrder(SDMLocation inputLocation)
     {
-        return calcTotalPriceOfItemsNotFromSale() + calcTotalDeliveryPrice(inputLocation);
+        return calcTotalPriceOfItemsNotFromSale() + calcTotalDeliveryPrice();
     }
 
-    @Override
     public Double calcTotalPriceOfItemsNotFromSale()
     {
         return getOrderedItemsNotFromSale().values().stream().mapToDouble(OrderedItemFromStore::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
@@ -312,7 +310,7 @@ public class OpenedStoreOrder extends StoreOrder implements OpenedOrder {
     public ClosedStoreOrder closeOrder(SDMLocation location)
     {
         Double totalPriceOfItems = calcTotalPriceOfItemsNotFromSale();
-        Double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice(location);
+        Double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice();
         Double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
         Double totalAmountOfItemsByUnit = calcTotalAmountOfItemsNotFromSaleByUnit();
         Integer totalAmountOfItemsType = calcTotalAmountOfItemsTypeNotFromSale();

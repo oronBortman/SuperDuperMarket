@@ -16,20 +16,27 @@
 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.salesScreen.SalesScreenController">
    <content>
       <BorderPane>
-         <center>
-            <AnchorPane minHeight="900.0" minWidth="600.0" prefHeight="600.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <opaqueInsets>
+            <Insets left="400.0" />
+         </opaqueInsets>
+         <bottom>
+            <AnchorPane minHeight="822.0" minWidth="585.0" prefHeight="838.0" prefWidth="608.0" BorderPane.alignment="CENTER">
                <children>
-                  <ListView fx:id="listViewSales" layoutX="36.0" layoutY="52.0" prefHeight="217.0" prefWidth="529.0" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="36.0" layoutY="52.0" vbarPolicy="ALWAYS">
+                     <content>
+                        <ListView fx:id="listViewSales" prefHeight="217.0" prefWidth="529.0" />
+                     </content>
+                  </ScrollPane>
                   <Label layoutX="270.0" layoutY="14.0" prefHeight="34.0" prefWidth="99.0" text="Sales">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="comboBoxChooseSale" layoutX="189.0" layoutY="290.0" onAction="#chooseSale" prefWidth="150.0" promptText="Choose your sale" />
-                  <Button fx:id="buttonAdd" layoutX="369.0" layoutY="290.0" mnemonicParsing="false" onAction="#addAction" text="Add" />
-                  <ComboBox fx:id="comboBoxChooseItem" layoutX="189.0" layoutY="338.0" onAction="#chooseItem" prefWidth="150.0" promptText="Choose item" />
+                  <ComboBox fx:id="comboBoxChooseSale" layoutX="189.0" layoutY="304.0" onAction="#chooseSale" prefWidth="150.0" promptText="Choose your sale" />
+                  <Button fx:id="buttonAdd" layoutX="369.0" layoutY="304.0" mnemonicParsing="false" onAction="#addAction" text="Add" />
+                  <ComboBox fx:id="comboBoxChooseItem" layoutX="189.0" layoutY="347.0" onAction="#chooseItem" prefWidth="150.0" promptText="Choose item" />
                   <Separator layoutX="14.0" layoutY="389.0" prefHeight="3.0" prefWidth="558.0" />
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="24.0" layoutY="450.0" vbarPolicy="ALWAYS">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="25.0" layoutY="431.0" prefHeight="138.0" prefWidth="555.0" vbarPolicy="ALWAYS">
                      <content>
                         <TableView fx:id="tableViewSales" prefHeight="136.0" prefWidth="538.0">
                           <columns>
@@ -43,7 +50,7 @@
                         </TableView>
                      </content>
                   </ScrollPane>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="24.0" layoutY="659.0" vbarPolicy="ALWAYS">
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="26.0" layoutY="620.0" prefHeight="140.0" prefWidth="553.0" vbarPolicy="ALWAYS">
                      <content>
                         <TableView fx:id="tableViewCart" prefHeight="194.0" prefWidth="521.0">
                           <columns>
@@ -56,18 +63,16 @@
                         </TableView>
                      </content>
                   </ScrollPane>
-                  <Label layoutX="255.0" layoutY="623.0" text="Cart" />
-                  <Label layoutX="255.0" layoutY="418.0" text="Sales" />
-                  <Separator layoutX="14.0" layoutY="609.0" prefHeight="3.0" prefWidth="558.0" />
+                  <Label layoutX="258.0" layoutY="594.0" text="Cart" />
+                  <Label layoutX="255.0" layoutY="402.0" text="Sales" />
+                  <Separator layoutX="15.0" layoutY="583.0" prefHeight="3.0" prefWidth="558.0" />
+                  <Button fx:id="buttonNext" layoutX="509.0" layoutY="790.0" mnemonicParsing="false" onAction="#clickedOnNextButton" prefHeight="28.0" prefWidth="74.0" text="Next" />
                </children>
                <opaqueInsets>
                   <Insets left="400.0" />
                </opaqueInsets>
             </AnchorPane>
-         </center>
-         <opaqueInsets>
-            <Insets left="400.0" />
-         </opaqueInsets>
+         </bottom>
       </BorderPane>
    </content>
 </ScrollPane>

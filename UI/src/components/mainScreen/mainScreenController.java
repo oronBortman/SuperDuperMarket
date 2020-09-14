@@ -2,6 +2,8 @@ package components.mainScreen;
 
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
 import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
+import components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
+import components.makeAnOrderOption.SummeryOfOrder.SummeryOfOrderController;
 import components.makeAnOrderOption.salesScreen.SalesScreenController;
 import components.updateItemInStoreOption.addItemToStoreScreen.AddItemToStoreContoller;
 import components.makeAnOrderOption.chooseAnItemForOrder.ChooseItemsForOrderController;
@@ -17,6 +19,7 @@ import exceptions.SerialIDNotExistException;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Scene;
 import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
@@ -227,31 +230,98 @@ public class mainScreenController {
 
     @FXML
     void salesScreen(OpenedCustomerOrder openedCustomerOrder) throws IOException {
-        System.out.println("A");
         FXMLLoader loader = new FXMLLoader();
-        System.out.println("B");
-
         URL salesScreenFXML = getClass().getResource(SuperDuperMarketConstants.SALES_SCREEN);
-        System.out.println("C");
-
         loader.setLocation(salesScreenFXML);
-        System.out.println("D");
-
         ScrollPane gridPane = loader.load();
-        System.out.println("E");
-
         SalesScreenController salesScreenController = loader.getController();
-        System.out.println("F");
-
         salesScreenController.setOpenedCustomerOrder(openedCustomerOrder);
-        System.out.println("G");
-
         salesScreenController.setBusinessLogic(businessLogic);
-        System.out.println("H");
 
+        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    try {
+                        showSummeryOfOrder(openedCustomerOrder);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+
+        salesScreenController.setProperties(chooseNext);
         mainBorderPane.setCenter(gridPane);
     }
 
+    void showSummeryOfOrder(OpenedCustomerOrder openedCustomerOrder) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        URL showSummeryOfOrderInStoreFXML = getClass().getResource(SuperDuperMarketConstants.SUMMERY_OF_ORDER);
+        loader.setLocation(showSummeryOfOrderInStoreFXML);
+        ScrollPane gridPane = loader.load();
+        SummeryOfOrderController summeryOfOrderController = loader.getController();
+        summeryOfOrderController.setOpenedCustomerOrder(openedCustomerOrder);
+        summeryOfOrderController.setBusinessLogic(businessLogic);
+
+        Consumer<Boolean> isYesClickedConsumer = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    showMainScreen();
+                }
+            }
+        };
+
+        Consumer<Boolean> isNoClickedConsumer = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    showMainScreen();
+                }
+            }
+        };
+
+        summeryOfOrderController.setProperties(isYesClickedConsumer, isNoClickedConsumer);
+        mainBorderPane.setCenter(gridPane);
+    }
+
+    public void showMainScreen()
+    {
+        FXMLLoader loader = new FXMLLoader();
+
+        // load main fxml
+        URL mainFXML = getClass().getResource(SuperDuperMarketConstants.MAIN_FXML_RESOURCE_IDENTIFIER);
+        loader.setLocation(mainFXML);
+        BorderPane scrollPane = null;
+        try {
+            scrollPane = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        // wire up controller
+        components.mainScreen.mainScreenController superDuperMarketController = loader.getController();
+        BusinessLogic businessLogic = new BusinessLogic();
+        superDuperMarketController.setPrimaryStage(primaryStage);
+        try {
+            superDuperMarketController.setBusinessLogic(businessLogic);
+        } catch (SerialIDNotExistException e) {
+            e.printStackTrace();
+        } catch (JAXBException e) {
+            e.printStackTrace();
+        } catch (DuplicateSerialIDException e) {
+            e.printStackTrace();
+        }
+
+        // set stage
+        primaryStage.setTitle("Super Duper Market");
+        Scene scene = new Scene(scrollPane, 1050, 600);
+        primaryStage.setScene(scene);
+        primaryStage.show();
+    }
     @FXML
     void showItems(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();

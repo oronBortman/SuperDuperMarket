@@ -162,7 +162,7 @@ public class Store {
         return ItemsSerialIDMap.get(serialID);
     }
 
-    public ClosedOrder getOrderBySerialID(Integer serialID)
+    public ClosedStoreOrder getOrderBySerialID(Integer serialID)
     {
         return ordersSerialIDMap.get(serialID);
     }

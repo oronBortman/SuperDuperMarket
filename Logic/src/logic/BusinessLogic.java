@@ -51,7 +51,7 @@ public class BusinessLogic {
         return currentOrderSerialIDInSDK;
     }
 
-    public ClosedOrder getOrderBySerialID(Integer orderSerialID)
+    public ClosedCustomerOrder getOrderBySerialID(Integer orderSerialID)
     {
         return ordersSerialIDMap.get(orderSerialID);
     }
@@ -468,7 +468,7 @@ public class BusinessLogic {
         for (Map.Entry<Store, List<AvailableItemInStore>> entry : mapOfShopWithCheapestItems.entrySet()) {
             Store storeUsed = entry.getKey();
             List<AvailableItemInStore> availableItemInStoreList = entry.getValue();
-            OpenedStoreOrder openedStoreOrder = new OpenedStoreOrder(storeUsed, date, isOrderStatic);
+            OpenedStoreOrder openedStoreOrder = new OpenedStoreOrder(storeUsed, date, isOrderStatic, customer.getLocation());
 
             for (AvailableItemInStore itemInStore : availableItemInStoreList) {
                 if(itemInStore.getTypeOfMeasure() == Item.TypeOfMeasure.Weight) { addWeightItem(orderedItemsListByItemSerialIDAndWeight, itemInStore, openedStoreOrder);}
@@ -502,7 +502,7 @@ public class BusinessLogic {
     public OpenedCustomerOrder updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(Customer customer, Date date, Store store, Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight, Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity) {
         boolean isOrderStatic = true;
         OpenedCustomerOrder openedCustomerOrder = new OpenedCustomerOrder(date, customer.getLocation(), isOrderStatic);
-        OpenedStoreOrder openedStoreOrder = new OpenedStoreOrder(store, date, isOrderStatic);
+        OpenedStoreOrder openedStoreOrder = new OpenedStoreOrder(store, date, isOrderStatic, customer.getLocation());
 
 
         for (Map.Entry<Integer, Double> entry : orderedItemsListByItemSerialIDAndWeight.entrySet()) {

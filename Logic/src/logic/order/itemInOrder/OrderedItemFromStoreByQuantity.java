@@ -2,7 +2,7 @@ package logic.order.itemInOrder;
 
 import logic.AvailableItemInStore;
 
-public class OrderedItemFromStoreByQuantity extends OrderedItemFromStore {
+public class OrderedItemFromStoreByQuantity extends OrderedItemFromStore implements OrderedItem {
 
     public OrderedItemFromStoreByQuantity(Integer serialNumber, String name, int price, Double amountOfItemOrderedByUnits) {
         super(serialNumber, name, TypeOfMeasure.Quantity, price, amountOfItemOrderedByUnits);

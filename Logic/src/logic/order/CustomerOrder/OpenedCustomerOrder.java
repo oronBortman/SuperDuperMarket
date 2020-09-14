@@ -1,5 +1,7 @@
 package logic.order.CustomerOrder;
 
+import javafx.fxml.FXML;
+import javafx.scene.control.Label;
 import logic.SDMLocation;
 import logic.Store;
 import logic.discount.Discount;
@@ -15,7 +17,7 @@ import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
-public class OpenedCustomerOrder extends Order implements OpenedOrder {
+public class OpenedCustomerOrder extends Order {
 
     Map<Store, OpenedStoreOrder> openedStoresOrderMap;
     SDMLocation customerLocation;
@@ -34,6 +36,37 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
     {
 
     }
+
+    @FXML
+    private Label LabelTotalItemsCost;
+    @FXML private Label LabelTotalDeliveryPrice;
+    @FXML private Label LabelTotalOrderPrice;
+
+    public Double calcTotalItemsCost()
+    {
+        Double totalItemsCost=0.0;
+        for(OpenedStoreOrder openedStoreOrder : openedStoresOrderMap.values())
+        {
+            totalItemsCost+=openedStoreOrder.calcTotalPriceOfItemsFromSale();
+            totalItemsCost+=openedStoreOrder.calcTotalPriceOfItemsNotFromSale();
+        }
+        return totalItemsCost;
+    }
+
+    public Double calcTotalDeliveryPrice()
+    {
+        Double totalDeliveryPrice=0.0;
+        for(OpenedStoreOrder openedStoreOrder : openedStoresOrderMap.values())
+        {
+            totalDeliveryPrice+=openedStoreOrder.calcTotalDeliveryPrice();
+        }
+        return totalDeliveryPrice;
+    }
+    public Double calcTotalOrderPrice()
+    {
+        return calcTotalItemsCost() + calcTotalDeliveryPrice();
+    }
+
     public List<OrderedItemFromSale>  generateListOfOrderedItemFromSaleWithDiscountName()
     {
         List<OrderedItemFromSale> orderedItemFromSaleListWithDiscountNames = new ArrayList<>();
@@ -114,19 +147,6 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
     }
 
 
-    /*public boolean checkIfThereAreDiscountsLeft()
-    {
-        return itemsAmountLeftToUseInSalesMap.size() == 0;
-    }
-    public Map<Integer, Integer> getItemsAmountLeftToUseInSalesMap() {
-        return itemsAmountLeftToUseInSalesMap;
-    }
-
-    public int getHowMuchLeftToUseFromItemInSale(int itemSerialID)
-    {
-        return itemsAmountLeftToUseInSalesMap.get(itemSerialID);
-    }*/
-
     public Map<Store, OpenedStoreOrder> getOpenedStoresOrderMap() {
         return openedStoresOrderMap;
     }
@@ -142,35 +162,18 @@ public class OpenedCustomerOrder extends Order implements OpenedOrder {
         return customerLocation;
     }
 
-    @Override
-    public Double calcTotalDeliveryPrice(SDMLocation inputLocation) {
+    /*public Double calcTotalPriceOfItemsNotFromSale() {
         return 0.0;
-    }
-
-    @Override
-    public Double calcTotalPriceOfOrder(SDMLocation inputLocation) {
+    }*/
+    /*public Double calcTotalAmountOfItemsNotFromSaleByUnit() {
         return 0.0;
-    }
-
-    @Override
-    public Double calcTotalPriceOfItemsNotFromSale() {
-        return 0.0;
-    }
-
-    @Override
-    public Double calcTotalAmountOfItemsNotFromSaleByUnit() {
-        return 0.0;
-    }
-
-    @Override
+    }*/
     public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem) {
         return false;
     }
-
-    @Override
-    public Integer calcTotalAmountOfItemsTypeNotFromSale() {
+    /*public Integer calcTotalAmountOfItemsTypeNotFromSale() {
         return 0;
-    }
+    }*/
 
     public ClosedCustomerOrder closeCustomerOrder()
     {
