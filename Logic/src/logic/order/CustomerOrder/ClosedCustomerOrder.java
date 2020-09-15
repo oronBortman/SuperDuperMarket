@@ -76,6 +76,21 @@ public class ClosedCustomerOrder extends Order {
 
     }
 
+    public Double getTotalItemCostInOrder()
+    {
+
+    }
+
+    public Double getTotalDeliveryPriceInOrder()
+    {
+
+    }
+
+    public Double getTotalOrderPrice()
+    {
+
+    }
+
     public Integer getSerialNumber() {
         return SerialNumber;
     }

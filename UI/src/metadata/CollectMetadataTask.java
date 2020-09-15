@@ -22,9 +22,10 @@ public class CollectMetadataTask extends Task<Boolean> {
     private List<SDMCustomer> customers;
     private Consumer<String> errorMessage;
 
-    private final int SLEEP_TIME = 0;
+    private final int SLEEP_TIME = 2000;
 
     public CollectMetadataTask(String fileName, Consumer<Runnable> onCancel, BusinessLogic businessLogic) {
+        System.out.println("Instide collect metdata task c'tor");
         this.fileName = fileName;
         this.onCancel = onCancel;
         this.businessLogic = businessLogic;
@@ -32,10 +33,18 @@ public class CollectMetadataTask extends Task<Boolean> {
     }
 
     public void readListsFromXML() throws FileNotFoundException, JAXBException {
+        System.out.println("Read lists from xml");
         InputStream inputStream = new FileInputStream(fileName);
+        System.out.println("a" + fileName);
         SuperDuperMarketDescriptor descriptor = GeneralMethods.deserializeFrom(inputStream);
+        System.out.println("B");
+
         items = descriptor.getSDMItems().getSDMItem();
+        System.out.println("C");
+
         stores = descriptor.getSDMStores().getSDMStore();
+        System.out.println("D");
+
         customers = descriptor.getSDMCustomers().getSDMCustomer();
 
     }
@@ -48,12 +57,16 @@ public class CollectMetadataTask extends Task<Boolean> {
 
             readListsFromXML();
             updateMessage("Reading items..");
+            System.out.println("Reading items");
 
             readItemsFromXML();
+            System.out.println("Reading users");
 
             updateMessage("Reading Users..");
 
             readUsersFromXML();
+            System.out.println("Reading stores");
+
 
             updateMessage("Reading Stores..");
             readStoresFromXML();
@@ -82,6 +95,7 @@ public class CollectMetadataTask extends Task<Boolean> {
             try {
                 businessLogic.addItemsSerialIDMapFromXml(item);
                 if (isCancelled()) {
+                    SuperDuperMarketUtils.sleepForAWhile(0);
                     System.out.println("is Cancelled");
                     throw new TaskIsCanceledException();
                 }
@@ -190,7 +204,7 @@ public class CollectMetadataTask extends Task<Boolean> {
         //What to do if price is empty?
         List<SDMSell> sdmSellList = pricesInStore.getSDMSell();
         updateProgress(counter, sdmSellList.size());
-        SuperDuperMarketUtils.sleepForAWhile(0);
+        SuperDuperMarketUtils.sleepForAWhile(10);
 
         for (SDMSell sdmSell : sdmSellList) {
             businessLogic.addItemToStoreFromSDMSell(sdmSell, store.getId());

@@ -1,5 +1,6 @@
 package components.LoadingXMLFileScreen;
 
+import commonUI.SuperDuperMarketUtils;
 import exceptions.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -16,6 +17,7 @@ import logic.*;
 import metadata.*;
 import java.io.File;
 import java.util.Optional;
+import java.util.function.Consumer;
 
 public class LoadingXMLFileController {
 
@@ -37,11 +39,15 @@ public class LoadingXMLFileController {
 
     private Task<Boolean> currentRunningTask;
 
-    private BusinessLogic businessLogic;
+    private BusinessLogic businessLogicFromXML;
     private Stage primaryStage;
     private SimpleStringProperty fileName;
 
+    Consumer<Boolean> loadBusinessLogicSuccessfully;
+
+
     public LoadingXMLFileController() {
+        System.out.println("Inside loading xml c'tor");
         isActive = new SimpleBooleanProperty(false);
         isMetadataCollected = new SimpleBooleanProperty(false);
         selectedFileProperty = new SimpleStringProperty();
@@ -49,26 +55,38 @@ public class LoadingXMLFileController {
         fileName = new SimpleStringProperty();
     }
 
-    public void setBusinessLogic(BusinessLogic businessLogic) {
-        this.businessLogic = businessLogic;
-        fileNameProperty().bind(selectedFileProperty);
+    public void setProperties(Consumer<Boolean> loadBusinessLogicSuccessfully)
+    {
+        this.loadBusinessLogicSuccessfully = loadBusinessLogicSuccessfully;
     }
 
+
+    /*public void setBusinessLogic(BusinessLogic businessLogic) {
+        //this.businessLogicThatExist = businessLogic;
+        //this.businessLogic = businessLogic;
+    }
+*/
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
 
+    public BusinessLogic getBusinessLogicFromXML()
+    {
+        return businessLogicFromXML;
+    }
     @FXML
     private void initialize() {
         selectedFileName.textProperty().bind(selectedFileProperty);
         LoadFileButton.disableProperty().bind(isFileSelected.not());
         stopTaskButton.disableProperty().bind(isActive.not());
         clearTaskButton.disableProperty().bind(isActive);
+        fileNameProperty().bind(selectedFileProperty);
 
     }
 
     @FXML
    public void LoadFileButtonAction() {
+        this.businessLogicFromXML = new BusinessLogic();
         isActive.set(true);
         errorLabel.setText("");
 
@@ -89,7 +107,6 @@ public class LoadingXMLFileController {
         if (selectedFile == null) {
             return;
         }
-
         String absolutePath = selectedFile.getAbsolutePath();
         selectedFileProperty.set(absolutePath);
         isFileSelected.set(true);
@@ -132,6 +149,11 @@ public class LoadingXMLFileController {
 
         taskProgressBar.progressProperty().bind(aTask.progressProperty());
 
+        aTask.setOnSucceeded(e ->
+        {
+            System.out.println("Succeed!!!");
+            loadBusinessLogicSuccessfully.accept(true);
+        });
         aTask.setOnFailed(e ->
         {
             Throwable ex = aTask.getException();
@@ -251,6 +273,7 @@ public class LoadingXMLFileController {
                     errorLabel.setText("Error: The location " + locationStr + " of the store with name " + store.getName() + " and serial ID: " + store.getSerialNumber() +
                             "\nis identical to the location of the customer with name " + customer.getName() + " and serial ID: " + customer.getSerialNumber());
                 }
+                SuperDuperMarketUtils.sleepForAWhile(100);
             }
         });
         // task percent label
@@ -267,6 +290,7 @@ public class LoadingXMLFileController {
         aTask.valueProperty().addListener((observable, oldValue, newValue) -> {
             onTaskFinished(Optional.ofNullable(onFinish));
         });
+
     }
 
     public void onTaskFinished(Optional<Runnable> onFinish) {
@@ -283,7 +307,8 @@ public class LoadingXMLFileController {
 
     public void collectMetadata( Runnable onFinish) {
 
-        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), (q) -> onTaskFinished(Optional.ofNullable(onFinish)),  businessLogic);
+        System.out.println("Inside collectMetadata");
+        CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), (q) -> onTaskFinished(Optional.ofNullable(onFinish)),  businessLogicFromXML);
         setCurrentRunningTask(currentRunningTask);
 
         Thread t = new Thread(currentRunningTask);

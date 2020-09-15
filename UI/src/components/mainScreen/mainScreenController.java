@@ -36,8 +36,6 @@ import logic.order.CustomerOrder.ClosedCustomerOrder;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
-import javafx.application.Application;
-import javafx.scene.Scene;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Stage;
 
@@ -57,7 +55,6 @@ public class mainScreenController {
     @FXML BorderPane mainBorderPane;
 
 
-
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }
@@ -67,6 +64,11 @@ public class mainScreenController {
         this.businessLogic = businessLogic;
     }
 
+    public void setProperties()
+    {
+
+    }
+
     @FXML
     void loadFromXml(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -74,7 +76,19 @@ public class mainScreenController {
         loader.setLocation(LoadXMLFileFXML);
         ScrollPane borderPane = loader.load();
         LoadingXMLFileController loadingXMLFileController = loader.getController();
-        loadingXMLFileController.setBusinessLogic(businessLogic);
+        Consumer<Boolean> loadBusinessLogicSuccessfully = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if (aBoolean == true) {
+                    try {
+                        setBusinessLogic(loadingXMLFileController.getBusinessLogicFromXML());
+                    } catch (Exception e) {
+
+                    }
+                }
+            }
+        };
+        loadingXMLFileController.setProperties(loadBusinessLogicSuccessfully);
         mainBorderPane.setCenter(borderPane);
     }
 

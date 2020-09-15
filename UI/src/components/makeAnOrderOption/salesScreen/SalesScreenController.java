@@ -97,6 +97,7 @@ public class SalesScreenController {
         }
         setCartTableData();
         setSalesTableData();
+        setComboBoxData();
     }
 
     public void setListViewSales() throws IOException {
@@ -152,6 +153,12 @@ public class SalesScreenController {
         itemComboBoxIsVisible.bind(comboBoxChooseItem.visibleProperty());
     }
 
+    public void setComboBoxData()
+    {
+        final ObservableList<Discount> listOfDiscounts = FXCollections.observableList(openedCustomerOrder.generateListOfDiscounts());
+        comboBoxChooseSale.setItems(listOfDiscounts);
+    }
+
     public void initialize() {
 
         initializeComboBoxSales();
@@ -200,6 +207,7 @@ public class SalesScreenController {
         }
         this.salesOnStoreScreenController.setDiscounts(openedCustomerOrder.generateListOfDiscounts());
         setSalesTableData();
+        setComboBoxData();
     }
 
     void setSalesTableData()
