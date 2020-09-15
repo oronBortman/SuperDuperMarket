@@ -3,9 +3,14 @@ package logic.order.CustomerOrder;
 import logic.order.ClosedOrder;
 import logic.order.Order;
 import logic.order.StoreOrder.ClosedStoreOrder;
+import logic.order.itemInOrder.OrderedItemFromStore;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Map;
+
+import static java.util.stream.Collectors.toCollection;
 
 public class ClosedCustomerOrder extends Order {
 
@@ -24,24 +29,24 @@ public class ClosedCustomerOrder extends Order {
 
     public double getDeliveryPriceAfterOrderBySerialIDOfStore(int serialID)
     {
-        return closedStoresOrderMapByStoreSerialID.get(serialID).getDeliveryPriceAfterOrder();
+        return closedStoresOrderMapByStoreSerialID.get(serialID).calcTotalDeliveryPrice();
     }
 
     public double getDeliveryPriceAfterOrderBySerialIDOfItem(int serialIDOfItem)
     {
-        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.getDeliveryPriceAfterOrder()).sum();
+        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.calcTotalDeliveryPrice()).sum();
 
     }
 
     public double getTotalPriceOfStoreOrderBySerialIDOfStore(int serialID)
     {
-        return closedStoresOrderMapByStoreSerialID.get(serialID).getTotalPriceOfOrder();
+        return closedStoresOrderMapByStoreSerialID.get(serialID).calcTotalDeliveryPrice();
     }
 
     public double getTotalPriceOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
     {
 
-        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.getTotalPriceOfOrder()).sum();
+        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.calcTotalDeliveryPrice()).sum();
     }
 
     public Double getTotalAmountOfItemsByUnitOfStoreOrderBySerialIDOfStore(int serialID)
@@ -67,27 +72,38 @@ public class ClosedCustomerOrder extends Order {
 
     public double getTotalPriceOfItemsOfStoreOrderBySerialIDOfStore(int serialID)
     {
-        return closedStoresOrderMapByStoreSerialID.get(serialID).getTotalPriceOfItems();
+        return closedStoresOrderMapByStoreSerialID.get(serialID).calcTotalPriceOfItems();
     }
 
     public double getTotalPriceOfItemsOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
     {
-        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.getTotalPriceOfItems()).sum();
+        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.calcTotalPriceOfItems()).sum();
 
+    }
+
+    public List<ClosedStoreOrder> generateListOfClosedStoreOrders()
+    {
+        return closedStoresOrderMapByStoreSerialID.values().stream().collect(toCollection(ArrayList::new));
+    }
+
+    public void setSerialNumber(Integer serialNumber) {
+        this.SerialNumber = serialNumber;
     }
 
     public Double getTotalItemCostInOrder()
     {
-
+        return closedStoresOrderMapByStoreSerialID.values().stream().mapToDouble(x->x.calcTotalPriceOfItems()).sum();
     }
 
     public Double getTotalDeliveryPriceInOrder()
     {
+        return closedStoresOrderMapByStoreSerialID.values().stream().mapToDouble(x->x.calcTotalDeliveryPrice()).sum();
 
     }
 
     public Double getTotalOrderPrice()
     {
+        return closedStoresOrderMapByStoreSerialID.values().stream().mapToDouble(x->x.calcTotalPriceOfOrder()).sum();
 
     }
 

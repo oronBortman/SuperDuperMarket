@@ -177,21 +177,21 @@ public class ShowStoresController {
         totalItemsPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getTotalPriceOfItems().toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalPriceOfItems().toString());
             }
         });
 
         totalDeliveryPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getDeliveryPriceAfterOrder().toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalDeliveryPrice().toString());
             }
         });
 
         totalOrderPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getTotalPriceOfOrder().toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalPriceOfOrder().toString());
             }
         });
     }

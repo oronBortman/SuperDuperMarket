@@ -1,6 +1,7 @@
 package logic.order.StoreOrder;
 
 import logic.BusinessLogic;
+import logic.SDMLocation;
 import logic.order.ClosedOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
 import logic.Store;
@@ -18,31 +19,13 @@ public class ClosedStoreOrder extends StoreOrder{
     private double totalPriceOfItems;
 
 
-    public ClosedStoreOrder(double deliveryPrice, double totalPriceOfOrder, Double totalAmountOfItemsByUnit, int totalAmountOfItemTypes, double totalPriceOfItems, Store storeUsed, Map<Integer, OrderedItemFromStore> orderedItems, Date date, boolean isOrderStatic) {
-        super(date, isOrderStatic);
+    public ClosedStoreOrder(StoreOrder storeOrder) {
+        super(storeOrder);
         this.serialNumber = BusinessLogic.getCurrentOrderSerialIDInSDK();
-        this.deliveryPrice = deliveryPrice;
-        this.totalPriceOfOrder = totalPriceOfOrder;
-        this.totalAmountOfItemsByUnit = totalAmountOfItemsByUnit;
-        this.totalAmountOfItemTypes = totalAmountOfItemTypes;
-        this.totalPriceOfItems = totalPriceOfItems;
     }
 
     public void setSerialNumber(Integer serialNumber) {
         this.serialNumber = serialNumber;
-    }
-
-    public Store getStoreUsed() {
-        return storeUsed;
-    }
-
-    public Double getDeliveryPriceAfterOrder() {
-        return deliveryPrice;
-    }
-
-    public Double getTotalPriceOfOrder()
-    {
-        return totalPriceOfOrder;
     }
 
     public Double getTotalAmountOfItemsByUnit() {
@@ -51,11 +34,6 @@ public class ClosedStoreOrder extends StoreOrder{
 
     public Integer getTotalAmountOfItemTypes() {
         return totalAmountOfItemTypes;
-    }
-
-    public Double getTotalPriceOfItems()
-    {
-        return totalPriceOfItems;
     }
 
     public Integer getSerialNumber() {

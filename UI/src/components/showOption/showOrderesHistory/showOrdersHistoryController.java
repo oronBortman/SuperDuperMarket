@@ -2,40 +2,33 @@ package components.showOption.showOrderesHistory;
 
 import commonUI.SuperDuperMarketConstants;
 import components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
+import javafx.util.StringConverter;
 import logic.BusinessLogic;
 import logic.order.CustomerOrder.ClosedCustomerOrder;
-import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.ClosedStoreOrder;
-import logic.order.StoreOrder.OpenedStoreOrder;
 
 import java.io.IOException;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Optional;
-import java.util.function.Consumer;
 
-
-package components.makeAnOrderOption.SummeryOfOrder;
-
-import javafx.fxml.FXML;
-import javafx.scene.control.Button;
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import javafx.scene.layout.FlowPane;
+import logic.order.itemInOrder.OrderedItem;
 
 public class showOrdersHistoryController {
     @FXML private FlowPane flowPaneStores;
-    @FXML private ComboBox<?> comboBoxChooseOrder;
+    @FXML private ComboBox<ClosedCustomerOrder> comboBoxChooseOrder;
     @FXML private Label LabelTotalItemsCost;
     @FXML private Label LabelTotalDeliveryPrice;
     @FXML private Label LabelTotalOrderPrice;
-    @FXML private Button buttonApproveOrder;
 
     private Map<ClosedStoreOrder, ShowSummeryOfOrderedInStoreController> itemToTileControlleresMap;
     private BusinessLogic businessLogic;
@@ -43,7 +36,17 @@ public class showOrdersHistoryController {
 
     @FXML
     void chooseOrder(ActionEvent event) {
+        try {
+            setClosedCustomerOrder(comboBoxChooseOrder.getValue());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
+    @FXML
+    private void initialize()
+    {
+        initializeComboBoxOrders();
     }
 
     public void setLabelTotalItemsCost()
@@ -66,13 +69,35 @@ public class showOrdersHistoryController {
 
     }
 
+    public void initializeComboBoxOrders()
+    {
+        comboBoxChooseOrder.setConverter(new StringConverter<ClosedCustomerOrder>() {
+            @Override
+            public String toString(ClosedCustomerOrder object) {
+                return "Order number: " + object.getSerialNumber().toString();
+            }
+
+            @Override
+            public ClosedCustomerOrder fromString(String string) {
+                return null;
+            }
+        });
+
+    }
+
     public showOrdersHistoryController()
     {
-        itemToTileControlleresMap = new HashMap<OpenedStoreOrder, ShowSummeryOfOrderedInStoreController>();
+        itemToTileControlleresMap = new HashMap<ClosedStoreOrder, ShowSummeryOfOrderedInStoreController>();
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
+        final ObservableList<ClosedCustomerOrder> dataOfOrders = FXCollections.observableList(businessLogic.getClosedCustomerOrderList());
+        for(ClosedCustomerOrder closedCustomerOrder: businessLogic.getClosedCustomerOrderList())
+        {
+            System.out.println(closedCustomerOrder.getSerialNumber());
+        }
+        comboBoxChooseOrder.setItems(dataOfOrders);
     }
 
     public void setClosedCustomerOrder(ClosedCustomerOrder closedCustomerOrder) throws IOException {
@@ -80,17 +105,17 @@ public class showOrdersHistoryController {
         setLabelTotalDeliveryPrice();
         setLabelTotalItemsCost();
         setLabelTotalOrderPrice();
-        addOpenedStoreOrderTiles();
+        addClosedStoreOrderTiles();
     }
 
-    public void addOpenedStoreOrderTiles() throws IOException {
-        for(OpenedStoreOrder openedStoreOrder : closedCustomerOrder.getListOfOpenedStoreOrder())
+    public void addClosedStoreOrderTiles() throws IOException {
+        for(ClosedStoreOrder closedStoreOrder : closedCustomerOrder.generateListOfClosedStoreOrders())
         {
-            createShowSummeryOfOrderInStoreTile(openedStoreOrder);
+            createShowSummeryOfOrderInStoreTile(closedStoreOrder);
         }
     }
 
-    private void createShowSummeryOfOrderInStoreTile(OpenedStoreOrder openedStoreOrder) throws IOException {
+    private void createShowSummeryOfOrderInStoreTile(ClosedStoreOrder closedStoreOrder) throws IOException {
         try {
             FXMLLoader loader = new FXMLLoader();
             URL tileFXML = getClass().getResource(SuperDuperMarketConstants.SHOW_SUMMERY_OF_ORDER_IN_STORE);
@@ -98,11 +123,11 @@ public class showOrdersHistoryController {
             ScrollPane singleStoreTile = loader.load();
             ShowSummeryOfOrderedInStoreController showSummeryOfOrderedInStoreController = loader.getController();
             showSummeryOfOrderedInStoreController.setBusinessLogic(businessLogic);
-            showSummeryOfOrderedInStoreController.setOpenedStoreOrder(openedStoreOrder);
+            showSummeryOfOrderedInStoreController.setStoreOrder(closedStoreOrder);
 
-            System.out.println(openedStoreOrder.getStoreUsed().getName());
+            System.out.println(closedStoreOrder.getStoreUsed().getName());
             flowPaneStores.getChildren().add(singleStoreTile);
-            itemToTileControlleresMap.put(openedStoreOrder, showSummeryOfOrderedInStoreController);
+            itemToTileControlleresMap.put(closedStoreOrder, showSummeryOfOrderedInStoreController);
             System.out.println("Adding item");
 
         } catch (IOException e) {

@@ -142,7 +142,7 @@ public class ShowStoresStatusInDynamicOrderController {
         amountOfItemsPurchasedCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalAmountOfItemsTypeNotFromSale().toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalAmountOfItemsByMeasureType().toString());
             }
         });
 

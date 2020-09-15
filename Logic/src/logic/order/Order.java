@@ -30,5 +30,4 @@ public abstract class Order {
     }
 
     public abstract boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem);
-
 }

@@ -12,6 +12,7 @@ import javafx.util.Callback;
 import logic.BusinessLogic;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
+import logic.order.StoreOrder.StoreOrder;
 import logic.order.itemInOrder.OrderedItem;
 import logic.order.itemInOrder.OrderedItemFromSale;
 import logic.order.itemInOrder.OrderedItemFromStore;
@@ -33,15 +34,23 @@ public class ShowSummeryOfOrderedInStoreController {
     @FXML private Label LabelDeliveryCost;
 
     BusinessLogic businessLogic;
-    OpenedStoreOrder openedStoreOrder;
+    StoreOrder storeOrder;
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
     }
 
-    public void setOpenedStoreOrder(OpenedStoreOrder openedStoreOrder) {
-        this.openedStoreOrder = openedStoreOrder;
-        setLabelNameOfStore();
+    public void setStoreOrder(StoreOrder storeOrder) {
+        this.storeOrder = storeOrder;
+        if(storeOrder == null)
+        {
+            System.out.println("NULLLL!!!!");
+        }
+        if(storeOrder.getStoreUsed() == null)
+        {
+            System.out.println("NUL!!!!!!!");
+        }
         setLabelSerialID();
+        setLabelNameOfStore();
         setLabelPPK();
         setLabelDistanceToCustomer();
         setLabelDeliveryCost();
@@ -49,23 +58,23 @@ public class ShowSummeryOfOrderedInStoreController {
     }
 
     private void setLabelDeliveryCost() {
-        LabelDeliveryCost.setText(openedStoreOrder.calcTotalDeliveryPrice().toString());
+        LabelDeliveryCost.setText(storeOrder.calcTotalDeliveryPrice().toString());
     }
 
     private void setLabelDistanceToCustomer() {
-        LabelDistanceToCustomer.setText(openedStoreOrder.calcDistanceToCustomer().toString());
+        LabelDistanceToCustomer.setText(storeOrder.calcDistanceToCustomer().toString());
     }
 
     private void setLabelPPK() {
-        LabelPPK.setText(openedStoreOrder.getStoreUsed().getPPK().toString());
+        LabelPPK.setText(storeOrder.getStoreUsed().getPPK().toString());
     }
 
     private void setLabelSerialID() {
-        LabelSerialID.setText(openedStoreOrder.getStoreUsed().getSerialNumber().toString());
+        LabelSerialID.setText(storeOrder.getStoreUsed().getSerialNumber().toString());
     }
 
     private void setLabelNameOfStore() {
-        LabelNameOfStore.setText(openedStoreOrder.getStoreUsed().getName());
+        LabelNameOfStore.setText(storeOrder.getStoreUsed().getName());
     }
 
     @FXML
@@ -178,9 +187,9 @@ public class ShowSummeryOfOrderedInStoreController {
 
     public void setDataOnItemsTable()
     {
-        final ObservableList<OrderedItem> dataOfItems = FXCollections.observableList(openedStoreOrder.generateListOfGeneralOrderedItems());
+        final ObservableList<OrderedItem> dataOfItems = FXCollections.observableList(storeOrder.generateListOfGeneralOrderedItems());
         System.out.println("In set data on items table");
-        for(OrderedItem orderedItem : openedStoreOrder.generateListOfGeneralOrderedItems())
+        for(OrderedItem orderedItem : storeOrder.generateListOfGeneralOrderedItems())
         {
             System.out.println(orderedItem.getClass());
             if(orderedItem instanceof OrderedItemFromSale)

@@ -6,11 +6,8 @@ import jaxb.schema.generated.*;
 import logic.discount.Discount;
 import logic.discount.IfYouBuySDM;
 import logic.discount.ThenYouGetSDM;
-import logic.order.ClosedOrder;
 import logic.order.GeneralMethods;
-import logic.order.Order;
 import logic.order.StoreOrder.ClosedStoreOrder;
-import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -152,7 +149,7 @@ public class Store {
     //TODO
     public double calcProfitOfDelivers()
     {
-        return ordersSerialIDMap.values().stream().mapToDouble(ClosedStoreOrder::getDeliveryPriceAfterOrder).sum();
+        return ordersSerialIDMap.values().stream().mapToDouble(ClosedStoreOrder::calcTotalDeliveryPrice).sum();
     }
 
     public String getName()
@@ -209,11 +206,11 @@ public class Store {
     }
     public double getAmountOfItemSoledByUnit(Integer itemID)
     {
-        return ordersSerialIDMap.values().stream().mapToDouble(closedStoreOrder -> closedStoreOrder.getAmountOfCertainItemByUnit(itemID)).sum();
+        return ordersSerialIDMap.values().stream().mapToDouble(closedStoreOrder -> closedStoreOrder.calcAmountOfCertainItemByUnit(itemID)).sum();
     }
     public double getAmountOfItemSoledByTypeOfMeasure(Integer itemID)
     {
-        return ordersSerialIDMap.values().stream().mapToDouble(closedStoreOrder -> closedStoreOrder.getAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
+        return ordersSerialIDMap.values().stream().mapToDouble(closedStoreOrder -> closedStoreOrder.calcAmountOfCertainItemByTypeOfMeasure(itemID)).sum();
     }
 
     public boolean checkIfItemIsTheOnlyOneInStore(Integer itemID)

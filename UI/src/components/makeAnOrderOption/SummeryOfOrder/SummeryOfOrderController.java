@@ -1,19 +1,13 @@
 package components.makeAnOrderOption.SummeryOfOrder;
 
 import commonUI.SuperDuperMarketConstants;
-import components.makeAnOrderOption.Item.ItemTileController;
 import components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
-import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
 import javafx.scene.layout.FlowPane;
-import javafx.scene.layout.Pane;
-import logic.AvailableItemInStore;
 import logic.BusinessLogic;
-import logic.Item;
-import logic.Store;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 
@@ -101,7 +95,7 @@ public class SummeryOfOrderController {
             ScrollPane singleStoreTile = loader.load();
             ShowSummeryOfOrderedInStoreController showSummeryOfOrderedInStoreController = loader.getController();
             showSummeryOfOrderedInStoreController.setBusinessLogic(businessLogic);
-            showSummeryOfOrderedInStoreController.setOpenedStoreOrder(openedStoreOrder);
+            showSummeryOfOrderedInStoreController.setStoreOrder(openedStoreOrder);
 
             System.out.println(openedStoreOrder.getStoreUsed().getName());
             flowPaneStores.getChildren().add(singleStoreTile);

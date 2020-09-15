@@ -4,11 +4,15 @@ import logic.Customer;
 import logic.SDMLocation;
 import logic.Store;
 import logic.order.Order;
+import logic.order.itemInOrder.OrderedItem;
+import logic.order.itemInOrder.OrderedItemFromSale;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
+
+import static java.util.stream.Collectors.toCollection;
 
 public class StoreOrder extends Order {
 
@@ -37,7 +41,14 @@ public class StoreOrder extends Order {
     public StoreOrder(Date date, boolean isOrderStatic) {
         super(date, isOrderStatic);
     }
-
+    public StoreOrder(StoreOrder storeOrder)
+    {
+        super(storeOrder.getDate(), storeOrder.isOrderStatic());
+        this.storeUsed = storeOrder.storeUsed;
+        this.customerLocation = storeOrder.customerLocation;;
+        this.orderedItemsFromSale = storeOrder.orderedItemsFromSale;;
+        this.orderedItemsNotFromSale = storeOrder.orderedItemsNotFromSale;
+    }
 
     @Override
     public boolean checkIfItemAlreadyExistsInOrder(int serialIDOfItem)
@@ -72,7 +83,103 @@ public class StoreOrder extends Order {
         return storeUsed;
     }
 
-    public Double getAmountOfCertainItemByUnit(int serialId)
+
+    public List<OrderedItem> generateListOfGeneralOrderedItems()
+    {
+        return Stream.concat(generateListOfOrderedItemFromSaleWithDiscountName().stream(), generateListOfOrdereItemsNotFromSale().stream()).collect(Collectors.toList());
+    }
+
+
+    public List<OrderedItemFromStore> generateListOfOrdereItemsNotFromSale()
+    {
+        return getOrderedItemsNotFromSale().values().stream().collect(toCollection(ArrayList::new));
+    }
+
+
+    public List<OrderedItemFromSale> generateListOfOrderedItemFromSaleWithDiscountName()
+    {
+        List<OrderedItemFromSale> orderedItemFromSaleListWithDiscountNames = new ArrayList<>();
+        for(Map.Entry<String, Map<Integer, OrderedItemFromStore>> stringMapEntry : getOrderedItemsFromSale().entrySet())
+        {
+            Map<Integer, OrderedItemFromStore> orderedItemFromStoreMap = stringMapEntry.getValue();
+            String discountName = stringMapEntry.getKey();
+            for(Map.Entry<Integer, OrderedItemFromStore> orderedItemFromStoreEntry : orderedItemFromStoreMap.entrySet())
+            {
+                OrderedItemFromStore orderedItemFromStore = orderedItemFromStoreEntry.getValue();
+                orderedItemFromSaleListWithDiscountNames.add(new OrderedItemFromSale(discountName, orderedItemFromStore));
+            }
+        }
+        return orderedItemFromSaleListWithDiscountNames;
+    }
+
+    //public Double calcDistanceToCustomer()
+    public Double calcTotalDeliveryPrice() {
+        SDMLocation storeLocation = storeUsed.getLocationOfShop();
+        int PPK = storeUsed.getPPK();
+        double distanceBetweenTwoLocations = customerLocation.getAirDistanceToOtherLocation(storeLocation);
+        return(PPK * distanceBetweenTwoLocations);
+    }
+
+    public Double calcTotalPriceOfOrder()
+    {
+        return  calcTotalPriceOfItems() + calcTotalDeliveryPrice();
+    }
+
+    public Double calcTotalPriceOfItems()
+    {
+       return calcTotalPriceOfItemsNotFromSale() + calcTotalPriceOfItemsFromSale();
+    }
+    public Double calcTotalPriceOfItemsNotFromSale()
+    {
+        return getOrderedItemsNotFromSale().values().stream().mapToDouble(OrderedItemFromStore::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
+    }
+
+    public Double calcTotalPriceOfItemsFromSale() {
+        Map<String, Map<Integer, OrderedItemFromStore>> orderedItemsFromSale = getOrderedItemsFromSale();
+        Double totalPrice = 0.0;
+        for (Map<Integer, OrderedItemFromStore> orderedItemFromStoreMap : orderedItemsFromSale.values()) {
+            totalPrice += orderedItemFromStoreMap.values().stream().mapToDouble(OrderedItemFromStore::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
+        }
+        return totalPrice;
+    }
+
+    public Double calcDistanceToCustomer()
+    {
+        return customerLocation.getAirDistanceToOtherLocation(storeUsed.getLocationOfShop());
+    }
+
+    public Double calcTotalAmountOfItemsNotFromSaleByUnit()
+    {
+        return getOrderedItemsNotFromSale().values().stream().mapToDouble(OrderedItemFromStore::getAmountOfItemOrderedByUnits).sum();
+    }
+
+    public Double calcTotalAmountOfItemsFromSaleByUnit()
+    {
+        Double totalAmountOfItemsFromSaleByUnit=0.0;
+        for( Map<Integer, OrderedItemFromStore> mapOfOrderedsItems : getOrderedItemsFromSale().values())
+        {
+            totalAmountOfItemsFromSaleByUnit+=mapOfOrderedsItems.values().stream().mapToDouble(OrderedItemFromStore::getAmountOfItemOrderedByUnits).sum();
+        }
+        return totalAmountOfItemsFromSaleByUnit;
+    }
+
+    public Double calcTotalAmountItemsNotFromSaleByMeasureType()
+    {
+        return getOrderedItemsNotFromSale().values().stream().mapToDouble(OrderedItemFromStore::getTotalAmountOfItemOrderedByTypeOfMeasure).sum();
+
+    }
+
+    public Double calcTotalAmountItemsFromSaleByMeasureType()
+    {
+        Double totalAmountOfItemsFromSaleByMeasureType=0.0;
+        for( Map<Integer, OrderedItemFromStore> mapOfOrderedsItems : getOrderedItemsFromSale().values())
+        {
+            totalAmountOfItemsFromSaleByMeasureType+=mapOfOrderedsItems.values().stream().mapToDouble(OrderedItemFromStore::getTotalAmountOfItemOrderedByTypeOfMeasure).sum();
+        }
+        return totalAmountOfItemsFromSaleByMeasureType;
+    }
+
+    public Double calcAmountOfCertainItemByUnit(int serialId)
     {
         Double amountOfCertainItemByUnit;
         if(orderedItemsNotFromSale.containsKey(serialId))
@@ -86,8 +193,15 @@ public class StoreOrder extends Order {
         return amountOfCertainItemByUnit;
     }
 
+    public Double calcTotalAmountOfItemsByUnit() {
+        return calcTotalAmountOfItemsNotFromSaleByUnit() + calcTotalAmountOfItemsFromSaleByUnit();
+    }
 
-    public double getAmountOfCertainItemByTypeOfMeasure(int serialId)
+    public Double calcTotalAmountOfItemsByMeasureType() {
+        return calcTotalAmountItemsNotFromSaleByMeasureType() + calcTotalAmountItemsFromSaleByMeasureType();
+    }
+
+    public double calcAmountOfCertainItemByTypeOfMeasure(int serialId)
     {
         double amountOfCertainItemByUnit;
         if(orderedItemsNotFromSale.containsKey(serialId))

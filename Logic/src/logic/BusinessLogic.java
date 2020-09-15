@@ -141,8 +141,10 @@ public class BusinessLogic {
         {
             closedStoreOrder.setSerialNumber(currentOrderSerialIDInSDK);
         }
+        order.setSerialNumber(currentOrderSerialIDInSDK);
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;
+        System.out.println("a"+order.getSerialNumber());
         //TODO
         //Check if it's right to create new order after closing the one before
     }
@@ -266,6 +268,10 @@ public class BusinessLogic {
         }
     }
 
+    public List<ClosedCustomerOrder> getClosedCustomerOrderList()
+    {
+        return ordersSerialIDMap.values().stream().collect(toCollection(ArrayList::new));
+    }
 
     public void addStoreSerialIDMapFromXml(SDMStore store) throws JAXBException, FileNotFoundException, DuplicateStoreSerialIDException, StoreLocationIsIdenticalToStoreException, StoreLocationIsIdenticalToCustomerException {
 

@@ -48,9 +48,12 @@ public class WeightItemController implements ItemTileController {
     }
 
     public Double getAmount() {
-        //TODO
-        //Check if this is really double
         return Double.parseDouble(WeightTextField.getText());
+    }
+
+    public boolean weightTextFieldIsEmpty()
+    {
+        return WeightTextField.getText().equals("");
     }
 
 }

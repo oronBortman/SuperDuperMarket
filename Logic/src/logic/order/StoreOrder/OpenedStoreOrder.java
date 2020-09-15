@@ -24,52 +24,6 @@ public class OpenedStoreOrder extends StoreOrder{
 
     }
 
-    public Double calcTotalDeliveryPrice() {
-        SDMLocation storeLocation = storeUsed.getLocationOfShop();
-        int PPK = storeUsed.getPPK();
-        double distanceBetweenTwoLocations = customerLocation.getAirDistanceToOtherLocation(storeLocation);
-        return(PPK * distanceBetweenTwoLocations);
-    }
-
-    public Double calcDistanceToCustomer()
-    {
-        return customerLocation.getAirDistanceToOtherLocation(storeUsed.getLocationOfShop());
-    }
-
-    public Map<Integer, Double> getItemsAmountLeftToUseInSalesMap() {
-        return itemsAmountLeftToUseInSalesMap;
-    }
-
-    public Map<String, Discount> getDiscountsInStoresThatAreValidInOrder() {
-        return discountsInStoresThatAreValidInOrder;
-    }
-
-    public List<OrderedItemFromStore> generateListOfOrdereItemsNotFromSale()
-    {
-        return getOrderedItemsNotFromSale().values().stream().collect(toCollection(ArrayList::new));
-    }
-
-    public List<OrderedItemFromSale> generateListOfOrderedItemFromSaleWithDiscountName()
-    {
-        List<OrderedItemFromSale> orderedItemFromSaleListWithDiscountNames = new ArrayList<>();
-        for(Map.Entry<String, Map<Integer, OrderedItemFromStore>> stringMapEntry : getOrderedItemsFromSale().entrySet())
-        {
-            Map<Integer, OrderedItemFromStore> orderedItemFromStoreMap = stringMapEntry.getValue();
-            String discountName = stringMapEntry.getKey();
-            for(Map.Entry<Integer, OrderedItemFromStore> orderedItemFromStoreEntry : orderedItemFromStoreMap.entrySet())
-            {
-                OrderedItemFromStore orderedItemFromStore = orderedItemFromStoreEntry.getValue();
-                orderedItemFromSaleListWithDiscountNames.add(new OrderedItemFromSale(discountName, orderedItemFromStore));
-            }
-        }
-        return orderedItemFromSaleListWithDiscountNames;
-    }
-
-    public List<OrderedItem> generateListOfGeneralOrderedItems()
-    {
-        return Stream.concat(generateListOfOrderedItemFromSaleWithDiscountName().stream(), generateListOfOrdereItemsNotFromSale().stream()).collect(Collectors.toList());
-    }
-
     public List<Discount> generateListOfDiscountsInStoresThatAreValidInOrder() {
         return discountsInStoresThatAreValidInOrder.values().stream().collect(toCollection(ArrayList::new));
     }
@@ -80,7 +34,6 @@ public class OpenedStoreOrder extends StoreOrder{
             addToOrderedItemsFromSale(discountName, offer);
         }
     }
-
 
     public void addToOrderedItemsFromSale(String discountName, Offer offer)
     {
@@ -128,19 +81,6 @@ public class OpenedStoreOrder extends StoreOrder{
         getOrderedItemsFromSale().put(discountName, orderedItemFromStoreMap);
     }
 
-
-    /*public void addItemToDiscount(String discountName, OrderedItemFromStore orderedItemFromStore)
-    {
-        if(getOrderedItemsFromSale().containsKey(discountName))
-        {
-            Map<Integer,OrderedItemFromStore> orderedItemFromStoreMap = getOrderedItemsMapFromSaleByDiscountName(discountName);
-            if(orderedItemFromStoreMap != null && orderedItemFromStoreMap.containsKey(orderedItemFromStore.getSerialNumber()))
-            {
-                OrderedItemFromStore orderedItemFromStore = orderedItemFromStoreMap.get(itemID);
-                orderedItemFromStore.addQuantity(quantity);
-            }
-        }
-    }*/
 
     public void initializeDiscountInStoresThatValidInOrder()
     {
@@ -228,49 +168,12 @@ public class OpenedStoreOrder extends StoreOrder{
         return storeUsed.generateListOfDiscountsThatContainsItemsFromList(getOrderedItemsNotFromSale().keySet());
     }
 
-    public boolean checkIfDiscountExistsInOrderByName(String discountName)
-    {
-        return discountsInStoresThatAreValidInOrder.containsKey(discountName);
-    }
 
     public void addItemToItemsMapOfOrder(OrderedItemFromStore orderedItemFromStore)
     {
         getOrderedItemsNotFromSale().put(orderedItemFromStore.getSerialNumber(), orderedItemFromStore);
     }
 
-    /*public Double calcDeliverPriceFromStore(SDMLocation inputLocation, Store store) {
-        SDMLocation storeLocation = store.getLocationOfShop();
-        int PPK = store.getPPK();
-        double distanceBetweenTwoLocations = inputLocation.getAirDistanceToOtherLocation(storeLocation);
-        return(PPK * distanceBetweenTwoLocations);
-    }*/
-
-
-    public Double calcTotalPriceOfOrder(SDMLocation inputLocation)
-    {
-        return calcTotalPriceOfItemsNotFromSale() + calcTotalDeliveryPrice();
-    }
-
-    public Double calcTotalPriceOfItemsNotFromSale()
-    {
-        return getOrderedItemsNotFromSale().values().stream().mapToDouble(OrderedItemFromStore::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
-    }
-
-    public Double calcTotalPriceOfItemsFromSale()
-    {
-        Map<String, Map<Integer, OrderedItemFromStore>> orderedItemsFromSale = getOrderedItemsFromSale();
-        Double totalPrice=0.0;
-        for(Map<Integer, OrderedItemFromStore> orderedItemFromStoreMap : orderedItemsFromSale.values())
-        {
-            totalPrice+=orderedItemFromStoreMap.values().stream().mapToDouble(OrderedItemFromStore::getTotalPriceOfItemOrderedByTypeOfMeasure).sum();
-        }
-        return totalPrice;
-    }
-
-    public Double calcTotalAmountOfItemsNotFromSaleByUnit()
-    {
-        return getOrderedItemsNotFromSale().values().stream().mapToDouble(OrderedItemFromStore::getAmountOfItemOrderedByUnits).sum();
-    }
 
     public Double calcTotalAmountOfItemsFromSaleByUnit()
     {
@@ -283,17 +186,7 @@ public class OpenedStoreOrder extends StoreOrder{
         return totalAmount;
     }
 
-    /*public logic.Orders.orderItems.OrderedItem getItemInOrder(int serialIDOfItem)
-    {
-        return getOrderedItems().get(serialIDOfItem);
-    }*/
 
-
-
-    public Integer calcTotalAmountOfItemsTypeNotFromSale()
-    {
-        return getOrderedItemsNotFromSale().size();
-    }
 
     public Integer calcTotalAmountOfItemsTypeFromSale()
     {
@@ -307,14 +200,9 @@ public class OpenedStoreOrder extends StoreOrder{
     }
 
 
-    public ClosedStoreOrder closeOrder(SDMLocation location)
+    public ClosedStoreOrder closeOrder()
     {
-        Double totalPriceOfItems = calcTotalPriceOfItemsNotFromSale();
-        Double deliveryPriceAfterOrderIsDone = calcTotalDeliveryPrice();
-        Double totalPriceOfOrderAfterItsDone = calcTotalPriceOfOrder(location);
-        Double totalAmountOfItemsByUnit = calcTotalAmountOfItemsNotFromSaleByUnit();
-        Integer totalAmountOfItemsType = calcTotalAmountOfItemsTypeNotFromSale();
-        ClosedStoreOrder closedStoreOrder = new ClosedStoreOrder(deliveryPriceAfterOrderIsDone, totalPriceOfOrderAfterItsDone,totalAmountOfItemsByUnit, totalAmountOfItemsType, totalPriceOfItems, storeUsed, getOrderedItemsNotFromSale(), getDate(), isOrderStatic());
+        ClosedStoreOrder closedStoreOrder = new ClosedStoreOrder(this);
         getStoreUsed().addClosedOrderToHistory(closedStoreOrder);
         return closedStoreOrder;
     }

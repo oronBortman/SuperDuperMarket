@@ -5,6 +5,7 @@ import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
 import components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
 import components.makeAnOrderOption.SummeryOfOrder.SummeryOfOrderController;
 import components.makeAnOrderOption.salesScreen.SalesScreenController;
+import components.showOption.showOrderesHistory.showOrdersHistoryController;
 import components.updateItemInStoreOption.addItemToStoreScreen.AddItemToStoreContoller;
 import components.makeAnOrderOption.chooseAnItemForOrder.ChooseItemsForOrderController;
 import components.updateItemInStoreOption.removeItemFromStoreScreen.RemoveItemFromStoreContoller;
@@ -520,6 +521,18 @@ public class mainScreenController {
     @FXML
     void showOrders(ActionEvent event) {
 
+        FXMLLoader loader = new FXMLLoader();
+        URL showOrdersFXML = getClass().getResource(SuperDuperMarketConstants.SHOW_ORDERS_HISTORY_CONTROLLER);
+        loader.setLocation(showOrdersFXML);
+        ScrollPane gridPane = null;
+        try {
+            gridPane = loader.load();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        showOrdersHistoryController showOrdersHistoryController = loader.getController();
+        showOrdersHistoryController.setBusinessLogic(businessLogic);
+        mainBorderPane.setCenter(gridPane);
     }
 
     void initialize(){

@@ -22,7 +22,7 @@ public class CollectMetadataTask extends Task<Boolean> {
     private List<SDMCustomer> customers;
     private Consumer<String> errorMessage;
 
-    private final int SLEEP_TIME = 2000;
+    private final int SLEEP_TIME = 0;
 
     public CollectMetadataTask(String fileName, Consumer<Runnable> onCancel, BusinessLogic businessLogic) {
         System.out.println("Instide collect metdata task c'tor");

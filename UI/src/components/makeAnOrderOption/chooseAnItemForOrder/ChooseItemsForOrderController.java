@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.FlowPane;
 import javafx.scene.layout.Pane;
@@ -32,6 +33,7 @@ public class ChooseItemsForOrderController {
     @FXML Button nextButton;
     @FXML BorderPane borderPane;
     @FXML FlowPane flowPaneItems;
+    @FXML Label errorLabel;
     BusinessLogic businessLogic;
     private Map<Item, ItemTileController> itemToTileControlleresMap;
     private List<Item> itemsList;
@@ -166,8 +168,40 @@ public class ChooseItemsForOrderController {
 
     public void clickOnNextButton(ActionEvent actionEvent) throws IOException {
 
-        isNextClicked.set(true);
-        isNextClickedConsumer.accept(true);
+        boolean goodInput=true;
+        for(Map.Entry<Item, ItemTileController> itemEntry: itemToTileControlleresMap.entrySet())
+        {
+            Item item = itemEntry.getKey();
+            ItemTileController itemTileController = itemEntry.getValue();
+
+            if(itemTileController instanceof WeightItemController)
+            {
+                if(((WeightItemController)itemTileController).weightTextFieldIsEmpty() == false)
+                {
+                    try
+                    {
+                        if(((WeightItemController)itemTileController).getAmount() < 0)
+                        {
+                            errorLabel.setText("Error: weight of item with serial ID " + item.getSerialNumber()  + " and name " + item.getName() +
+                                    " can't be negative");
+                            goodInput=false;
+                        }
+                    }
+                    catch(NumberFormatException exception)
+                    {
+                        goodInput=false;
+                        errorLabel.setText("Error: weight of item with serial ID " + item.getSerialNumber()  + " and name " + item.getName() +
+                                " is not a number");
+                    }
+                }
+            }
+        }
+        if(goodInput==true)
+        {
+            isNextClicked.set(true);
+            isNextClickedConsumer.accept(true);
+        }
+
 
     }
 
@@ -221,10 +255,10 @@ public class ChooseItemsForOrderController {
             ItemTileController itemController = entry.getValue();
             if(itemController != null) {
                 if (itemController.getClass() == WeightItemController.class) {
-                    Double amount = ((WeightItemController) itemController).getAmount();
-                    if(amount > 0)
+                    WeightItemController weightItemController = ((WeightItemController) itemController);
+                    if( weightItemController.weightTextFieldIsEmpty() == false && weightItemController.getAmount() > 0)
                     {
-                        orderedItemFromStoreMap.put(itemSerialID, amount);
+                        orderedItemFromStoreMap.put(itemSerialID, weightItemController.getAmount());
                     }
                 }
             }
