@@ -4,13 +4,13 @@
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.text.Font?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.salesScreen.SalesScreenController">
@@ -19,26 +19,38 @@
          <opaqueInsets>
             <Insets left="400.0" />
          </opaqueInsets>
-         <bottom>
-            <AnchorPane minHeight="822.0" minWidth="585.0" prefHeight="838.0" prefWidth="608.0" BorderPane.alignment="CENTER">
-               <children>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="36.0" layoutY="52.0" vbarPolicy="ALWAYS">
+         <top>
+            <BorderPane BorderPane.alignment="CENTER">
+               <center>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
                      <content>
-                        <ListView fx:id="listViewSales" prefHeight="217.0" prefWidth="529.0" />
+                        <HBox fx:id="HboxOfListView" alignment="CENTER" minHeight="217.0" minWidth="594.0" prefHeight="217.0" prefWidth="594.0">
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </HBox>
                      </content>
                   </ScrollPane>
-                  <Label layoutX="270.0" layoutY="14.0" prefHeight="34.0" prefWidth="99.0" text="Sales">
+               </center>
+               <top>
+                  <Label prefHeight="34.0" prefWidth="99.0" text="Sales" BorderPane.alignment="CENTER">
                      <font>
                         <Font size="24.0" />
                      </font>
                   </Label>
-                  <ComboBox fx:id="comboBoxChooseSale" layoutX="189.0" layoutY="304.0" onAction="#chooseSale" prefWidth="150.0" promptText="Choose your sale" />
-                  <Button fx:id="buttonAdd" layoutX="369.0" layoutY="304.0" mnemonicParsing="false" onAction="#addAction" text="Add" />
-                  <ComboBox fx:id="comboBoxChooseItem" layoutX="189.0" layoutY="347.0" onAction="#chooseItem" prefWidth="150.0" promptText="Choose item" />
-                  <Separator layoutX="14.0" layoutY="389.0" prefHeight="3.0" prefWidth="558.0" />
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="25.0" layoutY="431.0" prefHeight="138.0" prefWidth="555.0" vbarPolicy="ALWAYS">
-                     <content>
-                        <TableView fx:id="tableViewSales" prefHeight="136.0" prefWidth="538.0">
+               </top>
+            </BorderPane>
+         </top>
+         <center>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane minHeight="687.0" minWidth="585.0" prefHeight="687.0" prefWidth="612.0">
+                     <children>
+                        <ComboBox fx:id="comboBoxChooseSale" layoutX="223.0" layoutY="42.0" onAction="#chooseSale" prefWidth="150.0" promptText="Choose your sale" />
+                        <Button fx:id="buttonAdd" layoutX="403.0" layoutY="42.0" mnemonicParsing="false" onAction="#addAction" text="Add" />
+                        <ComboBox fx:id="comboBoxChooseItem" layoutX="223.0" layoutY="85.0" onAction="#chooseItem" prefWidth="150.0" promptText="Choose item" />
+                        <Separator layoutX="33.0" layoutY="146.0" prefHeight="3.0" prefWidth="558.0" />
+                        <TableView fx:id="tableViewSales" layoutX="44.0" layoutY="188.0" prefHeight="136.0" prefWidth="538.0">
                           <columns>
                             <TableColumn fx:id="salesTableNameCol" prefWidth="75.0" text="Name" />
                             <TableColumn fx:id="salesTableSerialIDCol" prefWidth="75.0" text="SerialID" />
@@ -48,11 +60,7 @@
                               <TableColumn fx:id="salesTableSaleNameCol" prefWidth="75.0" text="Sale name" />
                           </columns>
                         </TableView>
-                     </content>
-                  </ScrollPane>
-                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" layoutX="26.0" layoutY="620.0" prefHeight="140.0" prefWidth="553.0" vbarPolicy="ALWAYS">
-                     <content>
-                        <TableView fx:id="tableViewCart" prefHeight="194.0" prefWidth="521.0">
+                        <TableView fx:id="tableViewCart" layoutX="45.0" layoutY="377.0" prefHeight="194.0" prefWidth="521.0">
                           <columns>
                             <TableColumn fx:id="cartTableNameCol" prefWidth="75.0" text="Name" />
                             <TableColumn fx:id="cartTableSerialIDCol" prefWidth="75.0" text="SerialID" />
@@ -61,18 +69,18 @@
                               <TableColumn fx:id="cartTableTotalPriceCol" prefWidth="75.0" text="Total price" />
                           </columns>
                         </TableView>
-                     </content>
-                  </ScrollPane>
-                  <Label layoutX="258.0" layoutY="594.0" text="Cart" />
-                  <Label layoutX="255.0" layoutY="402.0" text="Sales" />
-                  <Separator layoutX="15.0" layoutY="583.0" prefHeight="3.0" prefWidth="558.0" />
-                  <Button fx:id="buttonNext" layoutX="509.0" layoutY="790.0" mnemonicParsing="false" onAction="#clickedOnNextButton" prefHeight="28.0" prefWidth="74.0" text="Next" />
+                        <Label layoutX="277.0" layoutY="351.0" text="Cart" />
+                        <Label layoutX="274.0" layoutY="159.0" text="Sales" />
+                        <Separator layoutX="34.0" layoutY="340.0" prefHeight="3.0" prefWidth="558.0" />
+                        <Button fx:id="buttonNext" layoutX="517.0" layoutY="637.0" mnemonicParsing="false" onAction="#clickedOnNextButton" prefHeight="28.0" prefWidth="74.0" text="Next" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="400.0" />
+                     </opaqueInsets>
+                  </AnchorPane>
                </children>
-               <opaqueInsets>
-                  <Insets left="400.0" />
-               </opaqueInsets>
-            </AnchorPane>
-         </bottom>
+            </HBox>
+         </center>
       </BorderPane>
    </content>
 </ScrollPane>

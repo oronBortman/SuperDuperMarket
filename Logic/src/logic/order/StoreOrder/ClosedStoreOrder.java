@@ -36,11 +36,11 @@ public class ClosedStoreOrder extends StoreOrder{
         return storeUsed;
     }
 
-    public double getDeliveryPriceAfterOrder() {
+    public Double getDeliveryPriceAfterOrder() {
         return deliveryPrice;
     }
 
-    public double getTotalPriceOfOrder()
+    public Double getTotalPriceOfOrder()
     {
         return totalPriceOfOrder;
     }
@@ -49,11 +49,11 @@ public class ClosedStoreOrder extends StoreOrder{
         return totalAmountOfItemsByUnit;
     }
 
-    public int getTotalAmountOfItemTypes() {
+    public Integer getTotalAmountOfItemTypes() {
         return totalAmountOfItemTypes;
     }
 
-    public double getTotalPriceOfItems()
+    public Double getTotalPriceOfItems()
     {
         return totalPriceOfItems;
     }

@@ -8,6 +8,7 @@ import logic.discount.IfYouBuySDM;
 import logic.discount.ThenYouGetSDM;
 import logic.order.ClosedOrder;
 import logic.order.GeneralMethods;
+import logic.order.Order;
 import logic.order.StoreOrder.ClosedStoreOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
@@ -115,12 +116,14 @@ public class Store {
 
     public List<Item> getItemsList()
     {
-        List<Item> list = new ArrayList<Item>();
+       /* List<Item> list = new ArrayList<Item>();
         for(AvailableItemInStore itemInStore : ItemsSerialIDMap.values())
         {
             list.add(itemInStore);
         }
-        return list;
+        return list;*/
+        return ItemsSerialIDMap.values().stream().collect(Collectors.toCollection(ArrayList::new));
+
     }
 
 
@@ -228,6 +231,23 @@ public class Store {
     public void updatePriceOfItem(int itemID, int priceOfItem)
     {
         ItemsSerialIDMap.get(itemID).setPricePerUnit(priceOfItem);
+    }
+
+    public List<ClosedStoreOrder> getOrdersList() {
+        /*List<ClosedStoreOrder> list = new ArrayList<ClosedStoreOrder>();
+        for( ClosedStoreOrder closedStoreOrder: ordersSerialIDMap.values())
+        {
+            list.add(closedStoreOrder);
+        }
+        return list;*/
+        return ordersSerialIDMap.values().stream().collect(Collectors.toCollection(ArrayList::new));
+
+        //srcCollection.stream().collect(toCollection(ArrayList::new));
+    }
+
+    public List<Discount> getDiscountsList()
+    {
+        return discountNameDMap.values().stream().collect(Collectors.toCollection(ArrayList::new));
     }
 }
 

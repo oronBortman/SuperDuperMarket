@@ -32,6 +32,7 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import logic.*;
+import logic.order.CustomerOrder.ClosedCustomerOrder;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
@@ -154,6 +155,14 @@ public class mainScreenController {
                                 System.out.println(entry.getValue().getName() + " " + entry.getValue().getPricePerUnit() + " " +  entry.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
                             }
                         }
+                        if(openedCustomerOrder != null)
+                        {
+                            try {
+                                showStoresStatusInDynamicOrder(openedCustomerOrder);
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
 
                 }
@@ -247,8 +256,8 @@ public class mainScreenController {
         loader.setLocation(salesScreenFXML);
         ScrollPane gridPane = loader.load();
         SalesScreenController salesScreenController = loader.getController();
-        salesScreenController.setOpenedCustomerOrder(openedCustomerOrder);
         salesScreenController.setBusinessLogic(businessLogic);
+        salesScreenController.setOpenedCustomerOrder(openedCustomerOrder);
 
         Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
             @Override
@@ -274,14 +283,16 @@ public class mainScreenController {
         loader.setLocation(showSummeryOfOrderInStoreFXML);
         ScrollPane gridPane = loader.load();
         SummeryOfOrderController summeryOfOrderController = loader.getController();
-        summeryOfOrderController.setOpenedCustomerOrder(openedCustomerOrder);
         summeryOfOrderController.setBusinessLogic(businessLogic);
+        summeryOfOrderController.setOpenedCustomerOrder(openedCustomerOrder);
 
         Consumer<Boolean> isYesClickedConsumer = new Consumer<Boolean>() {
             @Override
             public void accept(Boolean aBoolean) {
                 if(aBoolean == true)
                 {
+                    ClosedCustomerOrder closedCustomerOrder = openedCustomerOrder.closeCustomerOrder();
+                    businessLogic.addClosedOrderToHistory(closedCustomerOrder);
                     showMainScreen();
                 }
             }
@@ -316,7 +327,6 @@ public class mainScreenController {
         }
         // wire up controller
         components.mainScreen.mainScreenController superDuperMarketController = loader.getController();
-        BusinessLogic businessLogic = new BusinessLogic();
         superDuperMarketController.setPrimaryStage(primaryStage);
         try {
             superDuperMarketController.setBusinessLogic(businessLogic);
@@ -369,6 +379,7 @@ public class mainScreenController {
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         return scrollPane;
     }
+
     void settingColumnsScaleMark(GridPane gridPane, int maxCoordinateX)
     {
 

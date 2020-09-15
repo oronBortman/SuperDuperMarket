@@ -1,7 +1,5 @@
 package components.makeAnOrderOption.salesScreen;
 
-import components.makeAnOrderOption.Item.ItemTileController;
-import components.makeAnOrderOption.salesOnStoreScreen.SalesOnStoreScreenController;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
@@ -10,10 +8,7 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import logic.BusinessLogic;
@@ -26,20 +21,16 @@ import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.itemInOrder.OrderedItemFromSale;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
-import java.io.IOException;
-import java.net.URL;
 import java.util.List;
 import java.util.function.Consumer;
 
-import static commonUI.SuperDuperMarketConstants.SALES_LIST_VIEW;
+public class SalesScreenControllerBackupNew {
 
-public class SalesScreenController {
-
+    @FXML private ListView<Discount> listViewSales;
     @FXML private ComboBox<Discount> comboBoxChooseSale;
     @FXML private Button buttonAdd;
     @FXML private ComboBox<Offer> comboBoxChooseItem;
     @FXML private Button buttonNext;
-    @FXML private HBox HboxOfListView;
 
     @FXML private TableView tableViewSales;
     @FXML private TableColumn<OrderedItemFromSale, String> salesTableNameCol;
@@ -59,8 +50,7 @@ public class SalesScreenController {
     BusinessLogic businessLogic;
     OpenedCustomerOrder openedCustomerOrder;
     Consumer<Boolean> isNextClickedConsumer;
-    ListView listView;
-    SalesOnStoreScreenController salesOnStoreScreenController;
+
     SimpleBooleanProperty saleChosen;
     SimpleBooleanProperty saleChosenIsOneOf;
     SimpleBooleanProperty itemChosen;
@@ -73,7 +63,7 @@ public class SalesScreenController {
         this.isNextClickedConsumer = isNextClicked;
     }
 
-    public SalesScreenController()
+    public SalesScreenControllerBackupNew()
     {
          saleChosen = new SimpleBooleanProperty(false);
          itemChosen = new SimpleBooleanProperty(false);
@@ -90,24 +80,20 @@ public class SalesScreenController {
         this.openedCustomerOrder = openedCustomerOrder;
         openedCustomerOrder.initializeAvailableDiscountMapInOpenedStoreOrders();
         openedCustomerOrder.initializeItemsAmountLeftToUseInSalesMapInOpenedStoreOrders();
-        try {
-            setListViewSales();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        setDiscounts(openedCustomerOrder.generateListOfDiscounts());
         setCartTableData();
         setSalesTableData();
     }
 
-    public void setListViewSales() throws IOException {
-        FXMLLoader loader = new FXMLLoader();
-        URL itemFXML = getClass().getResource(SALES_LIST_VIEW);
-        loader.setLocation(itemFXML);
-        this.listView = loader.load();
-        this.salesOnStoreScreenController = loader.getController();
-        this.salesOnStoreScreenController.setBusinessLogic(this.businessLogic);
-        this.salesOnStoreScreenController.setDiscounts(openedCustomerOrder.generateListOfDiscounts());
-        HboxOfListView.getChildren().setAll(listView);
+    public void setDiscounts(List<Discount> discountList)
+    {
+        listViewSales.getItems().clear();
+        comboBoxChooseSale.getItems().clear();
+        for(Discount discount : discountList)
+        {
+            listViewSales.getItems().add(discount);
+            comboBoxChooseSale.getItems().add(discount);
+        }
     }
 
     public void initializeComboBoxSales()
@@ -125,6 +111,28 @@ public class SalesScreenController {
             }
         });
 
+    }
+
+    public void initializeListViewSales()
+    {
+        listViewSales.setCellFactory(param -> new ListCell<Discount>() {
+            @Override
+            protected void updateItem(Discount discount, boolean empty) {
+                if (empty || discount == null || discount.getName() == null) {
+                    setText(null);
+                } else {
+                    super.updateItem(discount, empty);
+                    IfYouBuySDM ifYouBuySDM = discount.getIfYouBuySDM();
+                    Double quantity = ifYouBuySDM.getQuantity();
+                    int itemID = ifYouBuySDM.getItemId();
+                    ThenYouGetSDM thenYouGetSDM = discount.getThenYouGet();
+                    List<Offer> offerList= thenYouGetSDM.getOfferList();
+                    String operator = thenYouGetSDM.getOperator();
+                    System.out.println("Operator:" + operator);
+                    setText(message(discount.getName(), quantity, itemID, offerList, operator));
+                }
+            }
+        });
     }
 
     public void initializeComboBoxItems()
@@ -154,6 +162,7 @@ public class SalesScreenController {
 
     public void initialize() {
 
+        initializeListViewSales();
         initializeComboBoxSales();
         initializeComboBoxItems();
         initializeSalesCols();
@@ -167,6 +176,35 @@ public class SalesScreenController {
 
     }
 
+    private String message(String nameOfSale, Double quantity, Integer itemID, List<Offer> offerList, String operator)
+    {
+        String message = "Name of sale: " + nameOfSale + "\n" +
+                "Buy: " + quantity + " of " + businessLogic.getItemBySerialID(itemID).getName() + "\n" +
+                "Get:\n";
+        message = message.concat(getStringByOperator(offerList, operator));
+        return message;
+    }
+
+    private String getStringByOperator(List<Offer> offerList, String operator)
+    {
+        String allOrNothingOffers = "";
+        for(Offer offer : offerList)
+        {
+            if(offer.equals(offerList.get(0)) == false)
+            {
+                allOrNothingOffers = allOrNothingOffers.concat("         ");
+                if(operator.equals(SuperDuperMarketConstants.ALL_OR_NOTHING)) {
+                    allOrNothingOffers = allOrNothingOffers.concat("AND\n");
+                }
+                else if(operator.equals(SuperDuperMarketConstants.ONE_OF)) {
+                    allOrNothingOffers = allOrNothingOffers.concat("OR\n");
+                }
+
+            }
+            allOrNothingOffers = allOrNothingOffers.concat(offer.getQuantity() + " amount of " + businessLogic.getItemBySerialID(offer.getItemId()).getName() + " for " + offer.getForAdditional() + "\n");
+        }
+        return  allOrNothingOffers;
+    }
 
     @FXML
     void addAction(ActionEvent event)
@@ -198,7 +236,7 @@ public class SalesScreenController {
 
             }
         }
-        this.salesOnStoreScreenController.setDiscounts(openedCustomerOrder.generateListOfDiscounts());
+        setDiscounts(openedCustomerOrder.generateListOfDiscounts());
         setSalesTableData();
     }
 

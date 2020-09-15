@@ -25,5 +25,7 @@ public class SuperDuperMarketConstants {
     public static final String SUMMERY_OF_ORDER = "/components/makeAnOrderOption/SummeryOfOrder/SummeryOfOrder.fxml";
     public static final String SHOW_SUMMERY_OF_ORDER_IN_STORE = "/components/makeAnOrderOption/ShowSummeryOfOrderInStore/showSummeryOfOrderInStore.fxml";
     public static final String SALES_SCREEN = "/components/makeAnOrderOption/salesScreen/SalesScreen.fxml";
+    public static final String SALES_LIST_VIEW = "/components/makeAnOrderOption/salesOnStoreScreen/SalesOnStoreScreen.fxml";
+
 
 }

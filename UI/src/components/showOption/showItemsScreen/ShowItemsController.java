@@ -31,14 +31,12 @@ public class ShowItemsController {
 
     @FXML
     private void initialize() {
+        initializeItemsTable();
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
         setItemsTable();
-        //final ObservableList<Store> stores = FXCollections.observableList(businessLogic.getStoresList());
-        //TODO
-        //Change xml loading
     }
 
     public ShowItemsController()
@@ -46,9 +44,8 @@ public class ShowItemsController {
 
     }
 
-    private void setItemsTable()
+    private void initializeItemsTable()
     {
-        final ObservableList<Item> dataOfItems = FXCollections.observableList(businessLogic.getItemsList());
         ItemSerialNumberCol.setCellValueFactory(new PropertyValueFactory<Item, Integer>("serialNumber"));
         NameOfItemCol.setCellValueFactory(new PropertyValueFactory<Item, String>("name"));
         AveragePriceCol.setCellValueFactory(new Callback<CellDataFeatures<Item, String>, ObservableValue<String>>() {
@@ -78,7 +75,11 @@ public class ShowItemsController {
                 return new ReadOnlyObjectWrapper<String>(param.getValue().getTypeOfMeasureStr());
             }
         });
+    }
 
+    private void setItemsTable()
+    {
+        final ObservableList<Item> dataOfItems = FXCollections.observableList(businessLogic.getItemsList());
         listOfItemsTable.setItems(dataOfItems);
 
     }
