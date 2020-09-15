@@ -387,7 +387,7 @@ public class mainScreenController {
         for(Customer customer : businessLogic.getUsersList())
         {
             final Tooltip tooltip = new Tooltip();
-            tooltip.setText("Name: " + customer.getName() +
+            tooltip.setText("Type: customer\n" + "Name: " + customer.getName() +
                     "\nLocation:" + "(" + customer.getLocation().getX() + "," +
                     customer.getLocation().getY() + ")");
 
@@ -431,7 +431,7 @@ public class mainScreenController {
         for(Store store : businessLogic.getStoresList())
         {
             final Tooltip tooltip = new Tooltip();
-            tooltip.setText("Serial ID: " + store.getSerialNumber() + "\nName: " + store.getName() +
+            tooltip.setText("Type: store\n" + "Serial ID: " + store.getSerialNumber() + "\nName: " + store.getName() +
                     "\nLocation:" + "(" + store.getLocationOfShop().getX() + "," +
                     store.getLocationOfShop().getY() + ")");
 

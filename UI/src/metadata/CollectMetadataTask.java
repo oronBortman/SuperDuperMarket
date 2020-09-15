@@ -98,7 +98,7 @@ public class CollectMetadataTask extends Task<Boolean> {
         }
     }
 
-    public void readUsersFromXML() throws FileNotFoundException, JAXBException, DuplicateCustomerSerialIDException, TaskIsCanceledException {
+    public void readUsersFromXML() throws FileNotFoundException, JAXBException, DuplicateCustomerSerialIDException, TaskIsCanceledException, CustomerLocationIsIdenticalToCustomerException, CustomerLocationIsIdenticalToStoreException {
         int counter = 0;
         updateProgress(counter, customers.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
@@ -123,7 +123,7 @@ public class CollectMetadataTask extends Task<Boolean> {
         }
     }
 
-    public void readStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException {
+    public void readStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException, StoreLocationIsIdenticalToStoreException, StoreLocationIsIdenticalToCustomerException {
         int counter = 0;
         updateProgress(counter, stores.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);

@@ -212,6 +212,23 @@ public class LoadingXMLFileController {
                     String storeName = duplicateDiscountNameException.getStoreName();
                     errorLabel.setText("Error: A discount with the name " + discountName + " already exists in the store"  + storeName);
                 }
+                else if(ex.getClass() == CustomerLocationIsIdenticalToCustomerException.class)
+                {
+                    CustomerLocationIsIdenticalToCustomerException customerLocationIsIdenticalToCustomerException = (CustomerLocationIsIdenticalToCustomerException) ex;
+                    String firstCustomerID = customerLocationIsIdenticalToCustomerException
+                }
+                else if(ex.getClass() == CustomerLocationIsIdenticalToStoreException.class)
+                {
+
+                }
+                else if(ex.getClass() == StoreLocationIsIdenticalToStoreException.class)
+                {
+
+                }
+                else if(ex.getClass() == StoreLocationIsIdenticalToCustomerException.class)
+                {
+
+                }
             }
         });
         // task percent label

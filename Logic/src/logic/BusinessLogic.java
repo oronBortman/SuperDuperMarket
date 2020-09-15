@@ -239,7 +239,7 @@ public class BusinessLogic {
 
     }
 
-    public void addUserSerialIDMapFromXml(SDMCustomer user) throws DuplicateCustomerSerialIDException, JAXBException, FileNotFoundException {
+    public void addUserSerialIDMapFromXml(SDMCustomer user) throws DuplicateCustomerSerialIDException, JAXBException, FileNotFoundException, CustomerLocationIsIdenticalToCustomerException, CustomerLocationIsIdenticalToStoreException {
 
         if(usersSerialIDMap != null  && usersSerialIDMap.containsKey(user.getId()))
         {
@@ -247,14 +247,27 @@ public class BusinessLogic {
         }
         else
         {
-            Customer userToAddToMap = new Customer(user);
-            usersSerialIDMap.put(user.getId(), userToAddToMap);
-            usersLocationMap.put(userToAddToMap.getLocation(), userToAddToMap);
+            Customer customerToAddToMap = new Customer(user);
+            SDMLocation customerLocation = customerToAddToMap.getLocation();
+            if(usersLocationMap != null && usersLocationMap.containsKey(customerLocation))
+            {
+
+                throw new CustomerLocationIsIdenticalToCustomerException(customerToAddToMap, usersLocationMap.get(customerLocation));
+            }
+            else if(usersLocationMap != null && storesLocationMap.containsKey(customerLocation))
+            {
+                throw new CustomerLocationIsIdenticalToStoreException(customerToAddToMap, storesLocationMap.get(customerLocation));
+            }
+            else
+            {
+                usersSerialIDMap.put(user.getId(), customerToAddToMap);
+                usersLocationMap.put(customerToAddToMap.getLocation(), customerToAddToMap);
+            }
         }
     }
 
 
-    public void addStoreSerialIDMapFromXml(SDMStore store) throws JAXBException, FileNotFoundException, DuplicateStoreSerialIDException {
+    public void addStoreSerialIDMapFromXml(SDMStore store) throws JAXBException, FileNotFoundException, DuplicateStoreSerialIDException, StoreLocationIsIdenticalToStoreException, StoreLocationIsIdenticalToCustomerException {
 
         if(storesSerialIDMap != null  && storesSerialIDMap.containsKey(store.getId()))
         {
@@ -263,8 +276,21 @@ public class BusinessLogic {
         else
         {
             Store storeToAddToMap = new Store(store);
-            storesSerialIDMap.put(store.getId(), storeToAddToMap);
-            storesLocationMap.put(storeToAddToMap.getLocationOfShop(), storeToAddToMap);
+            SDMLocation storeLocation = storeToAddToMap.getLocationOfShop();
+            if(storesLocationMap != null && storesLocationMap.containsKey(storeLocation))
+            {
+
+                throw new StoreLocationIsIdenticalToStoreException(storeToAddToMap, storesLocationMap.get(storeLocation));
+            }
+            else if(usersLocationMap != null && usersLocationMap.containsKey(storeLocation))
+            {
+                throw new StoreLocationIsIdenticalToCustomerException(storeToAddToMap, usersLocationMap.get(storeLocation));
+            }
+            else
+            {
+                storesSerialIDMap.put(store.getId(), storeToAddToMap);
+                storesLocationMap.put(storeToAddToMap.getLocationOfShop(), storeToAddToMap);
+            }
         }
     }
 
