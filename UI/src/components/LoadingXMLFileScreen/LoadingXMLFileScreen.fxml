@@ -98,11 +98,18 @@
                          </HBox>
                      </children>
                   </GridPane>
-                  <Label fx:id="errorLabel" prefHeight="17.0" prefWidth="847.0" textFill="#f80000">
-                     <font>
-                        <Font size="18.0" />
-                     </font>
-                  </Label>
+                  <HBox>
+                     <children>
+                        <Label fx:id="errorLabel" text="1" textFill="#f80000">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                     <padding>
+                        <Insets left="10.0" />
+                     </padding>
+                  </HBox>
                   <Separator maxHeight="20.0" minHeight="20.0" prefHeight="20.0" prefWidth="200.0">
                      <VBox.margin>
                         <Insets bottom="10.0" top="10.0" />

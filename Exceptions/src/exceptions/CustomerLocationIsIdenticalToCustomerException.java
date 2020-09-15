@@ -4,7 +4,7 @@ import logic.Customer;
 
 import javax.xml.stream.Location;
 
-public class CustomerLocationIsIdenticalToCustomerException extends Throwable {
+public class CustomerLocationIsIdenticalToCustomerException extends Exception {
 
     Customer firstCustomer;
     Customer secondCustomer;

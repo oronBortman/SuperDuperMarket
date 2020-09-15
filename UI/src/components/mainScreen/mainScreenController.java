@@ -359,121 +359,110 @@ public class mainScreenController {
         storeImage.setFitWidth(40);
         return storeImage;
     }
-    @FXML
-    void showMapOfStoresAndOrders(ActionEvent event) {
+
+    ScrollPane createAndSetScrollPane()
+    {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);
         scrollPane.setFitToWidth(true);
         scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
         scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-
-        int maxCoordinateX = businessLogic.getMaxCoordinateXOfLocationOfUsersAndStores();
-        System.out.println("Max x:" + maxCoordinateX);
-        int maxCoordinateY = businessLogic.getMaxCoordinateYOfLocationOfUsersAndStores();
-        System.out.println("Max y:" + maxCoordinateY);
-        GridPane gridPane = gridPaneForceColsAndRows(maxCoordinateX,maxCoordinateY);
-        System.out.println("A");
+        return scrollPane;
+    }
+    void settingColumnsScaleMark(GridPane gridPane, int maxCoordinateX)
+    {
 
         for(Integer i=1;i<=maxCoordinateX;i++)
         {
             gridPane.add(new Label(i.toString()),i,0);
         }
+    }
 
+    void settingRowsScaleMark(GridPane gridPane, int maxCoordinateY)
+    {
         for(Integer i=1;i<=maxCoordinateY;i++)
         {
             gridPane.add(new Label(i.toString()),0,i);
         }
 
+    }
+
+    void settingCustomersOnMap(GridPane gridPane)
+    {
         for(Customer customer : businessLogic.getUsersList())
         {
             final Tooltip tooltip = new Tooltip();
             tooltip.setText("Type: customer\n" + "Name: " + customer.getName() +
                     "\nLocation:" + "(" + customer.getLocation().getX() + "," +
                     customer.getLocation().getY() + ")");
-
-            int coordinateX = customer.getLocation().getX();
-            int coordinateY = customer.getLocation().getY();
-            System.out.println("Corrdinate x:"+coordinateX);
-            System.out.println("Corrdinate y:"+coordinateY);
             ImageView imageView = generateUserImage();
-            //Tooltip.install(imageView, new Tooltip("AAA"));
-            HBox hbox = new HBox(imageView);
-            hbox.setMinHeight(40);
-            hbox.setPrefHeight(40);
-            hbox.setMinWidth(40);
-            hbox.setPrefHeight(40);
-            hbox.setFillHeight(true);
-            HBox.setHgrow(imageView,Priority.ALWAYS);
-
-            imageView.fitWidthProperty().bind(hbox.widthProperty());
-            imageView.fitHeightProperty().bind(hbox.heightProperty());
-
-            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent t) {
-                    Node  node =(Node)t.getSource();
-                    tooltip.show(node, primaryStage.getX()+t.getSceneX(), primaryStage.getY()+t.getSceneY());
-                }
-            });
-
-            imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent t) {
-                    tooltip.hide();
-                }
-            });
-
-            gridPane.add(hbox,coordinateX,coordinateY);
+            createImageAndSetItWithHboxAndToolTip(tooltip, imageView, gridPane, customer.getLocation().getX(), customer.getLocation().getY());
         }
+    }
 
-        System.out.println("Finished with users");
-
+    void settingStoresOnMap(GridPane gridPane)
+    {
         for(Store store : businessLogic.getStoresList())
         {
             final Tooltip tooltip = new Tooltip();
             tooltip.setText("Type: store\n" + "Serial ID: " + store.getSerialNumber() + "\nName: " + store.getName() +
                     "\nLocation:" + "(" + store.getLocationOfShop().getX() + "," +
                     store.getLocationOfShop().getY() + ")");
-
-            int coordinateX = store.getLocationOfShop().getX();
-            int coordinateY = store.getLocationOfShop().getY();
-            System.out.println("Corrdinate x:"+coordinateX);
-            System.out.println("Corrdinate y:"+coordinateY);
-
             ImageView imageView = generateStoreImage();
-            imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent t) {
-                    Node  node =(Node)t.getSource();
-                    tooltip.show(node, primaryStage.getX()+t.getSceneX(), primaryStage.getY()+t.getSceneY());
-                }
-            });
-
-            imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
-                @Override
-                public void handle(MouseEvent t) {
-                    tooltip.hide();
-                }
-            });
-
-            HBox hbox = new HBox(imageView);
-            hbox.setMinHeight(40);
-            hbox.setPrefHeight(40);
-            hbox.setMinWidth(40);
-            hbox.setPrefHeight(40);
-            hbox.setFillHeight(true);
-            HBox.setHgrow(imageView,Priority.ALWAYS);
-
-            imageView.fitWidthProperty().bind(hbox.widthProperty());
-            imageView.fitHeightProperty().bind(hbox.heightProperty());
-
-            gridPane.add(hbox,coordinateX,coordinateY);
+            createImageAndSetItWithHboxAndToolTip(tooltip, imageView, gridPane, store.getLocationOfShop().getX(), store.getLocationOfShop().getY());
         }
+    }
 
+    @FXML
+    void showMapOfStoresAndOrders(ActionEvent event)
+    {
+        ScrollPane scrollPane = createAndSetScrollPane();
+        int maxCoordinateX = businessLogic.getMaxCoordinateXOfLocationOfUsersAndStores();
+        int maxCoordinateY = businessLogic.getMaxCoordinateYOfLocationOfUsersAndStores();
+        GridPane gridPane = gridPaneForceColsAndRows(maxCoordinateX,maxCoordinateY);
+        settingColumnsScaleMark(gridPane, maxCoordinateX);
+        settingRowsScaleMark(gridPane, maxCoordinateY);
+        settingCustomersOnMap(gridPane);
+        settingStoresOnMap(gridPane);
         scrollPane.setContent(gridPane);
-
         mainBorderPane.setCenter(scrollPane);
+    }
 
+    public void createImageAndSetItWithHboxAndToolTip(Tooltip tooltip, ImageView imageView, GridPane gridPane, int coordinateX, int coordinateY)
+    {
+        setToolTipOnImage(tooltip, imageView);
+        HBox hbox = new HBox(imageView);
+        updateHboxWithImage(hbox,imageView);
+        gridPane.add(hbox,coordinateX,coordinateY);
+    }
+    public void setToolTipOnImage(Tooltip toolTipOnImage, ImageView imageView)
+    {
+        imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                Node  node =(Node)t.getSource();
+                toolTipOnImage.show(node, primaryStage.getX()+t.getSceneX(), primaryStage.getY()+t.getSceneY());
+            }
+        });
+
+        imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
+            @Override
+            public void handle(MouseEvent t) {
+                toolTipOnImage.hide();
+            }
+        });
+    }
+    public void updateHboxWithImage(HBox hbox, ImageView imageView)
+    {
+        hbox.setMinHeight(40);
+        hbox.setPrefHeight(40);
+        hbox.setMinWidth(40);
+        hbox.setPrefHeight(40);
+        hbox.setFillHeight(true);
+        HBox.setHgrow(imageView,Priority.ALWAYS);
+
+        imageView.fitWidthProperty().bind(hbox.widthProperty());
+        imageView.fitHeightProperty().bind(hbox.heightProperty());
 
     }
 

@@ -12,8 +12,7 @@ import javafx.scene.control.ProgressBar;
 import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-import logic.BusinessLogic;
-import logic.Item;
+import logic.*;
 import metadata.*;
 import java.io.File;
 import java.util.Optional;
@@ -215,19 +214,42 @@ public class LoadingXMLFileController {
                 else if(ex.getClass() == CustomerLocationIsIdenticalToCustomerException.class)
                 {
                     CustomerLocationIsIdenticalToCustomerException customerLocationIsIdenticalToCustomerException = (CustomerLocationIsIdenticalToCustomerException) ex;
-                    String firstCustomerID = customerLocationIsIdenticalToCustomerException
+                    Customer firstCustomer = customerLocationIsIdenticalToCustomerException.getFirstCustomer();
+                    Customer secondCustomer = customerLocationIsIdenticalToCustomerException.getSecondCustomer();
+                    SDMLocation location = firstCustomer.getLocation();
+                    String locationStr = "(" + location.getX() + "," + location.getY() + ")";
+                    errorLabel.setText("Error: The location " + locationStr + " of the customer with name " + firstCustomer.getName() + " and serial ID: " + firstCustomer.getSerialNumber() +
+                            "\nis identical to the location of the customer with name " + secondCustomer.getName() + " and serial ID: " + secondCustomer.getSerialNumber());
                 }
                 else if(ex.getClass() == CustomerLocationIsIdenticalToStoreException.class)
                 {
-
+                    CustomerLocationIsIdenticalToStoreException customerLocationIsIdenticalToStoreException = (CustomerLocationIsIdenticalToStoreException) ex;
+                    Customer customer = customerLocationIsIdenticalToStoreException.getCustomer();
+                    Store store = customerLocationIsIdenticalToStoreException.getStore();
+                    SDMLocation location = customer.getLocation();
+                    String locationStr = "(" + location.getX() + "," + location.getY() + ")";
+                    errorLabel.setText("Error: The location " + locationStr + " of the customer with name " + customer.getName() + " and serial ID: " + customer.getSerialNumber() +
+                            "\nis identical to the location of the store with name " + store.getName() + " and serial ID: " + store.getSerialNumber());
                 }
                 else if(ex.getClass() == StoreLocationIsIdenticalToStoreException.class)
                 {
-
+                    StoreLocationIsIdenticalToStoreException storeLocationIsIdenticalToStoreException = (StoreLocationIsIdenticalToStoreException) ex;
+                    Store firstStore = storeLocationIsIdenticalToStoreException.getFirstStore();
+                    Store secondStore = storeLocationIsIdenticalToStoreException.getSecondStore();
+                    SDMLocation location = firstStore.getLocationOfShop();
+                    String locationStr = "(" + location.getX() + "," + location.getY() + ")";
+                    errorLabel.setText("Error: The location " + locationStr + " of the store with name " + firstStore.getName() + " and serial ID: " + firstStore.getSerialNumber() +
+                            "\nis identical to the location of the store with name " + secondStore.getName() + " and serial ID: " + secondStore.getSerialNumber());
                 }
                 else if(ex.getClass() == StoreLocationIsIdenticalToCustomerException.class)
                 {
-
+                    StoreLocationIsIdenticalToCustomerException storeLocationIsIdenticalToCustomerException = (StoreLocationIsIdenticalToCustomerException) ex;
+                    Store store = storeLocationIsIdenticalToCustomerException.getStore();
+                    Customer customer = storeLocationIsIdenticalToCustomerException.getCustomer();
+                    SDMLocation location = store.getLocationOfShop();
+                    String locationStr = "(" + location.getX() + "," + location.getY() +")";
+                    errorLabel.setText("Error: The location " + locationStr + " of the store with name " + store.getName() + " and serial ID: " + store.getSerialNumber() +
+                            "\nis identical to the location of the customer with name " + customer.getName() + " and serial ID: " + customer.getSerialNumber());
                 }
             }
         });

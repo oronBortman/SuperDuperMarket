@@ -5,7 +5,7 @@ import logic.Store;
 
 import javax.xml.stream.Location;
 
-public class StoreLocationIsIdenticalToCustomerException extends Throwable {
+public class StoreLocationIsIdenticalToCustomerException extends Exception {
     Store store;
     Customer customer;
 
