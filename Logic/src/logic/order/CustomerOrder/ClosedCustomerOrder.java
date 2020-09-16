@@ -5,6 +5,7 @@ import logic.order.Order;
 import logic.order.StoreOrder.ClosedStoreOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -17,7 +18,7 @@ public class ClosedCustomerOrder extends Order {
     Integer SerialNumber;
     Map<Integer, ClosedStoreOrder> closedStoresOrderMapByStoreSerialID;
 
-    public ClosedCustomerOrder(Date date,Map<Integer, ClosedStoreOrder> closedStoresOrderMapByStoreSerialID , boolean isOrderStatic)
+    public ClosedCustomerOrder(LocalDate date, Map<Integer, ClosedStoreOrder> closedStoresOrderMapByStoreSerialID , boolean isOrderStatic)
     {
         super(date, isOrderStatic);
         this.closedStoresOrderMapByStoreSerialID = closedStoresOrderMapByStoreSerialID;

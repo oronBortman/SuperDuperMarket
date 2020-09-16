@@ -14,6 +14,8 @@ import logic.order.StoreOrder.OpenedStoreOrder;
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
+import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -26,6 +28,7 @@ public class SummeryOfOrderController {
     @FXML private Label LabelTotalDeliveryPrice;
     @FXML private Label LabelTotalOrderPrice;
     @FXML private Button buttonApproveOrder;
+    @FXML private Label LabelDateValue;
 
     BusinessLogic businessLogic;
     OpenedCustomerOrder openedCustomerOrder;
@@ -58,6 +61,12 @@ public class SummeryOfOrderController {
         LabelTotalOrderPrice.setText(decimalFormat.format(openedCustomerOrder.calcTotalOrderPrice()));
     }
 
+    public void setLabelOrderDateValue()
+    {
+        LabelDateValue.setText(openedCustomerOrder.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yy")));
+    }
+
+
     public void setFlowPaneStores()
     {
 
@@ -77,6 +86,7 @@ public class SummeryOfOrderController {
         setLabelTotalDeliveryPrice();
         setLabelTotalItemsCost();
         setLabelTotalOrderPrice();
+        setLabelOrderDateValue();
         addOpenedStoreOrderTiles();
     }
 

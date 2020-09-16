@@ -1,6 +1,7 @@
 package components.makeAnOrderOption.chooseAnItemForOrder;
 
 
+import com.sun.jmx.mbeanserver.NamedObject;
 import commonUI.SuperDuperMarketConstants;
 import components.makeAnOrderOption.Item.ItemTileController;
 import components.makeAnOrderOption.Item.QuantityItem.QuantityItemController;
@@ -169,10 +170,13 @@ public class ChooseItemsForOrderController {
     public void clickOnNextButton(ActionEvent actionEvent) throws IOException {
 
         boolean goodInput=true;
+        Integer amountOfWeightItemsWithoutAmountValue=0;
+        Integer amountOfQuantityItemsWithoutAmountValue=0;
         for(Map.Entry<Item, ItemTileController> itemEntry: itemToTileControlleresMap.entrySet())
         {
             Item item = itemEntry.getKey();
             ItemTileController itemTileController = itemEntry.getValue();
+
 
             if(itemTileController instanceof WeightItemController)
             {
@@ -186,6 +190,10 @@ public class ChooseItemsForOrderController {
                                     " can't be negative");
                             goodInput=false;
                         }
+                        else if(((WeightItemController)itemTileController).getAmount() ==0)
+                        {
+                            amountOfWeightItemsWithoutAmountValue++;
+                        }
                     }
                     catch(NumberFormatException exception)
                     {
@@ -194,7 +202,23 @@ public class ChooseItemsForOrderController {
                                 " is not a number");
                     }
                 }
+                else
+                {
+                    amountOfWeightItemsWithoutAmountValue++;
+                }
             }
+            else if((itemTileController instanceof QuantityItemController))
+            {
+                if((((QuantityItemController)itemTileController).getAmount() == 0))
+                {
+                    amountOfQuantityItemsWithoutAmountValue++;
+                }
+            }
+        }
+        if((amountOfQuantityItemsWithoutAmountValue + amountOfWeightItemsWithoutAmountValue) == itemToTileControlleresMap.size())
+        {
+            errorLabel.setText("Error: You didn't add any item to the order!");
+            goodInput = false;
         }
         if(goodInput==true)
         {

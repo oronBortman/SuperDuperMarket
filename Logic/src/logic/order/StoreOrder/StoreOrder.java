@@ -7,6 +7,7 @@ import logic.order.itemInOrder.OrderedItem;
 import logic.order.itemInOrder.OrderedItemFromSale;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -20,7 +21,7 @@ public class StoreOrder extends Order {
     private Map<Integer, OrderedItemFromStore> orderedItemsNotFromSale;
     private Map<String, Map<Integer, OrderedItemFromStore>> orderedItemsFromSale;
 
-    public StoreOrder(Store store, Date date, boolean isOrderStatic, SDMLocation customerLocation)
+    public StoreOrder(Store store, LocalDate date, boolean isOrderStatic, SDMLocation customerLocation)
     {
         super(date, isOrderStatic);
         this.customerLocation = customerLocation;
@@ -29,7 +30,7 @@ public class StoreOrder extends Order {
         orderedItemsFromSale = new HashMap<String,Map<Integer, OrderedItemFromStore>>();
     }
 
-    public StoreOrder(Date date, boolean isOrderStatic, SDMLocation customerLocation)
+    public StoreOrder(LocalDate date, boolean isOrderStatic, SDMLocation customerLocation)
     {
         super(date, isOrderStatic);
         this.customerLocation=customerLocation;
@@ -37,7 +38,7 @@ public class StoreOrder extends Order {
         orderedItemsFromSale = new HashMap<String,Map<Integer, OrderedItemFromStore>>();
     }
 
-    public StoreOrder(Date date, boolean isOrderStatic) {
+    public StoreOrder(LocalDate date, boolean isOrderStatic) {
         super(date, isOrderStatic);
     }
     public StoreOrder(StoreOrder storeOrder)

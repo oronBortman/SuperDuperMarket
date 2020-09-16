@@ -38,6 +38,7 @@ import javafx.scene.layout.GridPane;
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URL;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -151,13 +152,15 @@ public class mainScreenController {
                             if(isOrderStatic)
                             {
                                 Store store = makeAnOrderController.getStore();
+                                LocalDate date = makeAnOrderController.getDate();
                                 itemsList = store.getItemsList();
-                                chooseItemsForStaticOrder(customer, store, isOrderStatic, itemsList);
+                                chooseItemsForStaticOrder(customer, store, date,isOrderStatic, itemsList);
                             }
                             else
                             {
                                 itemsList = businessLogic.getItemsList();
-                                chooseItemsForDynamicOrder(customer, isOrderStatic, itemsList);
+                                LocalDate date = makeAnOrderController.getDate();
+                                chooseItemsForDynamicOrder(customer, date,isOrderStatic, itemsList);
                             }
                         }
 
@@ -172,7 +175,7 @@ public class mainScreenController {
 
     }
 
-    public void chooseItemsForStaticOrder(Customer customer, Store store, Boolean isOrderStatic, List<Item> itemsList) throws IOException {
+    public void chooseItemsForStaticOrder(Customer customer, Store store, LocalDate date, Boolean isOrderStatic, List<Item> itemsList) throws IOException {
 
         FXMLLoader loader = new FXMLLoader();
         URL loaderFXML = getClass().getResource(SuperDuperMarketConstants.CHOOSE_ITEM_FOR_ORDER_RESOURCE_IDENTIFEIR);
@@ -182,7 +185,6 @@ public class mainScreenController {
         chooseItemsForOrderController.setOrderStatic(isOrderStatic);
         chooseItemsForOrderController.setItemsList(itemsList);
         chooseItemsForOrderController.setBusinessLogic(businessLogic);
-        Date date = new Date();
 
         Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
             @Override
@@ -221,7 +223,7 @@ public class mainScreenController {
 
     }
 
-    public void chooseItemsForDynamicOrder(Customer customer, Boolean isOrderStatic, List<Item> itemsList) throws IOException {
+    public void chooseItemsForDynamicOrder(Customer customer, LocalDate date, Boolean isOrderStatic, List<Item> itemsList) throws IOException {
         //ChooseItemsForOrderController chooseItemsForOrderController = getChooseItemsForOrderController(customer,itemsList);
 
         FXMLLoader loader = new FXMLLoader();
@@ -232,8 +234,6 @@ public class mainScreenController {
         chooseItemsForOrderController.setItemsList(itemsList);
         chooseItemsForOrderController.setBusinessLogic(businessLogic);
 
-
-        Date date = new Date();
         chooseItemsForOrderController.setOrderStatic(isOrderStatic);
         Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
             @Override

@@ -14,6 +14,7 @@ import logic.Customer;
 import logic.Store;
 
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.function.Consumer;
 
 public class MakeAnOrderController {
@@ -122,6 +123,7 @@ public class MakeAnOrderController {
                         isStoreSelected.not(),
                         isDynamicSelected.not()
                 ));
+
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -154,6 +156,7 @@ public class MakeAnOrderController {
         }
         else
         {
+            datePicker.getValue();
             isDatePickerSelected.set(true);
         }
     }
@@ -169,6 +172,8 @@ public class MakeAnOrderController {
         {
             isDatePickerSelected.set(true);
             isDynamicSelected.set(true);
+            isStaticSelected.set(false);
+            RadioButtonStatic.setSelected(false);
         }
         else
         {
@@ -180,6 +185,9 @@ public class MakeAnOrderController {
         if(RadioButtonStatic.isSelected())
         {
             isStaticSelected.set(true);
+            isDynamicSelected.set(false);
+            RadioButtonDynamic.setSelected(false);
+
         }
         else
         {
@@ -207,6 +215,15 @@ public class MakeAnOrderController {
         System.out.println("Inside getStore");
         System.out.println(comboBoxStore.getValue().getName());
         return comboBoxStore.getValue();
+    }
+
+    public LocalDate getDate()
+    {
+        LocalDate localDate = null;
+        if(datePicker.getValue() != null) {
+            localDate = datePicker.getValue();
+        }
+        return localDate;
     }
 
     public void chooseStore(ActionEvent actionEvent) {

@@ -54,6 +54,8 @@
                                     <Label fx:id="LabelTotalItemsCost" layoutX="207.0" layoutY="14.0" text="Label" />
                                     <Label fx:id="LabelTotalDeliveryPrice" layoutX="137.0" layoutY="43.0" text="Label" />
                                     <Label fx:id="LabelTotalOrderPrice" layoutX="122.0" layoutY="70.0" text="Label" />
+                                    <Label layoutX="14.0" layoutY="99.0" text="Label:" />
+                                    <Label fx:id="LabelDateValue" layoutX="67.0" layoutY="99.0" text="Label" />
                                  </children>
                               </Pane>
                            </children>

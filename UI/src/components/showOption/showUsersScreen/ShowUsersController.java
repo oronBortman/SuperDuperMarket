@@ -64,21 +64,51 @@ public class ShowUsersController {
         AmountOfOrdersCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Customer, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Customer, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getAmountOfOrdersCol().toString());
+                ReadOnlyObjectWrapper<String> readOnlyObjectWrapper;
+                Customer customer = param.getValue();
+                if(customer.getMapOfClosedCustomerOrders().size() > 0)
+                {
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(param.getValue().getAmountOfOrdersCol().toString());
+                }
+                else
+                {
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>("0");
+                }
+                return readOnlyObjectWrapper;
             }
         });
 
         AverageOrderPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Customer, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Customer, String> param) {
-                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageOrderPriceCol()));
+                ReadOnlyObjectWrapper<String> readOnlyObjectWrapper;
+                Customer customer = param.getValue();
+                if(customer.getMapOfClosedCustomerOrders().size() > 0)
+                {
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(param.getValue().getAverageOrderPriceCol().toString());
+                }
+                else
+                {
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>("0");
+                }
+                return readOnlyObjectWrapper;
             }
         });
 
         AverageDeliveryPrice.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Customer, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Customer, String> param) {
-                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageDeliveryPrice()));
+                ReadOnlyObjectWrapper<String> readOnlyObjectWrapper;
+                Customer customer = param.getValue();
+                if(customer.getMapOfClosedCustomerOrders().size() > 0)
+                {
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(param.getValue().getAverageDeliveryPrice().toString());
+                }
+                else
+                {
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>("0");
+                }
+                return readOnlyObjectWrapper;
             }
         });
 

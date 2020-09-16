@@ -26,6 +26,7 @@ import logic.order.itemInOrder.OrderedItemFromStoreByWeight;
 
 import javax.xml.bind.JAXBException;
 import java.io.FileNotFoundException;
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -503,11 +504,11 @@ public class BusinessLogic {
     }
 
 
-    public OpenedCustomerOrder updateItemsWithAmountAndCreateOpenedDynamicCustomerOrder(Customer customer, Date date, Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight, Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity)
+    public OpenedCustomerOrder updateItemsWithAmountAndCreateOpenedDynamicCustomerOrder(Customer customer, LocalDate date, Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight, Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity)
     {
         boolean isOrderStatic = false;
         List<Item> itemsList = new ArrayList<Item>();
-        OpenedCustomerOrder openedCustomerOrder = new OpenedCustomerOrder(date, customer.getLocation(),isOrderStatic);
+        OpenedCustomerOrder openedCustomerOrder = new OpenedCustomerOrder(date, customer,isOrderStatic);
         ArrayList<Item> itemsListFromQuantityList = addQuantityItemsToItemListFromOrderedItemsMap(orderedItemsListByItemSerialIDAndQuantity);
         ArrayList<Item> itemsListFromWeightList = addWeightItemsToItemListFromOrderedItemsMap(orderedItemsListByItemSerialIDAndWeight);
         itemsList = Stream.concat(itemsList.stream(), itemsListFromQuantityList.stream()).collect(Collectors.toList());;
@@ -548,9 +549,9 @@ public class BusinessLogic {
         }
     }
 
-    public OpenedCustomerOrder updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(Customer customer, Date date, Store store, Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight, Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity) {
+    public OpenedCustomerOrder updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(Customer customer, LocalDate date, Store store, Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight, Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity) {
         boolean isOrderStatic = true;
-        OpenedCustomerOrder openedCustomerOrder = new OpenedCustomerOrder(date, customer.getLocation(), isOrderStatic);
+        OpenedCustomerOrder openedCustomerOrder = new OpenedCustomerOrder(date, customer, isOrderStatic);
         OpenedStoreOrder openedStoreOrder = new OpenedStoreOrder(store, date, isOrderStatic, customer.getLocation());
 
 

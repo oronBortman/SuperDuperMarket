@@ -4,12 +4,10 @@ import logic.*;
 import logic.discount.Discount;
 import logic.discount.IfYouBuySDM;
 import logic.discount.Offer;
-import logic.order.OpenedOrder;
 import logic.order.itemInOrder.*;
 
+import java.time.LocalDate;
 import java.util.*;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static java.util.stream.Collectors.toCollection;
 
@@ -18,7 +16,7 @@ public class OpenedStoreOrder extends StoreOrder{
     Map<String, Discount> discountsInStoresThatAreValidInOrder = new HashMap<String, Discount>();
     Map<Integer, Double> itemsAmountLeftToUseInSalesMap = new HashMap<Integer, Double>();
 
-    public OpenedStoreOrder(Store store, Date date, boolean isOrderStatic, SDMLocation customerLocation)
+    public OpenedStoreOrder(Store store, LocalDate date, boolean isOrderStatic, SDMLocation customerLocation)
     {
         super(store, date, isOrderStatic, customerLocation);
 

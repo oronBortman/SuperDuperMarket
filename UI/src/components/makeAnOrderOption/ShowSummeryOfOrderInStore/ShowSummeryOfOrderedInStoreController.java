@@ -18,6 +18,7 @@ import logic.order.itemInOrder.OrderedItemFromSale;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 
 public class ShowSummeryOfOrderedInStoreController {
 
@@ -34,7 +35,7 @@ public class ShowSummeryOfOrderedInStoreController {
     @FXML private Label LabelPPK;
     @FXML private Label LabelDistanceToCustomer;
     @FXML private Label LabelDeliveryCost;
-
+    @FXML private Label LabelDate;
     BusinessLogic businessLogic;
     StoreOrder storeOrder;
 
@@ -59,6 +60,7 @@ public class ShowSummeryOfOrderedInStoreController {
         setLabelPPK();
         setLabelDistanceToCustomer();
         setLabelDeliveryCost();
+        setLabelDate();
         setDataOnItemsTable();
     }
 
@@ -81,6 +83,8 @@ public class ShowSummeryOfOrderedInStoreController {
     private void setLabelNameOfStore() {
         LabelNameOfStore.setText(storeOrder.getStoreUsed().getName());
     }
+
+    private void setLabelDate() {LabelDate.setText(storeOrder.getDate().format(DateTimeFormatter.ofPattern("dd.MM.yy")));}
 
     @FXML
     void initialize()
