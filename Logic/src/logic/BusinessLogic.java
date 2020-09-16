@@ -2,13 +2,11 @@ package logic;
 
 import exceptions.*;
 import jaxb.schema.generated.*;
-import logic.order.ClosedOrder;
 import logic.order.CustomerOrder.ClosedCustomerOrder;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.GeneralMethods;
 import logic.order.StoreOrder.ClosedStoreOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
-import logic.order.itemInOrder.OrderedItemFromStore;
 import logic.discount.Discount;
 import logic.order.itemInOrder.OrderedItemFromStoreByQuantity;
 import logic.order.itemInOrder.OrderedItemFromStoreByWeight;
@@ -251,6 +249,7 @@ public class BusinessLogic {
         {
             Customer customerToAddToMap = new Customer(user);
             SDMLocation customerLocation = customerToAddToMap.getLocation();
+
             if(usersLocationMap != null && usersLocationMap.containsKey(customerLocation))
             {
 
@@ -265,6 +264,33 @@ public class BusinessLogic {
                 usersSerialIDMap.put(user.getId(), customerToAddToMap);
                 usersLocationMap.put(customerToAddToMap.getLocation(), customerToAddToMap);
             }
+        }
+    }
+
+    public boolean checkIfCustomerLocationIsValidAndThrowsExceptionIfNot(SDMLocation location, String customerName)
+    {
+        int coordinateX = location.getX();
+        int coordinateY = location.getY();
+
+        if(coordinateX > 50 || coordinateX < 0)
+        {
+            throw new InvalidCoordinateXOfCustomerException(location.getX(),)
+        }
+        else if(coordinateY > 50 || coordinateY < 0)
+        {
+
+        }
+    }
+
+    public boolean checkIfStoreLocationIsValidAndThrowsExceptionIfNot(SDMLocation location, string )
+    {
+        if(location.getX() > 50 || location.getY() < 0)
+        {
+
+        }
+        else if(location.getY() > 50 || location.getX() < 0)
+        {
+
         }
     }
 
@@ -474,15 +500,15 @@ public class BusinessLogic {
             OpenedStoreOrder openedStoreOrder = new OpenedStoreOrder(storeUsed, date, isOrderStatic, customer.getLocation());
 
             for (AvailableItemInStore itemInStore : availableItemInStoreList) {
-                if(itemInStore.getTypeOfMeasure() == Item.TypeOfMeasure.Weight) { addWeightItem(orderedItemsListByItemSerialIDAndWeight, itemInStore, openedStoreOrder);}
-                else if(itemInStore.getTypeOfMeasure() == Item.TypeOfMeasure.Quantity) { addQuantityItem(orderedItemsListByItemSerialIDAndQuantity, itemInStore, openedStoreOrder);}
+                if(itemInStore.getTypeOfMeasure() == Item.TypeOfMeasure.Weight) { addWeightItemToOpenedOrder(orderedItemsListByItemSerialIDAndWeight, itemInStore, openedStoreOrder);}
+                else if(itemInStore.getTypeOfMeasure() == Item.TypeOfMeasure.Quantity) { addQuantityItemToOpenedOrder(orderedItemsListByItemSerialIDAndQuantity, itemInStore, openedStoreOrder);}
             }
             openedCustomerOrder.addStoreOrder(openedStoreOrder);
         }
         return openedCustomerOrder;
     }
 
-    public void addWeightItem(Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight, AvailableItemInStore itemInStore, OpenedStoreOrder openedStoreOrder)
+    public void addWeightItemToOpenedOrder(Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight, AvailableItemInStore itemInStore, OpenedStoreOrder openedStoreOrder)
     {
         int itemSerialID = itemInStore.getSerialNumber();
         if (orderedItemsListByItemSerialIDAndWeight.containsKey(itemSerialID)) {
@@ -492,7 +518,7 @@ public class BusinessLogic {
         }
     }
 
-    public void addQuantityItem(Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity, AvailableItemInStore itemInStore, OpenedStoreOrder openedStoreOrder)
+    public void addQuantityItemToOpenedOrder(Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity, AvailableItemInStore itemInStore, OpenedStoreOrder openedStoreOrder)
     {
         int itemSerialID = itemInStore.getSerialNumber();
         if (orderedItemsListByItemSerialIDAndQuantity.containsKey(itemSerialID)) {

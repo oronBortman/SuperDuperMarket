@@ -13,6 +13,7 @@ import logic.order.StoreOrder.OpenedStoreOrder;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -33,6 +34,7 @@ public class SummeryOfOrderController {
 
 
     private Map<OpenedStoreOrder, ShowSummeryOfOrderedInStoreController> itemToTileControlleresMap;
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
 
     public void setProperties(Consumer<Boolean> isYesClickedConsumer, Consumer<Boolean> isNoClickedConsumer)
@@ -43,17 +45,17 @@ public class SummeryOfOrderController {
 
     public void setLabelTotalItemsCost()
     {
-        LabelTotalItemsCost.setText(openedCustomerOrder.calcTotalItemsCost().toString());
+        LabelTotalItemsCost.setText(decimalFormat.format(openedCustomerOrder.calcTotalItemsCost()));
     }
 
     public void setLabelTotalDeliveryPrice()
     {
-        LabelTotalDeliveryPrice.setText(openedCustomerOrder.calcTotalDeliveryPrice().toString());
+        LabelTotalDeliveryPrice.setText(decimalFormat.format(openedCustomerOrder.calcTotalDeliveryPrice()));
     }
 
     public void setLabelTotalOrderPrice()
     {
-        LabelTotalOrderPrice.setText(openedCustomerOrder.calcTotalOrderPrice().toString());
+        LabelTotalOrderPrice.setText(decimalFormat.format(openedCustomerOrder.calcTotalOrderPrice()));
     }
 
     public void setFlowPaneStores()

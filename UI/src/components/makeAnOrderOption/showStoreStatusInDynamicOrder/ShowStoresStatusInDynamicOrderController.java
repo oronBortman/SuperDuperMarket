@@ -19,6 +19,7 @@ import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 
 import java.io.IOException;
+import java.text.DecimalFormat;
 import java.util.function.Consumer;
 
 public class ShowStoresStatusInDynamicOrderController {
@@ -43,6 +44,7 @@ public class ShowStoresStatusInDynamicOrderController {
     Consumer<Boolean> isNextClickedConsumer;
 
     OpenedCustomerOrder openedCustomerOrder;
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     @FXML
     private void initialize() {
@@ -118,7 +120,7 @@ public class ShowStoresStatusInDynamicOrderController {
         DistanceFromCustomerCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getStoreUsed().getLocationOfShop().getAirDistanceToOtherLocation(openedCustomerOrder.getCustomerLocation()).toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getStoreUsed().getLocationOfShop().getAirDistanceToOtherLocation(openedCustomerOrder.getCustomerLocation())));
             }
         });
 
@@ -135,14 +137,14 @@ public class ShowStoresStatusInDynamicOrderController {
                 Store store = param.getValue().getStoreUsed();
                 SDMLocation storeLocation = store.getLocationOfShop();
                 SDMLocation customerLocation = openedCustomerOrder.getCustomerLocation();
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalDeliveryPrice().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().calcTotalDeliveryPrice()));
             }
         });
 
         amountOfItemsPurchasedCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalAmountOfItemsByMeasureType().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().calcTotalAmountOfItemsByMeasureType()));
             }
         });
 
@@ -150,7 +152,7 @@ public class ShowStoresStatusInDynamicOrderController {
         totalPriceOfItemsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalPriceOfItemsNotFromSale().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().calcTotalPriceOfItemsNotFromSale()));
             }
         });
 

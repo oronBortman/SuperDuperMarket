@@ -15,6 +15,8 @@ import javafx.beans.value.ObservableValue;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 
+import java.text.DecimalFormat;
+
 
 public class ShowItemsController {
 
@@ -28,6 +30,8 @@ public class ShowItemsController {
     @FXML TableColumn<Item, String> AmountOfStoresSellesItemCol;
     @FXML TableColumn<Item, String>  AmountSoledFromItemCol;
     @FXML TableColumn<Item, String> TypeOfMeasureCol;
+
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     @FXML
     private void initialize() {
@@ -51,7 +55,7 @@ public class ShowItemsController {
         AveragePriceCol.setCellValueFactory(new Callback<CellDataFeatures<Item, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<Item, String> param) {
-                return new ReadOnlyObjectWrapper<String>(businessLogic.getAvgPriceOfItemInSDK(param.getValue().getSerialNumber()).toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(businessLogic.getAvgPriceOfItemInSDK(param.getValue().getSerialNumber())));
             }
         });
 
@@ -65,7 +69,7 @@ public class ShowItemsController {
         AmountSoledFromItemCol.setCellValueFactory(new Callback<CellDataFeatures<Item, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<Item, String> param) {
-                return new ReadOnlyObjectWrapper<String>(businessLogic.getTotalAmountOfSoledItem(param.getValue().getSerialNumber()).toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(businessLogic.getTotalAmountOfSoledItem(param.getValue().getSerialNumber())));
             }
         });
 

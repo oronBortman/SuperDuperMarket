@@ -17,6 +17,7 @@ import components.showOption.showUsersScreen.ShowUsersController;
 import components.updateItemInStoreOption.updatePriceOfItemInStoreScreen.UpdateItemInStoreController;
 import exceptions.DuplicateSerialIDException;
 import exceptions.SerialIDNotExistException;
+import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
@@ -24,10 +25,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.ScrollPane;
-import javafx.scene.control.Tooltip;
+import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
@@ -54,7 +52,27 @@ public class mainScreenController {
     private Stage primaryStage;
     private BusinessLogic businessLogic;
     @FXML BorderPane mainBorderPane;
+    @FXML MenuItem menuOptionMakeAnOrder;
+    @FXML Menu menuOptionShow;
+    @FXML MenuItem menuOptionShowUsers;
+    @FXML MenuItem menuOptionShowItems;
+    @FXML MenuItem menuOptionShowStores;
+    @FXML MenuItem menuOptionShowOrders;
+    @FXML MenuItem menuOptionShowMap;
+    @FXML Menu menuOptionUpdateItem;
+    @FXML MenuItem menuOptionDeleteItem;
+    @FXML MenuItem menuOptionAddItem;
+    @FXML MenuItem menuOptionUpdatePrice;
 
+
+    private SimpleBooleanProperty loadedXMLFileSuccessfully;
+
+
+    public mainScreenController()
+    {
+        loadedXMLFileSuccessfully = new SimpleBooleanProperty(false);
+        setProperties();
+    }
 
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
@@ -65,6 +83,21 @@ public class mainScreenController {
         this.businessLogic = businessLogic;
     }
 
+
+    public void initialize()
+    {
+        menuOptionMakeAnOrder.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        //menuOptionShow.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionShowUsers.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionShowItems.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionShowStores.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionShowOrders.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionShowMap.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        //menuOptionUpdateItem.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionDeleteItem.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionAddItem.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionUpdatePrice.disableProperty().bind(loadedXMLFileSuccessfully.not());
+    }
     public void setProperties()
     {
 
@@ -83,6 +116,7 @@ public class mainScreenController {
                 if (aBoolean == true) {
                     try {
                         setBusinessLogic(loadingXMLFileController.getBusinessLogicFromXML());
+                        loadedXMLFileSuccessfully.set(true);
                     } catch (Exception e) {
 
                     }
@@ -352,13 +386,18 @@ public class mainScreenController {
         } catch (DuplicateSerialIDException e) {
             e.printStackTrace();
         }
-
+        superDuperMarketController.setLoadedXMLFileSuccessfully(this.loadedXMLFileSuccessfully.get());
         // set stage
         primaryStage.setTitle("Super Duper Market");
         Scene scene = new Scene(scrollPane, 1050, 600);
         primaryStage.setScene(scene);
         primaryStage.show();
     }
+
+    public void setLoadedXMLFileSuccessfully(boolean loadedXMLFileSuccessfully) {
+        this.loadedXMLFileSuccessfully.set(loadedXMLFileSuccessfully);
+    }
+
     @FXML
     void showItems(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();
@@ -535,9 +574,6 @@ public class mainScreenController {
         mainBorderPane.setCenter(gridPane);
     }
 
-    void initialize(){
-
-    }
 
     @FXML
     void showStores(ActionEvent event) throws IOException, SerialIDNotExistException, JAXBException, DuplicateSerialIDException {

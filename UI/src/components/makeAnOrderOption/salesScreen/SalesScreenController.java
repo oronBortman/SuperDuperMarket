@@ -28,6 +28,7 @@ import logic.order.itemInOrder.OrderedItemFromStore;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.List;
 import java.util.function.Consumer;
 
@@ -66,6 +67,7 @@ public class SalesScreenController {
     SimpleBooleanProperty itemChosen;
     SimpleBooleanProperty itemComboBoxIsVisible;
     SimpleBooleanProperty isNextClicked;
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
 
     public void setProperties(Consumer<Boolean> isNextClicked)
@@ -234,20 +236,20 @@ public class SalesScreenController {
         cartTableAmountCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure()));
             }
         });
 
         cartTablePriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getPricePerUnit().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getPricePerUnit()));
             }
         });
         cartTableTotalPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromStore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromStore, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getTotalPriceOfItemOrderedByTypeOfMeasure().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getTotalPriceOfItemOrderedByTypeOfMeasure()));
             }
         });
     }
@@ -269,7 +271,7 @@ public class SalesScreenController {
         salesTableAmountCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getOrderedItemFromStore().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getOrderedItemFromStore().getTotalAmountOfItemOrderedByTypeOfMeasure()));
             }
         });
         salesTablePriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
@@ -281,7 +283,7 @@ public class SalesScreenController {
         salesTableTotalPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OrderedItemFromSale, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getOrderedItemFromStore().getTotalPriceOfItemOrderedByTypeOfMeasure().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getOrderedItemFromStore().getTotalPriceOfItemOrderedByTypeOfMeasure()));
             }
         });
         salesTableSaleNameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OrderedItemFromSale, String>, ObservableValue<String>>() {

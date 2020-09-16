@@ -20,29 +20,29 @@
                      <items>
                         <MenuItem mnemonicParsing="false" onAction="#loadFromXml" text="Load from xml" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                      <MenuItem mnemonicParsing="false" onAction="#makeAnOrder" text="Make an order" />
+                      <MenuItem fx:id="menuOptionMakeAnOrder" mnemonicParsing="false" onAction="#makeAnOrder" text="Make an order" />
                         <SeparatorMenuItem mnemonicParsing="false" />
-                      <Menu mnemonicParsing="false" text="Show">
+                      <Menu fx:id="menuOptionShow" mnemonicParsing="false" text="Show">
                         <items>
-                          <MenuItem mnemonicParsing="false" onAction="#showUsers" text="Show users" />
+                          <MenuItem fx:id="menuOptionShowUsers" mnemonicParsing="false" onAction="#showUsers" text="Show users" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#showItems" text="Show items" />
+                              <MenuItem fx:id="menuOptionShowItems" mnemonicParsing="false" onAction="#showItems" text="Show items" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#showStores" text="Show stores" />
+                              <MenuItem fx:id="menuOptionShowStores" mnemonicParsing="false" onAction="#showStores" text="Show stores" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#showOrders" text="Show orders" />
+                              <MenuItem fx:id="menuOptionShowOrders" mnemonicParsing="false" onAction="#showOrders" text="Show orders" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#showMapOfStoresAndOrders" text="Show map of stores and orders" />
+                              <MenuItem fx:id="menuOptionShowMap" mnemonicParsing="false" onAction="#showMapOfStoresAndOrders" text="Show map of stores and orders" />
                         </items>
                       </Menu>
                         <SeparatorMenuItem mnemonicParsing="false" />
-                        <Menu mnemonicParsing="false" text="Update item in store">
+                        <Menu fx:id="menuOptionUpdateItem" mnemonicParsing="false" text="Update item in store">
                           <items>
-                            <MenuItem mnemonicParsing="false" onAction="#removeItemFromStore" text="Delete item from store" />
+                            <MenuItem fx:id="menuOptionDeleteItem" mnemonicParsing="false" onAction="#removeItemFromStore" text="Delete item from store" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#addItemToStore" text="Add item to store" />
+                              <MenuItem fx:id="menuOptionAddItem" mnemonicParsing="false" onAction="#addItemToStore" text="Add item to store" />
                               <SeparatorMenuItem mnemonicParsing="false" />
-                              <MenuItem mnemonicParsing="false" onAction="#updatePriceOfItemInStore" text="Update price of item in store" />
+                              <MenuItem fx:id="menuOptionUpdatePrice" mnemonicParsing="false" onAction="#updatePriceOfItemInStore" text="Update price of item in store" />
                           </items>
                         </Menu>
                      </items>

@@ -17,6 +17,8 @@ import logic.order.itemInOrder.OrderedItem;
 import logic.order.itemInOrder.OrderedItemFromSale;
 import logic.order.itemInOrder.OrderedItemFromStore;
 
+import java.text.DecimalFormat;
+
 public class ShowSummeryOfOrderedInStoreController {
 
     @FXML TableView tableViewOfItems;
@@ -35,6 +37,9 @@ public class ShowSummeryOfOrderedInStoreController {
 
     BusinessLogic businessLogic;
     StoreOrder storeOrder;
+
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
+
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
     }
@@ -58,11 +63,11 @@ public class ShowSummeryOfOrderedInStoreController {
     }
 
     private void setLabelDeliveryCost() {
-        LabelDeliveryCost.setText(storeOrder.calcTotalDeliveryPrice().toString());
+        LabelDeliveryCost.setText(decimalFormat.format(storeOrder.calcTotalDeliveryPrice()));
     }
 
     private void setLabelDistanceToCustomer() {
-        LabelDistanceToCustomer.setText(storeOrder.calcDistanceToCustomer().toString());
+        LabelDistanceToCustomer.setText(decimalFormat.format(storeOrder.calcDistanceToCustomer()));
     }
 
     private void setLabelPPK() {
@@ -133,10 +138,10 @@ public class ShowSummeryOfOrderedInStoreController {
                 ReadOnlyObjectWrapper<String> readOnlyObjectWrapper=null;
                 if(param.getValue() instanceof OrderedItemFromSale)
                 {
-                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(((OrderedItemFromSale)param.getValue()).getOrderedItemFromStore().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(decimalFormat.format(((OrderedItemFromSale)param.getValue()).getOrderedItemFromStore().getTotalAmountOfItemOrderedByTypeOfMeasure()));
                 }
                 else if (param.getValue() instanceof OrderedItemFromStore) {
-                    readOnlyObjectWrapper = new  ReadOnlyObjectWrapper<String>(((OrderedItemFromStore)param.getValue()).getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
+                    readOnlyObjectWrapper = new  ReadOnlyObjectWrapper<String>(decimalFormat.format(((OrderedItemFromStore)param.getValue()).getTotalAmountOfItemOrderedByTypeOfMeasure()));
                 }
                 return readOnlyObjectWrapper;
             }
@@ -147,10 +152,10 @@ public class ShowSummeryOfOrderedInStoreController {
                 ReadOnlyObjectWrapper<String> readOnlyObjectWrapper=null;
                 if(param.getValue() instanceof OrderedItemFromSale)
                 {
-                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(((OrderedItemFromSale)param.getValue()).getOrderedItemFromStore().getPricePerUnit().toString());
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(decimalFormat.format(((OrderedItemFromSale)param.getValue()).getOrderedItemFromStore().getPricePerUnit()));
                 }
                 else if (param.getValue() instanceof OrderedItemFromStore) {
-                    readOnlyObjectWrapper = new  ReadOnlyObjectWrapper<String>(((OrderedItemFromStore)param.getValue()).getPricePerUnit().toString());
+                    readOnlyObjectWrapper = new  ReadOnlyObjectWrapper<String>(decimalFormat.format(((OrderedItemFromStore)param.getValue()).getPricePerUnit()));
                 }
                 return readOnlyObjectWrapper;
             }
@@ -161,10 +166,10 @@ public class ShowSummeryOfOrderedInStoreController {
                 ReadOnlyObjectWrapper<String> readOnlyObjectWrapper=null;
                 if(param.getValue() instanceof OrderedItemFromSale)
                 {
-                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(((OrderedItemFromSale)param.getValue()).getOrderedItemFromStore().getTotalPriceOfItemOrderedByTypeOfMeasure().toString());
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(decimalFormat.format(((OrderedItemFromSale)param.getValue()).getOrderedItemFromStore().getTotalPriceOfItemOrderedByTypeOfMeasure()));
                 }
                 else if (param.getValue() instanceof  OrderedItemFromStore) {
-                    readOnlyObjectWrapper = new  ReadOnlyObjectWrapper<String>(((OrderedItemFromStore)param.getValue()).getTotalPriceOfItemOrderedByTypeOfMeasure().toString());
+                    readOnlyObjectWrapper = new  ReadOnlyObjectWrapper<String>(decimalFormat.format(((OrderedItemFromStore)param.getValue()).getTotalPriceOfItemOrderedByTypeOfMeasure()));
                 }
                 return readOnlyObjectWrapper;
             }

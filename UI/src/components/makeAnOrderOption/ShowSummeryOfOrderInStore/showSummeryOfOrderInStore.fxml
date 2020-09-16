@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="543.0" prefWidth="682.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController">
+   <content>
+      <BorderPane prefHeight="515.0" prefWidth="515.0">
+         <top>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <Pane prefHeight="215.0" prefWidth="420.0">
+                     <children>
+                        <HBox alignment="CENTER" layoutX="98.0" layoutY="43.0" prefHeight="155.0" prefWidth="285.0">
+                           <children>
+                              <Pane prefHeight="155.0" prefWidth="285.0">
+                                 <children>
+                                    <Label layoutX="28.0" layoutY="27.0" text="SerialID of Store:" />
+                                    <Label layoutX="28.0" layoutY="50.0" text="Name Of Store:" />
+                                    <Label layoutX="28.0" layoutY="75.0" text="PPK:" />
+                                    <Label layoutX="28.0" layoutY="100.0" text="Distance to customer:" />
+                                    <Label layoutX="28.0" layoutY="125.0" text="Delivery cost to customer:" />
+                                    <Label fx:id="LabelNameOfStore" layoutX="132.0" layoutY="50.0" text="Label" />
+                                    <Label fx:id="LabelSerialID" layoutX="132.0" layoutY="27.0" text="Label" />
+                                    <Label fx:id="LabelPPK" layoutX="74.0" layoutY="75.0" text="Label" />
+                                    <Label fx:id="LabelDistanceToCustomer" layoutX="162.0" layoutY="100.0" text="Label" />
+                                    <Label fx:id="LabelDeliveryCost" layoutX="192.0" layoutY="125.0" text="Label" />
+                                 </children>
+                              </Pane>
+                           </children>
+                        </HBox>
+                        <Separator layoutX="-26.0" layoutY="200.0" prefHeight="1.0" prefWidth="472.0" />
+                        <Label layoutX="152.0" layoutY="20.0" text="Details on store">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                        <Separator layoutX="-32.0" layoutY="51.0" prefHeight="1.0" prefWidth="472.0" />
+                     </children>
+                  </Pane>
+               </children>
+            </HBox>
+         </top>
+         <center>
+            <BorderPane BorderPane.alignment="CENTER">
+               <center>
+                  <HBox alignment="CENTER" prefHeight="294.0" prefWidth="475.0">
+                     <children>
+                        <TableView fx:id="tableViewOfItems" prefHeight="201.0" prefWidth="576.0">
+                          <columns>
+                            <TableColumn fx:id="SerialIDCol" prefWidth="75.0" text="SerialID" />
+                            <TableColumn fx:id="nameCol" prefWidth="75.0" text="Name" />
+                              <TableColumn fx:id="measureTypeCol" prefWidth="92.0" text="Measure Type" />
+                              <TableColumn fx:id="amountCol" prefWidth="58.0" text="Amount" />
+                              <TableColumn fx:id="pricePerUnitCol" prefWidth="83.0" text="Price per Unit" />
+                              <TableColumn fx:id="totalPriceCol" prefWidth="67.0" text="Total price" />
+                              <TableColumn fx:id="boughtOnSaleCol" prefWidth="111.0" text="Bought on sale" />
+                          </columns>
+                        </TableView>
+                     </children>
+                     <padding>
+                        <Insets bottom="30.0" left="20.0" right="20.0" />
+                     </padding>
+                  </HBox>
+               </center>
+               <top>
+                  <HBox alignment="CENTER" prefHeight="76.0" prefWidth="516.0" BorderPane.alignment="CENTER">
+                     <children>
+                        <Label text="Deatils on items in order">
+                           <font>
+                              <Font size="18.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+               </top>
+            </BorderPane>
+         </center>
+      </BorderPane>
+   </content>
+</ScrollPane>

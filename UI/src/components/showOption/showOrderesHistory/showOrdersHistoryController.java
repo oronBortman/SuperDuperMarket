@@ -16,6 +16,7 @@ import logic.order.StoreOrder.ClosedStoreOrder;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,6 +34,7 @@ public class showOrdersHistoryController {
     private Map<ClosedStoreOrder, ShowSummeryOfOrderedInStoreController> itemToTileControlleresMap;
     private BusinessLogic businessLogic;
     private ClosedCustomerOrder closedCustomerOrder;
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     @FXML
     void chooseOrder(ActionEvent event) {
@@ -51,17 +53,17 @@ public class showOrdersHistoryController {
 
     public void setLabelTotalItemsCost()
     {
-        LabelTotalItemsCost.setText(closedCustomerOrder.getTotalItemCostInOrder().toString());
+        LabelTotalItemsCost.setText(decimalFormat.format(closedCustomerOrder.getTotalItemCostInOrder()));
     }
 
     public void setLabelTotalDeliveryPrice()
     {
-        LabelTotalDeliveryPrice.setText(closedCustomerOrder.getTotalDeliveryPriceInOrder().toString());
+        LabelTotalDeliveryPrice.setText(decimalFormat.format(closedCustomerOrder.getTotalDeliveryPriceInOrder()));
     }
 
     public void setLabelTotalOrderPrice()
     {
-        LabelTotalOrderPrice.setText(closedCustomerOrder.getTotalOrderPrice().toString());
+        LabelTotalOrderPrice.setText(decimalFormat.format(closedCustomerOrder.getTotalOrderPrice()));
     }
 
     public void setFlowPaneStores()

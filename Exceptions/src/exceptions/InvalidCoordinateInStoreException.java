@@ -1,14 +1,17 @@
 package exceptions;
 
-public class InvalidCoordinateException extends Exception{
+public class InvalidCoordinateInStoreException extends Exception{
     String name=null;
+    Integer serialID;
     int coord;
-    public InvalidCoordinateException(int coord, String name)
+
+    public InvalidCoordinateInStoreException(int coord, String name, Integer serialID)
     {
         this.coord = coord;
         this.name = name;
+        this.serialID = serialID;
     }
-    public InvalidCoordinateException(int coord)
+    public InvalidCoordinateInStoreException(int coord)
     {
         this.coord = coord;
     }

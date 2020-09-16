@@ -24,6 +24,7 @@ import logic.order.StoreOrder.ClosedStoreOrder;
 
 import java.io.IOException;
 import java.net.URL;
+import java.text.DecimalFormat;
 
 import static commonUI.SuperDuperMarketConstants.SALES_LIST_VIEW;
 
@@ -51,6 +52,8 @@ public class ShowStoresController {
     ListView listView;
     SalesOnStoreScreenController salesOnStoreScreenController;
     BusinessLogic businessLogic;
+
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     @FXML
     private void initialize() {
@@ -142,7 +145,7 @@ public class ShowStoresController {
         TotalItemsSoledInStoreCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<AvailableItemInStore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<AvailableItemInStore, String> param) {
-                return new ReadOnlyObjectWrapper<String>(businessLogic.getTotalAmountOfSoledItem(param.getValue().getSerialNumber()).toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(businessLogic.getTotalAmountOfSoledItem(param.getValue().getSerialNumber())));
             }
         });
 
@@ -177,21 +180,21 @@ public class ShowStoresController {
         totalItemsPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalPriceOfItems().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().calcTotalPriceOfItems()));
             }
         });
 
         totalDeliveryPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalDeliveryPrice().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().calcTotalDeliveryPrice()));
             }
         });
 
         totalOrderPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalPriceOfOrder().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().calcTotalPriceOfOrder()));
             }
         });
     }

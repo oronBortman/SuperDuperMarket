@@ -13,6 +13,8 @@ import javafx.util.Callback;
 import logic.BusinessLogic;
 import logic.Customer;
 
+import java.text.DecimalFormat;
+
 public class ShowUsersController {
 
 
@@ -26,6 +28,8 @@ public class ShowUsersController {
     @FXML TableColumn<Customer, String> AverageOrderPriceCol;
     @FXML TableColumn<Customer, String> AverageDeliveryPrice;
     @FXML
+
+    DecimalFormat decimalFormat = new DecimalFormat("#.00");
 
     private void initialize() {
     }
@@ -67,14 +71,14 @@ public class ShowUsersController {
         AverageOrderPriceCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Customer, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Customer, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getAverageOrderPriceCol().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageOrderPriceCol()));
             }
         });
 
         AverageDeliveryPrice.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Customer, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Customer, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getAverageDeliveryPrice().toString());
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageDeliveryPrice()));
             }
         });
 
