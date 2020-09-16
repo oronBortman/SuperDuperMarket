@@ -113,14 +113,14 @@ public class ShowStoresStatusInDynamicOrderController {
         locationCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                SDMLocation locationOfShop = param.getValue().getStoreUsed().getLocationOfShop();
+                SDMLocation locationOfShop = param.getValue().getStoreUsed().getLocation();
                 return new ReadOnlyObjectWrapper<String>("(" + locationOfShop.getX() + "," + locationOfShop.getY() + ")");
             }
         });
         DistanceFromCustomerCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getStoreUsed().getLocationOfShop().getAirDistanceToOtherLocation(openedCustomerOrder.getCustomerLocation())));
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getStoreUsed().getLocation().getAirDistanceToOtherLocation(openedCustomerOrder.getCustomerLocation())));
             }
         });
 
@@ -135,7 +135,7 @@ public class ShowStoresStatusInDynamicOrderController {
             @Override
             public ObservableValue<String> call(TableColumn.CellDataFeatures<OpenedStoreOrder, String> param) {
                 Store store = param.getValue().getStoreUsed();
-                SDMLocation storeLocation = store.getLocationOfShop();
+                SDMLocation storeLocation = store.getLocation();
                 SDMLocation customerLocation = openedCustomerOrder.getCustomerLocation();
                 return new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().calcTotalDeliveryPrice()));
             }

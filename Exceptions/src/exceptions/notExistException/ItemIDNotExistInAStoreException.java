@@ -1,4 +1,4 @@
-package exceptions;
+package exceptions.notExistException;
 
 public class ItemIDNotExistInAStoreException extends Exception{
     String storeName=null;

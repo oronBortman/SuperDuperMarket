@@ -1,4 +1,4 @@
-package exceptions;
+package exceptions.duplicateSerialID;
 
 public class DuplicateItemSerialIDInStoreException extends Exception{
     String storeName=null;

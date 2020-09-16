@@ -2,7 +2,6 @@ package components.mainScreen;
 
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
 import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
-import components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
 import components.makeAnOrderOption.SummeryOfOrder.SummeryOfOrderController;
 import components.makeAnOrderOption.salesScreen.SalesScreenController;
 import components.showOption.showOrderesHistory.showOrdersHistoryController;
@@ -15,14 +14,13 @@ import components.showOption.showItemsScreen.*;
 import commonUI.*;
 import components.showOption.showUsersScreen.ShowUsersController;
 import components.updateItemInStoreOption.updatePriceOfItemInStoreScreen.UpdateItemInStoreController;
-import exceptions.DuplicateSerialIDException;
-import exceptions.SerialIDNotExistException;
+import exceptions.duplicateSerialID.DuplicateSerialIDExceptionInSDM;
+import exceptions.notExistException.SerialIDNotExistException;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Insets;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -36,7 +34,6 @@ import logic.order.CustomerOrder.OpenedCustomerOrder;
 import logic.order.StoreOrder.OpenedStoreOrder;
 import logic.order.itemInOrder.OrderedItemFromStore;
 import javafx.scene.layout.GridPane;
-import javafx.stage.Stage;
 
 import javax.xml.bind.JAXBException;
 import java.io.IOException;
@@ -79,7 +76,7 @@ public class mainScreenController {
     }
 
 
-    public void setBusinessLogic(BusinessLogic businessLogic) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
+    public void setBusinessLogic(BusinessLogic businessLogic) throws SerialIDNotExistException, JAXBException, DuplicateSerialIDExceptionInSDM {
         this.businessLogic = businessLogic;
     }
 
@@ -383,7 +380,7 @@ public class mainScreenController {
             e.printStackTrace();
         } catch (JAXBException e) {
             e.printStackTrace();
-        } catch (DuplicateSerialIDException e) {
+        } catch (DuplicateSerialIDExceptionInSDM e) {
             e.printStackTrace();
         }
         superDuperMarketController.setLoadedXMLFileSuccessfully(this.loadedXMLFileSuccessfully.get());
@@ -471,10 +468,10 @@ public class mainScreenController {
         {
             final Tooltip tooltip = new Tooltip();
             tooltip.setText("Type: store\n" + "Serial ID: " + store.getSerialNumber() + "\nName: " + store.getName() +
-                    "\nLocation:" + "(" + store.getLocationOfShop().getX() + "," +
-                    store.getLocationOfShop().getY() + ")");
+                    "\nLocation:" + "(" + store.getLocation().getX() + "," +
+                    store.getLocation().getY() + ")");
             ImageView imageView = generateStoreImage();
-            createImageAndSetItWithHboxAndToolTip(tooltip, imageView, gridPane, store.getLocationOfShop().getX(), store.getLocationOfShop().getY());
+            createImageAndSetItWithHboxAndToolTip(tooltip, imageView, gridPane, store.getLocation().getX(), store.getLocation().getY());
         }
     }
 
@@ -576,7 +573,7 @@ public class mainScreenController {
 
 
     @FXML
-    void showStores(ActionEvent event) throws IOException, SerialIDNotExistException, JAXBException, DuplicateSerialIDException {
+    void showStores(ActionEvent event) throws IOException, SerialIDNotExistException, JAXBException, DuplicateSerialIDExceptionInSDM {
 
         FXMLLoader loader = new FXMLLoader();
         URL showStoresFXML = getClass().getResource(SuperDuperMarketConstants.SHOW_STORES_FXML_RESOURCE_IDENTIFIER);

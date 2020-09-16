@@ -1,19 +1,15 @@
-package exceptions;
+package exceptions.InvalidCoordinateException;
 
-public class InvalidCoordinateInCustomerException extends Exception{
+public class InvalidCoordinateException extends Exception{
     String name=null;
     int coord;
     Integer serialID;
 
-    public InvalidCoordinateInCustomerException(int coord, String name, Integer serialID)
+    public InvalidCoordinateException(int coord, String name, Integer serialID)
     {
         this.coord = coord;
         this.name = name;
         this.serialID = serialID;
-    }
-    public InvalidCoordinateInCustomerException(int coord)
-    {
-        this.coord = coord;
     }
 
     public String getName() {
@@ -22,5 +18,9 @@ public class InvalidCoordinateInCustomerException extends Exception{
 
     public int getCoord() {
         return coord;
+    }
+
+    public Integer getSerialID() {
+        return serialID;
     }
 }

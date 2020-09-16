@@ -1,4 +1,4 @@
-package exceptions;
+package exceptions.notExistException;
 
 public class  SerialIDNotExistException extends Exception{
     String name=null;

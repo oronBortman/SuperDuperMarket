@@ -2,6 +2,10 @@ package components.LoadingXMLFileScreen;
 
 import commonUI.SuperDuperMarketUtils;
 import exceptions.*;
+import exceptions.InvalidCoordinateException.*;
+import exceptions.duplicateSerialID.*;
+import exceptions.locationsIdentialException.*;
+import exceptions.notExistException.*;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.property.SimpleStringProperty;
@@ -10,7 +14,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.FlowPane;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import logic.*;
@@ -161,26 +164,16 @@ public class LoadingXMLFileController {
             {
                 if (ex.getClass() == DuplicateItemSerialIDException.class)
                 {
-
-                    DuplicateItemSerialIDException duplicateItemSerialIDException = (DuplicateItemSerialIDException) ex;
-                    Integer itemID = duplicateItemSerialIDException.getSerialId();
-                    String itemName = duplicateItemSerialIDException.getName();
-                    errorLabel.setText("Error: Found duplicate serial key " + itemID + " of item " + itemName);
+                    printErrorOnDuplicateSerialID("item", (DuplicateSerialIDExceptionInSDM)ex);
                 }
                 else if (ex.getClass() == DuplicateStoreSerialIDException.class)
                 {
+                    printErrorOnDuplicateSerialID("store", (DuplicateSerialIDExceptionInSDM)ex);
 
-                    DuplicateStoreSerialIDException duplicateStoreSerialIDException = (DuplicateStoreSerialIDException) ex;
-                    Integer storeID = duplicateStoreSerialIDException.getSerialId();
-                    String storeName = duplicateStoreSerialIDException.getName();
-                    errorLabel.setText("Error: Found duplicate serial key " + storeID + " of store" + storeName);
                 }
                 else if (ex.getClass() == DuplicateCustomerSerialIDException.class)
                 {
-                    DuplicateCustomerSerialIDException duplicateCustomerSerialIDException = (DuplicateCustomerSerialIDException) ex;
-                    Integer customerID = duplicateCustomerSerialIDException.getSerialId();
-                    String customerName = duplicateCustomerSerialIDException.getName();
-                    errorLabel.setText("Error: Found duplicate serial key " + customerID + " of customer " + customerID);
+                    printErrorOnDuplicateSerialID("customer", (DuplicateSerialIDExceptionInSDM)ex);
                 }
                 else if (ex.getClass() == DuplicateItemSerialIDInStoreException.class)
                 {
@@ -235,44 +228,60 @@ public class LoadingXMLFileController {
                 }
                 else if(ex.getClass() == CustomerLocationIsIdenticalToCustomerException.class)
                 {
-                    CustomerLocationIsIdenticalToCustomerException customerLocationIsIdenticalToCustomerException = (CustomerLocationIsIdenticalToCustomerException) ex;
-                    Customer firstCustomer = customerLocationIsIdenticalToCustomerException.getFirstCustomer();
-                    Customer secondCustomer = customerLocationIsIdenticalToCustomerException.getSecondCustomer();
-                    SDMLocation location = firstCustomer.getLocation();
-                    String locationStr = "(" + location.getX() + "," + location.getY() + ")";
-                    errorLabel.setText("Error: The location " + locationStr + " of the customer with name " + firstCustomer.getName() + " and serial ID: " + firstCustomer.getSerialNumber() +
-                            "\nis identical to the location of the customer with name " + secondCustomer.getName() + " and serial ID: " + secondCustomer.getSerialNumber());
+                    printErrorOnIdentialLocations("customer", "customer", (IdentialLocationException) ex);
                 }
                 else if(ex.getClass() == CustomerLocationIsIdenticalToStoreException.class)
                 {
-                    CustomerLocationIsIdenticalToStoreException customerLocationIsIdenticalToStoreException = (CustomerLocationIsIdenticalToStoreException) ex;
-                    Customer customer = customerLocationIsIdenticalToStoreException.getCustomer();
-                    Store store = customerLocationIsIdenticalToStoreException.getStore();
-                    SDMLocation location = customer.getLocation();
-                    String locationStr = "(" + location.getX() + "," + location.getY() + ")";
-                    errorLabel.setText("Error: The location " + locationStr + " of the customer with name " + customer.getName() + " and serial ID: " + customer.getSerialNumber() +
-                            "\nis identical to the location of the store with name " + store.getName() + " and serial ID: " + store.getSerialNumber());
+                    printErrorOnIdentialLocations("customer", "store", (IdentialLocationException) ex);
+
                 }
                 else if(ex.getClass() == StoreLocationIsIdenticalToStoreException.class)
                 {
-                    StoreLocationIsIdenticalToStoreException storeLocationIsIdenticalToStoreException = (StoreLocationIsIdenticalToStoreException) ex;
-                    Store firstStore = storeLocationIsIdenticalToStoreException.getFirstStore();
-                    Store secondStore = storeLocationIsIdenticalToStoreException.getSecondStore();
-                    SDMLocation location = firstStore.getLocationOfShop();
-                    String locationStr = "(" + location.getX() + "," + location.getY() + ")";
-                    errorLabel.setText("Error: The location " + locationStr + " of the store with name " + firstStore.getName() + " and serial ID: " + firstStore.getSerialNumber() +
-                            "\nis identical to the location of the store with name " + secondStore.getName() + " and serial ID: " + secondStore.getSerialNumber());
+                    printErrorOnIdentialLocations("store", "store", (IdentialLocationException) ex);
+
                 }
                 else if(ex.getClass() == StoreLocationIsIdenticalToCustomerException.class)
                 {
-                    StoreLocationIsIdenticalToCustomerException storeLocationIsIdenticalToCustomerException = (StoreLocationIsIdenticalToCustomerException) ex;
-                    Store store = storeLocationIsIdenticalToCustomerException.getStore();
-                    Customer customer = storeLocationIsIdenticalToCustomerException.getCustomer();
-                    SDMLocation location = store.getLocationOfShop();
-                    String locationStr = "(" + location.getX() + "," + location.getY() +")";
-                    errorLabel.setText("Error: The location " + locationStr + " of the store with name " + store.getName() + " and serial ID: " + store.getSerialNumber() +
-                            "\nis identical to the location of the customer with name " + customer.getName() + " and serial ID: " + customer.getSerialNumber());
+                    printErrorOnIdentialLocations("store", "customer", (IdentialLocationException) ex);
                 }
+                else if(ex instanceof InvalidCoordinateXOfCustomerException)
+                {
+                    printErrorOnInvalidCoordinate("customer", "x", (InvalidCoordinateXOfCustomerException) ex);
+                }
+                else if(ex instanceof InvalidCoordinateYOfCustomerException)
+                {
+                    printErrorOnInvalidCoordinate("customer", "y", (InvalidCoordinateYOfCustomerException) ex);
+
+                }
+                else if(ex instanceof InvalidCoordinateXOfStoreException)
+                {
+                    printErrorOnInvalidCoordinate("store", "x", (InvalidCoordinateXOfStoreException) ex);
+
+                }
+                else if(ex instanceof InvalidCoordinateYOfStoreException)
+                {
+                    printErrorOnInvalidCoordinate("store", "y", (InvalidCoordinateYOfStoreException) ex);
+
+                }
+                else if(ex instanceof ItemIDInDiscountNotExistInSDMException)
+                {
+                    ItemIDInDiscountNotExistInSDMException itemIDInDiscountNotExistInSDMException = (ItemIDInDiscountNotExistInSDMException)ex;
+                    Store store = itemIDInDiscountNotExistInSDMException.getStore();
+                    String discountName = itemIDInDiscountNotExistInSDMException.getDiscountName();
+                    Integer serialIdOfItem = itemIDInDiscountNotExistInSDMException.getSerialIdOfItem();
+                    errorLabel.setText("Error: serial id of item " + serialIdOfItem + " in discount \"" + discountName + "\" in store " + store.getName() + " doesn't exist in Super Duper Market");
+
+                }
+                else if(ex instanceof ItemIDInDiscountNotExistInAStoreException)
+                {
+                    ItemIDInDiscountNotExistInAStoreException itemIDInDiscountNotExistInAStoreException = (ItemIDInDiscountNotExistInAStoreException)ex;
+                    Store store = itemIDInDiscountNotExistInAStoreException.getStore();
+                    String discountName = itemIDInDiscountNotExistInAStoreException.getDiscountName();
+                    Integer serialIdOfItem = itemIDInDiscountNotExistInAStoreException.getSerialIdOfItem();
+
+                    errorLabel.setText("Error: serial id of item " + serialIdOfItem + " in discount \"" + discountName + "\" in store " + store.getName() + " doesn't exist in store " + store.getName());
+                }
+
                 SuperDuperMarketUtils.sleepForAWhile(100);
             }
         });
@@ -291,6 +300,32 @@ public class LoadingXMLFileController {
             onTaskFinished(Optional.ofNullable(onFinish));
         });
 
+    }
+
+    public void printErrorOnDuplicateSerialID(String objectType, DuplicateSerialIDExceptionInSDM duplicateSerialIDExceptionInSDM)
+    {
+        Integer serialID = duplicateSerialIDExceptionInSDM.getSerialId();
+        String name = duplicateSerialIDExceptionInSDM.getName();
+        errorLabel.setText("Error: Found duplicate serial key " + serialID + " of " + objectType + " " + name);
+    }
+
+    public void printErrorOnIdentialLocations(String firstObjectType, String secondObjectType, IdentialLocationException identialLocationException)
+    {
+        SDMObjectWithUniqueLocationAndUniqueSerialID firstObject = identialLocationException.getFirstObject();
+        SDMObjectWithUniqueLocationAndUniqueSerialID secondObject = identialLocationException.getSecondObject();
+
+        SDMLocation location = firstObject.getLocation();
+        String locationStr = "(" + location.getX() + "," + location.getY() +")";
+        errorLabel.setText("Error: The location " + locationStr + " of the " + firstObjectType + " with name " + firstObject.getName() + " and serial ID: " + firstObject.getSerialNumber() +
+                "\nis identical to the location of the " + secondObjectType + " with name " + secondObject.getName() + " and serial ID: " + secondObject.getSerialNumber());
+    }
+
+    public void printErrorOnInvalidCoordinate(String objectName, String coordinateType, InvalidCoordinateException invalidCoordinateException)
+    {
+        String name = invalidCoordinateException.getName();
+        Integer serialID = invalidCoordinateException.getSerialID();
+        Integer coordinate = invalidCoordinateException.getCoord();
+        errorLabel.setText("Error: The coordinate " + objectName + " with value " +  coordinate + " of the location of the " + objectName + " with name " + name + " and serial ID: " + serialID + " is invalid");
     }
 
     public void onTaskFinished(Optional<Runnable> onFinish) {

@@ -1,6 +1,19 @@
 package logic;
 
 import exceptions.*;
+import exceptions.InvalidCoordinateException.InvalidCoordinateXOfCustomerException;
+import exceptions.InvalidCoordinateException.InvalidCoordinateXOfStoreException;
+import exceptions.InvalidCoordinateException.InvalidCoordinateYOfCustomerException;
+import exceptions.InvalidCoordinateException.InvalidCoordinateYOfStoreException;
+import exceptions.duplicateSerialID.DuplicateCustomerSerialIDException;
+import exceptions.duplicateSerialID.DuplicateItemSerialIDException;
+import exceptions.duplicateSerialID.DuplicateItemSerialIDInStoreException;
+import exceptions.duplicateSerialID.DuplicateStoreSerialIDException;
+import exceptions.locationsIdentialException.CustomerLocationIsIdenticalToCustomerException;
+import exceptions.locationsIdentialException.CustomerLocationIsIdenticalToStoreException;
+import exceptions.locationsIdentialException.StoreLocationIsIdenticalToCustomerException;
+import exceptions.locationsIdentialException.StoreLocationIsIdenticalToStoreException;
+import exceptions.notExistException.*;
 import jaxb.schema.generated.*;
 import logic.order.CustomerOrder.ClosedCustomerOrder;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
@@ -239,7 +252,7 @@ public class BusinessLogic {
 
     }
 
-    public void addUserSerialIDMapFromXml(SDMCustomer user) throws DuplicateCustomerSerialIDException, JAXBException, FileNotFoundException, CustomerLocationIsIdenticalToCustomerException, CustomerLocationIsIdenticalToStoreException {
+    public void addUserSerialIDMapFromXml(SDMCustomer user) throws DuplicateCustomerSerialIDException, JAXBException, FileNotFoundException, CustomerLocationIsIdenticalToCustomerException, CustomerLocationIsIdenticalToStoreException, InvalidCoordinateYOfCustomerException, InvalidCoordinateXOfCustomerException {
 
         if(usersSerialIDMap != null  && usersSerialIDMap.containsKey(user.getId()))
         {
@@ -249,10 +262,9 @@ public class BusinessLogic {
         {
             Customer customerToAddToMap = new Customer(user);
             SDMLocation customerLocation = customerToAddToMap.getLocation();
-
+            checkIfCustomerLocationIsValidAndThrowsExceptionIfNot(customerLocation, customerToAddToMap.getName(), customerToAddToMap.getSerialNumber());
             if(usersLocationMap != null && usersLocationMap.containsKey(customerLocation))
             {
-
                 throw new CustomerLocationIsIdenticalToCustomerException(customerToAddToMap, usersLocationMap.get(customerLocation));
             }
             else if(usersLocationMap != null && storesLocationMap.containsKey(customerLocation))
@@ -267,30 +279,29 @@ public class BusinessLogic {
         }
     }
 
-    public boolean checkIfCustomerLocationIsValidAndThrowsExceptionIfNot(SDMLocation location, String customerName)
-    {
+    public void checkIfCustomerLocationIsValidAndThrowsExceptionIfNot(SDMLocation location, String customerName, Integer serialID) throws InvalidCoordinateXOfCustomerException, InvalidCoordinateYOfCustomerException {
         int coordinateX = location.getX();
         int coordinateY = location.getY();
 
         if(coordinateX > 50 || coordinateX < 0)
         {
-            throw new InvalidCoordinateXOfCustomerException(location.getX(),)
+            throw new InvalidCoordinateXOfCustomerException(location.getX(), customerName, serialID);
         }
         else if(coordinateY > 50 || coordinateY < 0)
         {
-
+            throw new InvalidCoordinateYOfCustomerException(location.getY(), customerName, serialID);
         }
     }
 
-    public boolean checkIfStoreLocationIsValidAndThrowsExceptionIfNot(SDMLocation location, string )
-    {
-        if(location.getX() > 50 || location.getY() < 0)
+    public void checkIfStoreLocationIsValidAndThrowsExceptionIfNot(SDMLocation location, String customerName, Integer serialID) throws InvalidCoordinateYOfStoreException, InvalidCoordinateXOfStoreException {
+        if(location.getX() > 50 || location.getX() < 0)
         {
+            throw new InvalidCoordinateXOfStoreException(location.getX(), customerName, serialID);
 
         }
-        else if(location.getY() > 50 || location.getX() < 0)
+        else if(location.getY() > 50 || location.getY() < 0)
         {
-
+            throw new InvalidCoordinateYOfStoreException(location.getY(), customerName, serialID);
         }
     }
 
@@ -299,7 +310,7 @@ public class BusinessLogic {
         return ordersSerialIDMap.values().stream().collect(toCollection(ArrayList::new));
     }
 
-    public void addStoreSerialIDMapFromXml(SDMStore store) throws JAXBException, FileNotFoundException, DuplicateStoreSerialIDException, StoreLocationIsIdenticalToStoreException, StoreLocationIsIdenticalToCustomerException {
+    public void addStoreSerialIDMapFromXml(SDMStore store) throws JAXBException, FileNotFoundException, DuplicateStoreSerialIDException, StoreLocationIsIdenticalToStoreException, StoreLocationIsIdenticalToCustomerException, InvalidCoordinateYOfStoreException, InvalidCoordinateXOfStoreException {
 
         if(storesSerialIDMap != null  && storesSerialIDMap.containsKey(store.getId()))
         {
@@ -308,7 +319,8 @@ public class BusinessLogic {
         else
         {
             Store storeToAddToMap = new Store(store);
-            SDMLocation storeLocation = storeToAddToMap.getLocationOfShop();
+            SDMLocation storeLocation = storeToAddToMap.getLocation();
+            checkIfStoreLocationIsValidAndThrowsExceptionIfNot(storeLocation, storeToAddToMap.getName(), storeToAddToMap.getSerialNumber());
             if(storesLocationMap != null && storesLocationMap.containsKey(storeLocation))
             {
 
@@ -321,7 +333,7 @@ public class BusinessLogic {
             else
             {
                 storesSerialIDMap.put(store.getId(), storeToAddToMap);
-                storesLocationMap.put(storeToAddToMap.getLocationOfShop(), storeToAddToMap);
+                storesLocationMap.put(storeToAddToMap.getLocation(), storeToAddToMap);
             }
         }
     }
@@ -363,9 +375,17 @@ public class BusinessLogic {
         }
     }
 
-    public void addDiscountToStoreFromSDMSell(SDMDiscount sdmDiscount, int storeID) throws ItemWithSerialIDNotExistInSDMException, DuplicateItemSerialIDInStoreException, StoreNotExistException, ItemNotExistInStoresException, DuplicateDiscountNameException, ItemIDNotExistInAStoreException {
+    public void addDiscountToStoreFromSDMSell(SDMDiscount sdmDiscount, int storeID) throws DuplicateDiscountNameException, ItemIDNotExistInAStoreException, ItemIDInDiscountNotExistInAStoreException, ItemIDInDiscountNotExistInSDMException {
         Store store = getStoreBySerialID(storeID);
-        store.addDiscountToStoreFromXML(sdmDiscount);
+        int itemSerialId = sdmDiscount.getIfYouBuy().getItemId();
+        if(itemsSerialIDMap.containsKey(itemSerialId) == false)
+        {
+            throw new ItemIDInDiscountNotExistInSDMException(storesSerialIDMap.get(storeID),itemSerialId, sdmDiscount.getName());
+        }
+        else
+        {
+            store.addDiscountToStoreFromXML(sdmDiscount);
+        }
     }
 
 

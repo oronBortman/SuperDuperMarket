@@ -1,4 +1,4 @@
-package exceptions;
+package exceptions.notExistException;
 
 public class StoreNotExistException extends Exception{
     String name=null;

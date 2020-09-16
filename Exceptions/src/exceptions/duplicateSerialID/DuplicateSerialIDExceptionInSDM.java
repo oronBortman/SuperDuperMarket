@@ -1,13 +1,13 @@
-package exceptions;
+package exceptions.duplicateSerialID;
 
-public class DuplicateItemSerialIDException extends Exception{
+public class DuplicateSerialIDExceptionInSDM extends Exception{
     String name=null;
     int serialId;
-    public DuplicateItemSerialIDException(int serialId)
+    public DuplicateSerialIDExceptionInSDM(int serialId)
     {
         this.serialId = serialId;
     }
-    public DuplicateItemSerialIDException(int serialId, String name)
+    public DuplicateSerialIDExceptionInSDM(int serialId, String name)
     {
         this.serialId = serialId;
         this.name = name;

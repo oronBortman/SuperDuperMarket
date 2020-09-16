@@ -2,13 +2,25 @@ package metadata;
 
 import commonUI.*;
 import exceptions.*;
+import exceptions.InvalidCoordinateException.InvalidCoordinateXOfCustomerException;
+import exceptions.InvalidCoordinateException.InvalidCoordinateXOfStoreException;
+import exceptions.InvalidCoordinateException.InvalidCoordinateYOfCustomerException;
+import exceptions.InvalidCoordinateException.InvalidCoordinateYOfStoreException;
+import exceptions.duplicateSerialID.DuplicateCustomerSerialIDException;
+import exceptions.duplicateSerialID.DuplicateItemSerialIDException;
+import exceptions.duplicateSerialID.DuplicateItemSerialIDInStoreException;
+import exceptions.duplicateSerialID.DuplicateStoreSerialIDException;
+import exceptions.locationsIdentialException.CustomerLocationIsIdenticalToCustomerException;
+import exceptions.locationsIdentialException.CustomerLocationIsIdenticalToStoreException;
+import exceptions.locationsIdentialException.StoreLocationIsIdenticalToCustomerException;
+import exceptions.locationsIdentialException.StoreLocationIsIdenticalToStoreException;
+import exceptions.notExistException.*;
 import javafx.concurrent.Task;
 import java.io.*;
 import java.util.List;
 import java.util.function.Consumer;
 import jaxb.schema.generated.*;
 import logic.BusinessLogic;
-import logic.discount.Discount;
 import logic.order.GeneralMethods;
 import javax.xml.bind.JAXBException;
 
@@ -112,7 +124,7 @@ public class CollectMetadataTask extends Task<Boolean> {
         }
     }
 
-    public void readUsersFromXML() throws FileNotFoundException, JAXBException, DuplicateCustomerSerialIDException, TaskIsCanceledException, CustomerLocationIsIdenticalToCustomerException, CustomerLocationIsIdenticalToStoreException {
+    public void readUsersFromXML() throws FileNotFoundException, JAXBException, DuplicateCustomerSerialIDException, TaskIsCanceledException, CustomerLocationIsIdenticalToCustomerException, CustomerLocationIsIdenticalToStoreException, InvalidCoordinateYOfCustomerException, InvalidCoordinateXOfCustomerException {
         int counter = 0;
         updateProgress(counter, customers.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
@@ -137,7 +149,7 @@ public class CollectMetadataTask extends Task<Boolean> {
         }
     }
 
-    public void readStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException, StoreLocationIsIdenticalToStoreException, StoreLocationIsIdenticalToCustomerException {
+    public void readStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException, StoreLocationIsIdenticalToStoreException, StoreLocationIsIdenticalToCustomerException, InvalidCoordinateYOfStoreException, InvalidCoordinateXOfStoreException {
         int counter = 0;
         updateProgress(counter, stores.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
@@ -220,7 +232,7 @@ public class CollectMetadataTask extends Task<Boolean> {
         }
     }
 
-    public void readDiscountsToStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException, DuplicateItemSerialIDInStoreException, ItemNotExistInStoresException, StoreNotExistException, DuplicateDiscountNameException, ItemWithSerialIDNotExistInSDMException, ItemIDNotExistInAStoreException {
+    public void readDiscountsToStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException, DuplicateItemSerialIDInStoreException, ItemNotExistInStoresException, StoreNotExistException, DuplicateDiscountNameException, ItemWithSerialIDNotExistInSDMException, ItemIDNotExistInAStoreException, ItemIDInDiscountNotExistInSDMException, ItemIDInDiscountNotExistInAStoreException {
         int counter = 0;
         updateProgress(counter, stores.size());
         SuperDuperMarketUtils.sleepForAWhile(SLEEP_TIME);
@@ -247,7 +259,7 @@ public class CollectMetadataTask extends Task<Boolean> {
         }
     }
 
-    public void readDiscountsToAStoreFromXML(SDMStore store) throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, DuplicateStoreSerialIDException, ItemNotExistInStoresException, DuplicateDiscountNameException, ItemIDNotExistInAStoreException {
+    public void readDiscountsToAStoreFromXML(SDMStore store) throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, DuplicateStoreSerialIDException, ItemNotExistInStoresException, DuplicateDiscountNameException, ItemIDNotExistInAStoreException, ItemIDInDiscountNotExistInSDMException, ItemIDInDiscountNotExistInAStoreException {
         int counter = 0;
         SuperDuperMarketUtils.sleepForAWhile(0);
         System.out.println(("Reading discounts to the store " + store.getName() + "..."));

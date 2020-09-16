@@ -1,6 +1,5 @@
 package logic.order.StoreOrder;
 
-import logic.Customer;
 import logic.SDMLocation;
 import logic.Store;
 import logic.order.Order;
@@ -114,7 +113,7 @@ public class StoreOrder extends Order {
 
     //public Double calcDistanceToCustomer()
     public Double calcTotalDeliveryPrice() {
-        SDMLocation storeLocation = storeUsed.getLocationOfShop();
+        SDMLocation storeLocation = storeUsed.getLocation();
         int PPK = storeUsed.getPPK();
         double distanceBetweenTwoLocations = customerLocation.getAirDistanceToOtherLocation(storeLocation);
         return(PPK * distanceBetweenTwoLocations);
@@ -145,7 +144,7 @@ public class StoreOrder extends Order {
 
     public Double calcDistanceToCustomer()
     {
-        return customerLocation.getAirDistanceToOtherLocation(storeUsed.getLocationOfShop());
+        return customerLocation.getAirDistanceToOtherLocation(storeUsed.getLocation());
     }
 
     public Double calcTotalAmountOfItemsNotFromSaleByUnit()
