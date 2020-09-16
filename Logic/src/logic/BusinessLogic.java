@@ -583,6 +583,10 @@ public class BusinessLogic {
         storesSerialIDMap.put(newStoreToAdd.getSerialNumber(), newStoreToAdd);
     }
 
+    public void addItem(Item newItemToAdd) {
+        itemsSerialIDMap.put(newItemToAdd.getSerialNumber(), newItemToAdd);
+    }
+
     public boolean checkIfLocationAlreadyExists(SDMLocation location) {
         return usersLocationMap.containsKey(location) || storesLocationMap.containsKey(location);
     }

@@ -41,7 +41,7 @@ public class Item {
 
     }
 
-    Item(Integer serialNumber, String name, TypeOfMeasure itemPurchaseCategory)
+    public Item(Integer serialNumber, String name, TypeOfMeasure itemPurchaseCategory)
     {
         //this.serialNumber = new SimpleIntegerProperty(serialNumber);
         this.serialNumber = serialNumber;
