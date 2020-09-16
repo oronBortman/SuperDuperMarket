@@ -216,15 +216,15 @@ public class LoadingXMLFileController {
                 {
                     ItemIDNotExistInAStoreException itemIDNotExistInAStoreException = (ItemIDNotExistInAStoreException) ex;
                     int itemID = itemIDNotExistInAStoreException.getSerialId();
-                    String storeName = itemIDNotExistInAStoreException.getStoreName();
-                    errorLabel.setText("Error: The item with the serial key " + itemID + " doesn't exist in the store " + storeName);
+                    Store store = itemIDNotExistInAStoreException.getStore();
+                    errorLabel.setText("Error: The item with the serial key " + itemID + " doesn't exist in the store with name " + store.getName() + " and serial id " + store.getSerialNumber());
                 }
                 else if (ex.getClass() == DuplicateDiscountNameException.class)
                 {
                     DuplicateDiscountNameException duplicateDiscountNameException = (DuplicateDiscountNameException) ex;
                     String discountName = duplicateDiscountNameException.getDiscountName();
-                    String storeName = duplicateDiscountNameException.getStoreName();
-                    errorLabel.setText("Error: A discount with the name " + discountName + " already exists in the store"  + storeName);
+                    Store store = duplicateDiscountNameException.getStore();
+                    errorLabel.setText("Error: A discount with the name " + discountName + " already exists in the store with the name "  + store.getName() + " and serial ID " + store.getSerialNumber());
                 }
                 else if(ex.getClass() == CustomerLocationIsIdenticalToCustomerException.class)
                 {
@@ -269,7 +269,7 @@ public class LoadingXMLFileController {
                     Store store = itemIDInDiscountNotExistInSDMException.getStore();
                     String discountName = itemIDInDiscountNotExistInSDMException.getDiscountName();
                     Integer serialIdOfItem = itemIDInDiscountNotExistInSDMException.getSerialIdOfItem();
-                    errorLabel.setText("Error: serial id of item " + serialIdOfItem + " in discount \"" + discountName + "\" in store " + store.getName() + " doesn't exist in Super Duper Market");
+                    errorLabel.setText("Error: serial id of item " + serialIdOfItem + " in discount \"" + discountName + "\" in store " + store.getName() + " with serial id " + store.getSerialNumber() + " doesn't exist in Super Duper Market");
 
                 }
                 else if(ex instanceof ItemIDInDiscountNotExistInAStoreException)
@@ -279,7 +279,7 @@ public class LoadingXMLFileController {
                     String discountName = itemIDInDiscountNotExistInAStoreException.getDiscountName();
                     Integer serialIdOfItem = itemIDInDiscountNotExistInAStoreException.getSerialIdOfItem();
 
-                    errorLabel.setText("Error: serial id of item " + serialIdOfItem + " in discount \"" + discountName + "\" in store " + store.getName() + " doesn't exist in store " + store.getName());
+                    errorLabel.setText("Error: serial id of item " + serialIdOfItem + " in discount \"" + discountName + "\" in store with the name " + store.getName() + " and the serial id " + store.getSerialNumber() + " doesn't exist in the store");
                 }
 
                 SuperDuperMarketUtils.sleepForAWhile(100);

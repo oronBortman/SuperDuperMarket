@@ -50,7 +50,7 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
         System.out.println("inside addDiscountToStoreFromXML");
         if(checkIfDiscountHasUniqueName(discountName) == false)
         {
-            throw new DuplicateDiscountNameException(discountName, getName());
+            throw new DuplicateDiscountNameException(discountName, this);
         }
         else if(checkIfItemIdExists(ifYouBuy.getItemId()) == false)
         {
