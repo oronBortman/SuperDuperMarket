@@ -28,9 +28,7 @@ public class SuperDuperMarketConstants {
     public static final String SALES_SCREEN = "/components/makeAnOrderOption/salesScreen/SalesScreen.fxml";
     public static final String SALES_LIST_VIEW = "/components/makeAnOrderOption/salesOnStoreScreen/SalesOnStoreScreen.fxml";
     public static final String ADD_STORE = "/components/addStore/addStore.fxml";
-
-
-
-
+    public static final String ADD_ITEM = "/components/addItem/addNewItem.fxml";
+    public static final String CHOOSE_STORE_FOR_ITEM = "/components/addItem/chooseStoresForItem/AddItemControllerBackup.fxml";
 
 }

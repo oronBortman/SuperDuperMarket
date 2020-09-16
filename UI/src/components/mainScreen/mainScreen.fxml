@@ -18,7 +18,7 @@
               <menus>
                 <Menu mnemonicParsing="false" text="Actions">
                      <items>
-                        <MenuItem mnemonicParsing="false" onAction="#loadFromXml" text="Load from xml" />
+                        <MenuItem fx:id="menuOptionLoadFromXML" mnemonicParsing="false" onAction="#loadFromXml" text="Load from xml" />
                         <SeparatorMenuItem mnemonicParsing="false" />
                       <MenuItem fx:id="menuOptionMakeAnOrder" mnemonicParsing="false" onAction="#makeAnOrder" text="Make an order" />
                         <SeparatorMenuItem mnemonicParsing="false" />
@@ -49,6 +49,8 @@
                         <Menu fx:id="menuOptionUpdateItem1" mnemonicParsing="false" text="Bonus">
                            <items>
                               <MenuItem fx:id="menuOptionAddStore" mnemonicParsing="false" onAction="#ClickedOnOptionAddStore" text="Add store to Super Duper Market" />
+                              <SeparatorMenuItem mnemonicParsing="false" />
+                              <MenuItem fx:id="menuOptionAddItemToSDM" mnemonicParsing="false" onAction="#ClickedOnOptionAddItem" text="Add item to Super Duper Market" />
                            </items>
                         </Menu>
                      </items>

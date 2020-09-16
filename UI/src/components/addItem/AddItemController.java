@@ -14,6 +14,7 @@ import logic.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.function.Consumer;
 
 import static java.util.stream.Collectors.toCollection;
 
@@ -33,129 +34,41 @@ public class AddItemController {
     @FXML private Label LabelErrorItemName;
     @FXML private RadioButton RadioButtonQuantity;
     @FXML private RadioButton RadioButtonWeight;
-    @FXML private Pane PaneAddItems;
-    @FXML private TableView StoresTable;
-    @FXML private TableColumn<Store, String> SerialIDCol;
-    @FXML private TableColumn<Store, String> nameCol;
     @FXML private Button ButtonAddStore;
-    @FXML private ComboBox<Store> ComboBoxChooseStore;
-    @FXML private Label LabelErrorOnTable;
     @FXML private Button buttonAddItem;
+    @FXML private Label LabelErrorTypeOfMeasure;
 
 
     BusinessLogic businessLogic;
-    SimpleBooleanProperty isStoreChosen;
     SimpleBooleanProperty textFieldSerialIDEmpty;
     SimpleBooleanProperty textFieldNameEmpty;
-    SimpleBooleanProperty tableIsEmpty;
     SimpleBooleanProperty isRadioButtonQuantitySelected;
     SimpleBooleanProperty isRadioButtonWeightSelected;
 
-    HashMap<Integer, Store> storeInComboBoxMap;
-    HashMap<Integer, Store> storesToAddToItem;
+    Consumer<Boolean> isItemAdded;
+
+    Item addedItem=null;
 
 
     public AddItemController() {
-        storeInComboBoxMap = new HashMap<Integer, Store>();
-        storesToAddToItem = new HashMap<Integer, Store>();
-        isStoreChosen = new SimpleBooleanProperty(false);
         isRadioButtonQuantitySelected = new SimpleBooleanProperty(false);
         isRadioButtonWeightSelected = new SimpleBooleanProperty(false);
         textFieldSerialIDEmpty = new SimpleBooleanProperty(true);
         textFieldNameEmpty = new SimpleBooleanProperty(true);
-        tableIsEmpty = new SimpleBooleanProperty(true);
     }
     // final ObservableList<SimpleBooleanProperty> componentsNeedToBeFieldForAddingStore =
     //  FXCollections.observableArrayList(tableIsEmpty,textFieldPPKEmpty,textFieldNameEmpty,textFieldSerialIDEmpty);
 
     public void initialize() {
-        initializeComboBoxChooseItem();
-        initializeStoresTable();
-        setProperties();
     }
 
-    public void setProperties() {
-        //TODO
-        //Change xml loading
-        ButtonAddStore.disableProperty().bind(isStoreChosen.not());
-        buttonAddItem.disableProperty().bind(tableIsEmpty);
-        RadioButtonQuantity.selectedProperty().bind(isRadioButtonWeightSelected);
-       /* buttonAddStore.disableProperty().bind(Bindings.createBooleanBinding(() -> {
-            for (int i = 0; i < componentsNeedToBeFieldForAddingStore.size(); ++i) {
-                if (componentsNeedToBeFieldForAddingStore.get(i).equals(true)) {
-                    return false;
-                }
-            }
-            return true;
-        }, componentsNeedToBeFieldForAddingStore));*/
-
-
+    public void setProperties(Consumer<Boolean> isItemAdded)
+    {
+        this.isItemAdded = isItemAdded;
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
-        storeInComboBoxMap = new HashMap(businessLogic.getItemsSerialIDMap());
-        setComboBoxStoresFromBusinessLogic();
-    }
-
-    public void setComboBoxStoresFromBusinessLogic() {
-        final ObservableList<Store> observableList = FXCollections.observableList(businessLogic.getStoresList());
-        ComboBoxChooseStore.setItems(observableList);
-    }
-
-    @FXML
-    public void initializeComboBoxChooseItem() {
-        ComboBoxChooseStore.setConverter(new StringConverter<Store>() {
-            @Override
-            public String toString(Store object) {
-                return "Serial Number:" + object.getSerialNumber() + ", Name:" + object.getName();
-            }
-
-            @Override
-            public Store fromString(String string) {
-                return null;
-            }
-        });
-
-        ComboBoxChooseStore.valueProperty().addListener((obs, oldval, newval) -> {
-            if (newval != null) {
-
-            }
-        });
-    }
-
-
-    private void initializeStoresTable() {
-        SerialIDCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Store, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Store, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getSerialNumber().toString());
-            }
-        });
-        nameCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<Store, String>, ObservableValue<String>>() {
-            @Override
-            public ObservableValue<String> call(TableColumn.CellDataFeatures<Store, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getName());
-            }
-        });
-    }
-
-    @FXML
-    public void chooseStore(ActionEvent actionEvent) {
-        isStoreChosen.set(true);
-    }
-
-
-    public boolean checkTableAndAddErrorMessage() {
-        boolean tableIsOK = false;
-        if (StoresTable.getItems() == null) {
-            tableIsEmpty.set(true);
-            LabelErrorOnTable.setText("* Table can't be empty");
-        } else {
-            tableIsOK = true;
-            LabelErrorOnTable.setText("");
-        }
-        return tableIsOK;
     }
 
 
@@ -201,38 +114,48 @@ public class AddItemController {
     public void clickedOnButtonAddItem(ActionEvent actionEvent) {
 
         SDMLocation location = null;
-        boolean tableIsOK = checkTableAndAddErrorMessage();
         boolean serialIdIsOK = checkSerialNumberAndAddErrorMessage();
         boolean isNameOK = checkNameOfItemAndAddErrorMessage();
+        boolean isTypeOfMeasureOK =false;
         //TODO
-        boolean isAmountOK=false;
         Item newItemToAdd=null;
 
-        if (tableIsOK  && serialIdIsOK && isNameOK && isAmountOK) {
+        if(isRadioButtonQuantitySelected.getValue() || isRadioButtonWeightSelected.getValue() )
+        {
+            LabelErrorTypeOfMeasure.setText("");
+            isTypeOfMeasureOK = true;
+        }
+        else
+        {
+            LabelErrorTypeOfMeasure.setText("* item must have a measure type");
+        }
+
+        if ( serialIdIsOK && isNameOK && isTypeOfMeasureOK) {
             System.out.println("GREAT!!!");
             String nameOfItem = TextFieldItemName.getText();
             if(isRadioButtonQuantitySelected.getValue())
             {
                 newItemToAdd = new Item(getEnteredSerialID(), nameOfItem, Item.TypeOfMeasure.Quantity);
+                System.out.println("Added quantity!!!");
+
             }
             else if(isRadioButtonWeightSelected.getValue())
             {
                 newItemToAdd = new Item(getEnteredSerialID(), nameOfItem, Item.TypeOfMeasure.Weight);
+                System.out.println("Added Weight!!!");
 
             }
             businessLogic.addItem(newItemToAdd);
+            addedItem=newItemToAdd;
+            isItemAdded.accept(true);
         }
         clearAll();
-        setComboBoxStoresFromBusinessLogic();
     }
 
     public void clearAll() {
-        setComboBoxStoresFromBusinessLogic();
         TextFieldSerialID.setText("");
         TextFieldItemName.setText("");
-        StoresTable.getItems().clear();
-        tableIsEmpty.set(true);
-        ComboBoxChooseStore.getItems().clear();
+
     }
 
     public Integer getEnteredSerialID() {
@@ -247,16 +170,13 @@ public class AddItemController {
         return TextFieldItemName.getText().equals("");
     }
 
-    public void clickedOnAddButton(ActionEvent actionEvent) {
-        Store storeInCombobox = ComboBoxChooseStore.getValue();
-        storesToAddToItem.put(storeInCombobox.getSerialNumber(), storeInCombobox);
-        storeInComboBoxMap.remove(storeInCombobox.getSerialNumber());
-        final ObservableList<Store> storesInComboBoxList = FXCollections.observableList(storeInComboBoxMap.values().stream().collect(toCollection(ArrayList::new)));
-        ComboBoxChooseStore.setItems(storesInComboBoxList);
-        final ObservableList<Store> storesToAddToItemList = FXCollections.observableList(storesToAddToItem.values().stream().collect(toCollection(ArrayList::new)));
-        StoresTable.setItems(storesToAddToItemList);
-        tableIsEmpty.set(false);
+
+
+    public Item getItem()
+    {
+        return addedItem;
     }
+
 
     @FXML
     public void chooseQuantityRadioButton(ActionEvent actionEvent)

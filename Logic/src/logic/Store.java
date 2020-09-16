@@ -219,6 +219,10 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
     {
         ItemsSerialIDMap.put(item.getSerialNumber(), new AvailableItemInStore(item, priceOfItem));
     }
+    public void addItemToStore(AvailableItemInStore availableItemInStore)
+    {
+        ItemsSerialIDMap.put(availableItemInStore.getSerialNumber(), availableItemInStore);
+    }
     public void updatePriceOfItem(int itemID, int priceOfItem)
     {
         ItemsSerialIDMap.get(itemID).setPricePerUnit(priceOfItem);

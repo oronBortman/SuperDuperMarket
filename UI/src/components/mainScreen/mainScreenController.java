@@ -1,6 +1,8 @@
 package components.mainScreen;
 
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
+import components.addItem.AddItemController;
+import components.addItem.chooseStoresForItem.ChooseStoresForItemController;
 import components.addStore.AddStoreController;
 import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
 import components.makeAnOrderOption.SummeryOfOrder.SummeryOfOrderController;
@@ -61,6 +63,9 @@ public class mainScreenController {
     @FXML MenuItem menuOptionDeleteItem;
     @FXML MenuItem menuOptionAddItem;
     @FXML MenuItem menuOptionUpdatePrice;
+    @FXML MenuItem menuOptionAddStore;
+    @FXML MenuItem menuOptionAddItemToSDM;
+    @FXML MenuItem menuOptionLoadFromXML;
 
 
     private SimpleBooleanProperty loadedXMLFileSuccessfully;
@@ -84,18 +89,55 @@ public class mainScreenController {
 
     public void initialize()
     {
+        bindMenuOptionsToLoadedXMLFile();
+    }
+
+    public void unbindMenuOptionFromLoadedXMLFile()
+    {
+        menuOptionMakeAnOrder.disableProperty().unbind();
+        menuOptionShowUsers.disableProperty().unbind();
+        menuOptionShowItems.disableProperty().unbind();
+        menuOptionShowStores.disableProperty().unbind();
+        menuOptionShowOrders.disableProperty().unbind();
+        menuOptionShowMap.disableProperty().unbind();
+        menuOptionDeleteItem.disableProperty().unbind();
+        menuOptionAddItem.disableProperty().unbind();
+        menuOptionUpdatePrice.disableProperty().unbind();
+        menuOptionAddStore.disableProperty().unbind();
+        menuOptionAddItemToSDM.disableProperty().unbind();
+    }
+
+    public void bindMenuOptionsToLoadedXMLFile()
+    {
         menuOptionMakeAnOrder.disableProperty().bind(loadedXMLFileSuccessfully.not());
-        //menuOptionShow.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionShowUsers.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionShowItems.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionShowStores.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionShowOrders.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionShowMap.disableProperty().bind(loadedXMLFileSuccessfully.not());
-        //menuOptionUpdateItem.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionDeleteItem.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionAddItem.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionUpdatePrice.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionAddStore.disableProperty().bind(loadedXMLFileSuccessfully.not());
+        menuOptionAddItemToSDM.disableProperty().bind(loadedXMLFileSuccessfully.not());
     }
+
+    public void disableOrEnableAllMenuOptions(boolean disable)
+    {
+        menuOptionMakeAnOrder.setDisable(disable);
+        menuOptionShowUsers.setDisable(disable);
+        menuOptionShowItems.setDisable(disable);
+        menuOptionShowStores.setDisable(disable);
+        menuOptionShowOrders.setDisable(disable);
+        menuOptionShowMap.setDisable(disable);
+        menuOptionDeleteItem.setDisable(disable);
+        menuOptionAddItem.setDisable(disable);
+        menuOptionUpdatePrice.setDisable(disable);
+        menuOptionAddStore.setDisable(disable);
+        menuOptionAddItemToSDM.setDisable(disable);
+        menuOptionLoadFromXML.setDisable(disable);
+    }
+
     public void setProperties()
     {
 
@@ -184,6 +226,63 @@ public class mainScreenController {
         addStoreController.setBusinessLogic(businessLogic);
         mainBorderPane.setCenter(pane);
     }
+
+    public void ClickedOnOptionAddItem(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        URL loaderFXML = getClass().getResource(SuperDuperMarketConstants.ADD_ITEM);
+        loader.setLocation(loaderFXML);
+        ScrollPane pane = loader.load();
+        AddItemController addItemController = loader.getController();
+        addItemController.setBusinessLogic(businessLogic);
+        Consumer<Boolean> addedItem = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    Item item=addItemController.getItem();
+                    unbindMenuOptionFromLoadedXMLFile();
+                    disableOrEnableAllMenuOptions(true);
+                    try {
+                        chooseStoresForItem(item);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        addItemController.setProperties(addedItem);
+        mainBorderPane.setCenter(pane);
+    }
+
+    public void chooseStoresForItem(Item item) throws IOException {
+
+        FXMLLoader loader = new FXMLLoader();
+        URL loaderFXML = getClass().getResource(SuperDuperMarketConstants.CHOOSE_STORE_FOR_ITEM);
+        loader.setLocation(loaderFXML);
+        ScrollPane pane = loader.load();
+        ChooseStoresForItemController chooseStoresForItemController = loader.getController();
+        chooseStoresForItemController.setBusinessLogic(businessLogic);
+        chooseStoresForItemController.setAddedItem(item);
+
+        Consumer<Boolean> addedItemToStoreSuccessfully = new Consumer<Boolean>() {
+            @Override
+            public void accept(Boolean aBoolean) {
+                if(aBoolean == true)
+                {
+                    bindMenuOptionsToLoadedXMLFile();
+                    showMainScreen();
+                    try {
+                        chooseStoresForItem(item);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        };
+        chooseStoresForItemController.setProperties(addedItemToStoreSuccessfully);
+        mainBorderPane.setCenter(pane);
+    }
+
 
     public void chooseItemsForStaticOrder(Customer customer, Store store, LocalDate date, Boolean isOrderStatic, List<Item> itemsList) throws IOException {
 
