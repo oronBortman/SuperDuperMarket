@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.salesScreen.SalesScreenController">
+   <content>
+      <BorderPane>
+         <opaqueInsets>
+            <Insets left="400.0" />
+         </opaqueInsets>
+         <top>
+            <BorderPane BorderPane.alignment="CENTER">
+               <center>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS">
+                     <content>
+                        <HBox>
+                           <children>
+                              <ListView fx:id="listViewSales" prefHeight="217.0" prefWidth="594.0" />
+                           </children>
+                           <padding>
+                              <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+                           </padding>
+                        </HBox>
+                     </content>
+                  </ScrollPane>
+               </center>
+               <top>
+                  <Label prefHeight="34.0" prefWidth="99.0" text="Sales" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </top>
+            </BorderPane>
+         </top>
+         <center>
+            <AnchorPane minHeight="687.0" minWidth="585.0" prefHeight="687.0" prefWidth="612.0" BorderPane.alignment="CENTER">
+               <children>
+                  <ComboBox fx:id="comboBoxChooseSale" layoutX="223.0" layoutY="42.0" onAction="#chooseSale" prefWidth="150.0" promptText="Choose your sale" />
+                  <Button fx:id="buttonAdd" layoutX="403.0" layoutY="42.0" mnemonicParsing="false" onAction="#addAction" text="Add" />
+                  <ComboBox fx:id="comboBoxChooseItem" layoutX="223.0" layoutY="85.0" onAction="#chooseItem" prefWidth="150.0" promptText="Choose item" />
+                  <Separator layoutX="33.0" layoutY="146.0" prefHeight="3.0" prefWidth="558.0" />
+                  <TableView fx:id="tableViewSales" layoutX="44.0" layoutY="188.0" prefHeight="136.0" prefWidth="538.0">
+                    <columns>
+                      <TableColumn fx:id="salesTableNameCol" prefWidth="75.0" text="Name" />
+                      <TableColumn fx:id="salesTableSerialIDCol" prefWidth="75.0" text="SerialID" />
+                        <TableColumn fx:id="salesTableAmountCol" prefWidth="75.0" text="Amount" />
+                        <TableColumn fx:id="salesTablePriceCol" prefWidth="75.0" text="Price" />
+                        <TableColumn fx:id="salesTableTotalPriceCol" prefWidth="75.0" text="Total price" />
+                        <TableColumn fx:id="salesTableSaleNameCol" prefWidth="75.0" text="Sale name" />
+                    </columns>
+                  </TableView>
+                  <TableView fx:id="tableViewCart" layoutX="45.0" layoutY="377.0" prefHeight="194.0" prefWidth="521.0">
+                    <columns>
+                      <TableColumn fx:id="cartTableNameCol" prefWidth="75.0" text="Name" />
+                      <TableColumn fx:id="cartTableSerialIDCol" prefWidth="75.0" text="SerialID" />
+                        <TableColumn fx:id="cartTableAmountCol" prefWidth="75.0" text="Amount" />
+                        <TableColumn fx:id="cartTablePriceCol" prefWidth="75.0" text="Price" />
+                        <TableColumn fx:id="cartTableTotalPriceCol" prefWidth="75.0" text="Total price" />
+                    </columns>
+                  </TableView>
+                  <Label layoutX="277.0" layoutY="351.0" text="Cart" />
+                  <Label layoutX="274.0" layoutY="159.0" text="Sales" />
+                  <Separator layoutX="34.0" layoutY="340.0" prefHeight="3.0" prefWidth="558.0" />
+                  <Button fx:id="buttonNext" layoutX="509.0" layoutY="790.0" mnemonicParsing="false" onAction="#clickedOnNextButton" prefHeight="28.0" prefWidth="74.0" text="Next" />
+               </children>
+               <opaqueInsets>
+                  <Insets left="400.0" />
+               </opaqueInsets>
+            </AnchorPane>
+         </center>
+      </BorderPane>
+   </content>
+</ScrollPane>
