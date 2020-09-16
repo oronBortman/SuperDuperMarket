@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.text.Font?>
+
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="626.0" prefWidth="638.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.salesScreen.SalesScreenController">
+   <content>
+      <BorderPane>
+         <opaqueInsets>
+            <Insets left="400.0" />
+         </opaqueInsets>
+         <top>
+            <BorderPane BorderPane.alignment="CENTER">
+               <center>
+                  <Label prefHeight="58.0" prefWidth="383.0" text="Add new item to Super Duper Market" BorderPane.alignment="CENTER">
+                     <font>
+                        <Font size="24.0" />
+                     </font>
+                  </Label>
+               </center>
+            </BorderPane>
+         </top>
+         <center>
+            <HBox alignment="CENTER" BorderPane.alignment="CENTER">
+               <children>
+                  <AnchorPane minHeight="519.0" minWidth="585.0" prefHeight="519.0" prefWidth="633.0">
+                     <children>
+                        <Button fx:id="buttonAdd" layoutX="275.0" layoutY="210.0" mnemonicParsing="false" onAction="#addAction" text="Add" />
+                        <Separator layoutX="21.0" layoutY="316.0" prefHeight="3.0" prefWidth="558.0" />
+                        <TableView fx:id="tableViewSales" layoutX="352.0" layoutY="157.0" prefHeight="133.0" prefWidth="150.0">
+                          <columns>
+                            <TableColumn fx:id="salesTableNameCol" prefWidth="75.0" text="Name" />
+                            <TableColumn fx:id="salesTableSerialIDCol" prefWidth="75.0" text="SerialID" />
+                          </columns>
+                        </TableView>
+                        <TableView fx:id="tableViewCart" layoutX="99.0" layoutY="162.0" prefHeight="128.0" prefWidth="143.0">
+                          <columns>
+                            <TableColumn fx:id="cartTableNameCol" prefWidth="75.0" text="Name" />
+                            <TableColumn fx:id="cartTableSerialIDCol" prefWidth="75.0" text="SerialID" />
+                          </columns>
+                        </TableView>
+                        <Label layoutX="99.0" layoutY="136.0" text="Stores in Super Duper Market" />
+                        <Label layoutX="388.0" layoutY="136.0" text="Stores chosen" />
+                        <Button fx:id="ButtonCreateNewStore" layoutX="234.0" layoutY="344.0" mnemonicParsing="false" onAction="#clickedOnNextButton" prefHeight="28.0" prefWidth="116.0" text="Create new Item" />
+                        <Separator layoutX="95.0" layoutY="-3.0" prefHeight="5.0" prefWidth="463.0" />
+                        <TextField layoutX="104.0" layoutY="28.0" text="Enter Serial ID of item" />
+                        <TextField layoutX="308.0" layoutY="28.0" text="Enter name of item" />
+                        <RadioButton layoutX="275.0" layoutY="88.0" mnemonicParsing="false" text="Quantity" />
+                        <RadioButton layoutX="371.0" layoutY="87.0" mnemonicParsing="false" text="Weight" />
+                        <Label layoutX="116.0" layoutY="89.0" text="Choose type of measure:" />
+                     </children>
+                     <opaqueInsets>
+                        <Insets left="400.0" />
+                     </opaqueInsets>
+                  </AnchorPane>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
+   </content>
+</ScrollPane>
