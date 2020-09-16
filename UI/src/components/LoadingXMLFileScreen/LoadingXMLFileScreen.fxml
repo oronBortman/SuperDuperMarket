@@ -100,7 +100,7 @@
                   </GridPane>
                   <HBox>
                      <children>
-                        <Label fx:id="errorLabel" text="1" textFill="#f80000">
+                        <Label fx:id="errorLabel" textFill="#f80000">
                            <font>
                               <Font size="18.0" />
                            </font>

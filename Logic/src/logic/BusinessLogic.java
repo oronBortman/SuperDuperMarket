@@ -579,5 +579,12 @@ public class BusinessLogic {
         return openedCustomerOrder;
     }
 
+    public void addStore(Store newStoreToAdd) {
+        storesSerialIDMap.put(newStoreToAdd.getSerialNumber(), newStoreToAdd);
+    }
+
+    public boolean checkIfLocationAlreadyExists(SDMLocation location) {
+        return usersLocationMap.containsKey(location) || storesLocationMap.containsKey(location);
+    }
 }
 

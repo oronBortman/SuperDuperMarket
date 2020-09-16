@@ -45,6 +45,12 @@
                               <MenuItem fx:id="menuOptionUpdatePrice" mnemonicParsing="false" onAction="#updatePriceOfItemInStore" text="Update price of item in store" />
                           </items>
                         </Menu>
+                        <SeparatorMenuItem mnemonicParsing="false" />
+                        <Menu fx:id="menuOptionUpdateItem1" mnemonicParsing="false" text="Bonus">
+                           <items>
+                              <MenuItem fx:id="menuOptionAddStore" mnemonicParsing="false" onAction="#ClickedOnOptionAddStore" text="Add store to Super Duper Market" />
+                           </items>
+                        </Menu>
                      </items>
                 </Menu>
                 <Menu mnemonicParsing="false" text="Help">

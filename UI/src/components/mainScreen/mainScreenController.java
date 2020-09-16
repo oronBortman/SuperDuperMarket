@@ -1,6 +1,7 @@
 package components.mainScreen;
 
 import components.LoadingXMLFileScreen.LoadingXMLFileController;
+import components.addStore.AddStoreController;
 import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
 import components.makeAnOrderOption.SummeryOfOrder.SummeryOfOrderController;
 import components.makeAnOrderOption.salesScreen.SalesScreenController;
@@ -39,7 +40,6 @@ import javax.xml.bind.JAXBException;
 import java.io.IOException;
 import java.net.URL;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
@@ -173,6 +173,16 @@ public class mainScreenController {
         makeAnOrderController.setProperties(chooseNext);
         mainBorderPane.setCenter(pane);
 
+    }
+
+    public void ClickedOnOptionAddStore(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        URL loaderFXML = getClass().getResource(SuperDuperMarketConstants.ADD_STORE);
+        loader.setLocation(loaderFXML);
+        ScrollPane pane = loader.load();
+        AddStoreController addStoreController = loader.getController();
+        addStoreController.setBusinessLogic(businessLogic);
+        mainBorderPane.setCenter(pane);
     }
 
     public void chooseItemsForStaticOrder(Customer customer, Store store, LocalDate date, Boolean isOrderStatic, List<Item> itemsList) throws IOException {

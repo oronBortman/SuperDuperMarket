@@ -31,6 +31,17 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
         this.PPK = PPK;
     }
 
+    public Store(Integer serialNumber, String name, int PPK, SDMLocation SDMLocationOfShop, Map<Integer, AvailableItemInStore> itemsSerialIDMap)
+    {
+        super(serialNumber, name, SDMLocationOfShop);
+        this.ItemsSerialIDMap = itemsSerialIDMap;
+        ordersSerialIDMap = new HashMap<Integer, ClosedStoreOrder>();
+        discountNameDMap = new HashMap<String, Discount>();
+
+        this.PPK = PPK;
+    }
+
+
     public Store(SDMStore shop)
     {
         super(shop.getId(), shop.getName(), new SDMLocation(shop.getLocation()));
@@ -42,6 +53,7 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
 
         this.PPK = shop.getDeliveryPpk();
     }
+
 
     public void addDiscountToStoreFromXML(SDMDiscount discountFromXML) throws DuplicateDiscountNameException, ItemIDNotExistInAStoreException, ItemIDInDiscountNotExistInAStoreException {
         IfYouBuy ifYouBuy = discountFromXML.getIfYouBuy();

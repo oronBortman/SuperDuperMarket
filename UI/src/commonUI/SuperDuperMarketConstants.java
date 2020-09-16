@@ -27,6 +27,10 @@ public class SuperDuperMarketConstants {
     public static final String SHOW_ORDERS_HISTORY_CONTROLLER = "/components/showOption/showOrderesHistory/showOrdersHistory.fxml";
     public static final String SALES_SCREEN = "/components/makeAnOrderOption/salesScreen/SalesScreen.fxml";
     public static final String SALES_LIST_VIEW = "/components/makeAnOrderOption/salesOnStoreScreen/SalesOnStoreScreen.fxml";
+    public static final String ADD_STORE = "/components/addStore/addStore.fxml";
+
+
+
 
 
 }
