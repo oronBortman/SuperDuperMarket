@@ -65,6 +65,7 @@ public class AddingDiscountsController {
     @FXML private Label labelErrorEnterWeightInIfYouBuy;
     @FXML private Label labelErrorOperator;
     @FXML private Label labelErrorOnTable;
+    @FXML private Label labelAddedDiscountSuccessfully;
 
     SimpleBooleanProperty isRadioButtonOperatorAllOrNothingSelected;
     SimpleBooleanProperty isRadioButtonOperatorIrrelavntSelected;
@@ -103,6 +104,7 @@ public class AddingDiscountsController {
 
     private void setProperties()
     {
+        labelAddedDiscountSuccessfully.setVisible(false);
         comboBoxChooseItemIfYouBuy.disableProperty().bind(isStoreChosen.not());
         comboBoxChooseItemThenYouGet.disableProperty().bind(isStoreChosen.not());
         buttonAddItem.disableProperty().bind(isItemInThanYouGetChosen.not());
@@ -208,6 +210,7 @@ public class AddingDiscountsController {
     {
         if(comboBoxChooseStore != null)
         {
+            System.out.println("in set comboBox choose item than you get");
             Store store;
             store = comboBoxChooseStore.getValue();
             final ObservableList<AvailableItemInStore> availableItemInStores = FXCollections.observableList(store.getAvailableItemsList());
@@ -219,6 +222,7 @@ public class AddingDiscountsController {
     @FXML void chooseStore(ActionEvent event) {
         if(comboBoxChooseStore.getValue() != null)
         {
+            labelAddedDiscountSuccessfully.setVisible(false);
             setComboBoxChooseItemIfYouBuy();
             setComboBoxChooseItemThenYouGet();
             isStoreChosen.set(true);
@@ -258,25 +262,27 @@ public class AddingDiscountsController {
         WeightItemController weightItemController = (WeightItemController) currentItemTileControllerThenYouGet;
         if(weightItemController.checkIfWeightFieldIsOK() == false)
         {
+            System.out.println(weightItemController.getWeightErrorMessage());
             labelErrorInWeightFieldInThenYouGet.setText(weightItemController.getWeightErrorMessage());
         }
         else
         {
+            System.out.println("Label weight then you get is empty");
             labelErrorInWeightFieldInThenYouGet.setText("");
             isWeightFieldOK = true;
         }
         if(weightItemController.checkIfForAdditionalFieldIsOK() == false)
         {
+            System.out.println(weightItemController.getForAdditionalErrorMessage());
             labelErrorAdditionalPrice.setText(weightItemController.getForAdditionalErrorMessage());
         }
         else
         {
+            System.out.println("Label additional empty");
             labelErrorAdditionalPrice.setText("");
             isForAdditionalOK = true;
         }
         return isForAdditionalOK && isWeightFieldOK;
-
-
     }
 
     private boolean checkQuantityItemFieldsAndAddOfferToThenYouGet()
@@ -289,10 +295,13 @@ public class AddingDiscountsController {
 
         if(quantityItemController.checkIfForAdditionalFieldIsOK() == false)
         {
+            System.out.println("Error additional price");
             labelErrorAdditionalPrice.setText(quantityItemController.getForAdditionalErrorMessage());
         }
         else
         {
+            System.out.println("additional price ok");
+
             labelErrorAdditionalPrice.setText("");
             isForAdditionalOK = true;
         }
@@ -453,6 +462,7 @@ public class AddingDiscountsController {
             }
             Store store = comboBoxChooseStore.getValue();
             store.addDiscountToStore(discount);
+            labelAddedDiscountSuccessfully.setVisible(true);
         }
         clearAll();
     }
@@ -515,6 +525,8 @@ public class AddingDiscountsController {
     void chooseItemIfYouBuy(ActionEvent event) throws IOException {
         if(comboBoxChooseItemIfYouBuy.getValue() != null)
         {
+            labelErrorChooseItemInIfYouGet.setText("");
+            labelErrorEnterWeightInIfYouBuy.setText("");
             AvailableItemInStore availableItemInStore = comboBoxChooseItemIfYouBuy.getValue();
             setHboxItemIfYouBuy(availableItemInStore);
             isItemInIfYouBuyChosen.set(true);
@@ -526,6 +538,8 @@ public class AddingDiscountsController {
         System.out.println("In choose item");
         if(comboBoxChooseItemThenYouGet.getValue() != null)
         {
+            labelErrorAdditionalPrice.setText("");
+            labelErrorInWeightFieldInThenYouGet.setText("");
             System.out.println("Combobox not null");
             AvailableItemInStore availableItemInStore = comboBoxChooseItemThenYouGet.getValue();
             setHboxItemThenYouGet(availableItemInStore);

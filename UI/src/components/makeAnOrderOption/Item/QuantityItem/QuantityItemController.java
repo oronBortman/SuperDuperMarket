@@ -15,6 +15,7 @@ public class QuantityItemController implements ItemTileController {
     @FXML Label priceLabel;
     @FXML Label amountLabel;
     @FXML Label itemNameLabel;
+    @FXML Label labelSerialIdVal;
     Stage stage;
     BusinessLogic businessLogic;
     public void setStage(Stage stage)
@@ -54,15 +55,24 @@ public class QuantityItemController implements ItemTileController {
         priceLabel.setVisible(false);
     }
 
+    @Override
     public void setItemNameLabel(String itemName)
     {
         itemNameLabel.setText(itemName);
     }
 
+    @Override
     public void setItemPriceLabel(Integer price)
     {
         priceValueLabel.setText(price.toString());
     }
+
+    @Override
+    public void setSerialID(Integer serialID)
+    {
+        labelSerialIdVal.setText(serialID.toString());
+    }
+
 
     public Integer getAmount() {
         //TODO

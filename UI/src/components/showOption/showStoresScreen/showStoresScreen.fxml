@@ -19,12 +19,12 @@
                <children>
                   <Pane prefHeight="200.0" prefWidth="762.0">
                      <children>
-                        <Label layoutX="235.0" layoutY="83.0" text="Serial Number:" />
+                        <Label layoutX="39.0" layoutY="49.0" text="Serial Number:" />
                         <Label id="PPKValue" fx:id="PPKValue" layoutX="82.0" layoutY="120.0" text="  " />
                         <Label layoutX="40.0" layoutY="120.0" text="PPK:" />
                         <Label layoutX="40.0" layoutY="83.0" text="Name of store:" />
                         <Label id="nameOfStoreValue" fx:id="nameOfStoreValue" layoutX="131.0" layoutY="83.0" text="  " />
-                        <Label fx:id="serialNumberValue" layoutX="326.0" layoutY="83.0" text="  " />
+                        <Label fx:id="serialNumberValue" layoutX="133.0" layoutY="49.0" text="  " />
                         <ComboBox fx:id="comboBoxStores" layoutX="329.0" layoutY="31.0" onAction="#chooseStore" promptText="Choose Store" />
                         <Separator />
                         <Label layoutX="40.0" layoutY="155.0" text="Total payment for deliveries:" />

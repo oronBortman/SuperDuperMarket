@@ -28,14 +28,6 @@ public class ClosedStoreOrder extends StoreOrder{
         this.serialNumber = serialNumber;
     }
 
-    public Double getTotalAmountOfItemsByUnit() {
-        return totalAmountOfItemsByUnit;
-    }
-
-    public Integer getTotalAmountOfItemTypes() {
-        return totalAmountOfItemTypes;
-    }
-
     public Integer getSerialNumber() {
         return serialNumber;
     }

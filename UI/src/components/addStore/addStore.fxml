@@ -25,23 +25,23 @@
                            <children>
                               <Pane prefHeight="282.0" prefWidth="595.0">
                                  <children>
-                                    <TextField fx:id="TextFieldSerialID" layoutX="3.0" layoutY="51.0" text="Enter serial ID" />
-                                    <TextField fx:id="TextFieldStoreName" layoutX="234.0" layoutY="51.0" text="Enter store name" />
+                                    <TextField fx:id="TextFieldSerialID" layoutX="3.0" layoutY="51.0" />
+                                    <TextField fx:id="TextFieldStoreName" layoutX="234.0" layoutY="51.0" />
                                     <Label layoutX="67.0" layoutY="126.0" text="Choose Location" />
                                     <Label layoutX="41.0" layoutY="157.0" text="Coordinate x:" />
                                     <Label layoutX="41.0" layoutY="193.0" text="Coordinate y:" />
-                                    <TextField fx:id="TextFieldPPK" layoutX="431.0" layoutY="51.0" prefHeight="26.0" prefWidth="105.0" text="Enter ppk" />
-                                    <Label fx:id="LabelErrorSerialID" layoutX="3.0" layoutY="86.0" text="* error" textFill="RED" />
-                                    <Label fx:id="LabelErrorStoreName" layoutX="234.0" layoutY="86.0" text="* error" textFill="RED" />
-                                    <Label fx:id="LabelErrorPPK" layoutX="431.0" layoutY="86.0" text="* error" textFill="RED" />
+                                    <TextField fx:id="TextFieldPPK" layoutX="431.0" layoutY="51.0" prefHeight="26.0" prefWidth="105.0" />
+                                    <Label fx:id="LabelErrorSerialID" layoutX="3.0" layoutY="86.0" textFill="RED" />
+                                    <Label fx:id="LabelErrorStoreName" layoutX="234.0" layoutY="86.0" textFill="RED" />
+                                    <Label fx:id="LabelErrorPPK" layoutX="431.0" layoutY="86.0" textFill="RED" />
                                     <Separator layoutX="32.0" layoutY="223.0" prefHeight="3.0" prefWidth="565.0" />
                                     <Label layoutX="83.0" layoutY="21.0" text="Enter serial ID" />
                                     <Label layoutX="264.0" layoutY="21.0" text="Enter store name" />
                                     <Label layoutX="457.0" layoutY="21.0" text="Enter ppk" />
                                     <TextField fx:id="textFieldCoordinateX" layoutX="128.0" layoutY="152.0" prefHeight="21.0" prefWidth="48.0" />
                                     <TextField fx:id="textFieldCoordinateY" layoutX="128.0" layoutY="188.0" prefHeight="0.0" prefWidth="48.0" />
-                                    <Label fx:id="LabelErrorCoordinateX" layoutX="192.0" layoutY="157.0" text="* error" textFill="RED" />
-                                    <Label fx:id="LabelErrorCoordinateY" layoutX="192.0" layoutY="193.0" text="* error" textFill="RED" />
+                                    <Label fx:id="LabelErrorCoordinateX" layoutX="192.0" layoutY="157.0" textFill="RED" />
+                                    <Label fx:id="LabelErrorCoordinateY" layoutX="192.0" layoutY="193.0" textFill="RED" />
                                  </children>
                               </Pane>
                            </children>
@@ -67,10 +67,10 @@
                                     <Font size="18.0" />
                                  </font>
                               </Label>
-                              <TextField fx:id="TextFieldEnterPrice" layoutX="74.0" layoutY="133.0" text="Enter price of item" />
+                              <TextField fx:id="TextFieldEnterPrice" layoutX="74.0" layoutY="133.0" />
                               <ComboBox fx:id="ComboBoxChooseItem" layoutX="79.0" layoutY="60.0" onAction="#chooseItem" prefWidth="150.0" promptText="Choose item" />
                               <Label layoutX="96.0" layoutY="107.0" text="Enter price of item" />
-                              <Label fx:id="LabelErrorEnterPrice" layoutX="24.0" layoutY="167.0" text="* error" textFill="RED" />
+                              <Label fx:id="LabelErrorEnterPrice" layoutX="24.0" layoutY="167.0" textFill="RED" />
                               <Separator layoutX="-15.0" layoutY="285.0" prefHeight="3.0" prefWidth="620.0" />
                               <Label fx:id="LabelErrorOnTable" layoutX="388.0" layoutY="265.0" text="* error" textFill="RED" />
                            </children>

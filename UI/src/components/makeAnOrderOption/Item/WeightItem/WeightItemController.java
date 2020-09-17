@@ -13,6 +13,7 @@ public class WeightItemController implements ItemTileController {
     @FXML Label priceValueLabel;
     @FXML Label priceLabel;
     @FXML Label itemNameLabel;
+    @FXML Label labelSerialIdVal;
     Stage stage;
     BusinessLogic businessLogic;
     public void setStage(Stage stage)
@@ -37,19 +38,29 @@ public class WeightItemController implements ItemTileController {
         priceLabel.setVisible(false);
     }
 
+    @Override
     public void setItemNameLabel(String itemName)
     {
         itemNameLabel.setText(itemName);
     }
 
+    @Override
     public void setItemPriceLabel(Integer price)
     {
         priceValueLabel.setText(price.toString());
     }
 
+    @Override
+    public void setSerialID(Integer serialID)
+    {
+        labelSerialIdVal.setText(serialID.toString());
+    }
+
     public Double getAmount() {
         return Double.parseDouble(WeightTextField.getText());
     }
+
+
 
     public boolean weightTextFieldIsEmpty()
     {

@@ -11,6 +11,7 @@
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
 
 <ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" prefHeight="600.0" prefWidth="1050.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController">
    <content>
@@ -21,6 +22,11 @@
                   <Pane prefHeight="96.0" prefWidth="540.0">
                      <children>
                         <Separator layoutX="170.0" layoutY="68.0" prefHeight="36.0" prefWidth="200.0" />
+                        <Label layoutX="194.0" layoutY="50.0" text="Make An Order">
+                           <font>
+                              <Font size="24.0" />
+                           </font>
+                        </Label>
                      </children>
                   </Pane>
                </children>

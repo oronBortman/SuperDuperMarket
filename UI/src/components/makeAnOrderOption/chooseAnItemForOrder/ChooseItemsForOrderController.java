@@ -108,6 +108,7 @@ public class ChooseItemsForOrderController {
             if(itemController != null)
             {
                 itemController.setItemNameLabel(itemName);
+                itemController.setSerialID(itemSerialID);
                 System.out.println(itemName);
                 if(isOrderStatic == true)
                 {

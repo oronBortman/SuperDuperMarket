@@ -88,7 +88,6 @@ public class WeightItemController implements ItemTileController {
 
     @Override
     public Integer getAdditionalAmount() {
-        if(textFieldForAdditional.isVisible());
         return Integer.parseInt(textFieldForAdditional.getText());
     }
     public boolean weightTextFieldIsEmpty()
@@ -182,7 +181,7 @@ public class WeightItemController implements ItemTileController {
         {
             try
             {
-                Double amount = getAmount();
+                Integer amount = getAdditionalAmount();
                 if(amount < 0 )
                 {
                     errorMessage="*for additional field must contain a non-negative number";

@@ -1,8 +1,8 @@
 package components.showOption.showStoresScreen;
 
 
+import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
 import components.makeAnOrderOption.salesOnStoreScreen.SalesOnStoreScreenController;
-import javafx.beans.Observable;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -10,7 +10,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.*;
-import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
@@ -21,10 +20,12 @@ import javafx.scene.control.Label;
 import javafx.scene.layout.GridPane;
 import javafx.scene.control.TableColumn.CellDataFeatures;
 import logic.order.StoreOrder.ClosedStoreOrder;
+import logic.order.StoreOrder.StoreOrder;
 
 import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
+import java.time.format.DateTimeFormatter;
 
 import static commonUI.SuperDuperMarketConstants.SALES_LIST_VIEW;
 
@@ -37,6 +38,7 @@ public class ShowStoresController {
     @FXML Label PPKValue;
     @FXML TableView listOfItemsTable;
     @FXML HBox hboxSales;
+    @FXML Label totalPaymentForDeliveriesVal;
     @FXML TableColumn<AvailableItemInStore, String> ItemSerialNumberCol;
     @FXML TableColumn<AvailableItemInStore, String> NameOfItemCol;
     @FXML TableColumn<AvailableItemInStore, String> TypeOfMeasureCol;
@@ -77,7 +79,7 @@ public class ShowStoresController {
                 serialNumberValue.setText(newval.getSerialNumber().toString());
                 nameOfStoreValue.setText(newval.getName());
                 PPKValue.setText(newval.getPPK().toString());
-                // totalPaymentForDeliveriesVal.setText(newval.get);
+                totalPaymentForDeliveriesVal.setText(decimalFormat.format(newval.getOrdersList().stream().mapToDouble(StoreOrder::calcTotalDeliveryPrice).sum()));
             }
         });
 
@@ -164,7 +166,8 @@ public class ShowStoresController {
         dateCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(businessLogic.getTotalAmountOfSoledItem(param.getValue().getSerialNumber()).toString());
+                MakeAnOrderController closedCustomerOrder;
+                return new ReadOnlyObjectWrapper<String>(param.getValue().getDate().format(DateTimeFormatter.ofPattern("dd.MM.yy")));
             }
         });
 
@@ -173,7 +176,7 @@ public class ShowStoresController {
         totalItemsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
-                return new ReadOnlyObjectWrapper<String>(param.getValue().getTotalAmountOfItemsByUnit().toString());
+                return new ReadOnlyObjectWrapper<String>(param.getValue().calcTotalAmountOfItemsByUnit().toString());
             }
         });
 

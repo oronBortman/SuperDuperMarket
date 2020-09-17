@@ -11,16 +11,18 @@
    <children>
       <Pane prefHeight="158.0" prefWidth="128.0" style="-fx-border-color: gray; -fx-border-width: 5;">
          <children>
-            <Label fx:id="itemNameLabel" layoutX="20.0" layoutY="24.0" text="Item name">
+            <Label fx:id="itemNameLabel" layoutX="24.0" layoutY="23.0" text="Item name">
                <font>
                   <Font size="18.0" />
                </font>
             </Label>
-            <Label fx:id="priceLabel" layoutX="21.0" layoutY="69.0" text="Price:" />
-            <Label fx:id="priceValueLabel" layoutX="60.0" layoutY="69.0" text="Label" />
+            <Label fx:id="priceLabel" layoutX="21.0" layoutY="78.0" text="Price:" />
+            <Label fx:id="priceValueLabel" layoutX="55.0" layoutY="78.0" text="Label" />
             <Button fx:id="minusButton" layoutX="21.0" layoutY="109.0" mnemonicParsing="false" onAction="#clickedOnMinusButton" prefHeight="27.0" prefWidth="30.0" text="-" />
             <Button fx:id="plusButton" layoutX="70.0" layoutY="109.0" mnemonicParsing="false" onAction="#clickedOnPlusButton" prefHeight="27.0" prefWidth="31.0" text="+" />
             <Label fx:id="amountLabel" layoutX="56.0" layoutY="114.0" text="0" />
+            <Label fx:id="priceLabel1" layoutX="21.0" layoutY="54.0" text="Serial ID:" />
+            <Label fx:id="labelSerialIdVal" layoutX="73.0" layoutY="54.0" text="Label" />
          </children>
          <padding>
             <Insets left="3.0" />

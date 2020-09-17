@@ -14,7 +14,7 @@
    <top>
       <AnchorPane prefHeight="27.0" prefWidth="600.0" styleClass="menu-bar" BorderPane.alignment="CENTER">
          <children>
-            <MenuBar>
+            <MenuBar prefWidth="86.0">
               <menus>
                 <Menu mnemonicParsing="false" text="Actions">
                      <items>
@@ -56,11 +56,6 @@
                            </items>
                         </Menu>
                      </items>
-                </Menu>
-                <Menu mnemonicParsing="false" text="Help">
-                  <items>
-                    <MenuItem mnemonicParsing="false" text="About" />
-                  </items>
                 </Menu>
               </menus>
             </MenuBar>

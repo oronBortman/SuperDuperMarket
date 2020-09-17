@@ -23,17 +23,17 @@
                            <children>
                               <Pane prefHeight="238.0" prefWidth="688.0">
                                  <children>
-                                    <TextField fx:id="TextFieldSerialID" layoutX="118.0" layoutY="68.0" text="Enter serial ID" />
-                                    <TextField fx:id="TextFieldItemName" layoutX="349.0" layoutY="68.0" text="Enter store name" />
-                                    <Label fx:id="LabelErrorSerialID" layoutX="118.0" layoutY="103.0" text="* error" textFill="RED" />
-                                    <Label fx:id="LabelErrorItemName" layoutX="349.0" layoutY="103.0" text="* error" textFill="RED" />
+                                    <TextField fx:id="TextFieldSerialID" layoutX="118.0" layoutY="68.0" />
+                                    <TextField fx:id="TextFieldItemName" layoutX="349.0" layoutY="68.0" />
+                                    <Label fx:id="LabelErrorSerialID" layoutX="76.0" layoutY="103.0" textFill="RED" />
+                                    <Label fx:id="LabelErrorItemName" layoutX="332.0" layoutY="103.0" textFill="RED" />
                                     <Separator layoutX="32.0" layoutY="223.0" prefHeight="3.0" prefWidth="565.0" />
                                     <Label layoutX="155.0" layoutY="38.0" text="Enter serial ID" />
                                     <Label layoutX="379.0" layoutY="38.0" text="Enter item name" />
                                     <RadioButton fx:id="RadioButtonQuantity" layoutX="295.0" layoutY="183.0" mnemonicParsing="false" onAction="#chooseQuantityRadioButton" text="Quantity" />
                                     <RadioButton fx:id="RadioButtonWeight" layoutX="391.0" layoutY="183.0" mnemonicParsing="false" onAction="#chooseWeightRadioButton" text="Weight" />
                                     <Label layoutX="135.0" layoutY="183.0" text="Choose type of measure:" />
-                                    <Label fx:id="LabelErrorTypeOfMeasure" layoutX="492.0" layoutY="183.0" text="* error" textFill="RED" />
+                                    <Label fx:id="LabelErrorTypeOfMeasure" layoutX="492.0" layoutY="183.0" textFill="RED" />
                                  </children>
                               </Pane>
                            </children>
