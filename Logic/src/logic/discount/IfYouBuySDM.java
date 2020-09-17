@@ -14,6 +14,12 @@ public class IfYouBuySDM {
         this.itemId = ifYouBuy.getItemId();
     }
 
+    public IfYouBuySDM(Integer itemId, Double quantity)
+    {
+        this.itemId = itemId;
+        this.quantity = quantity;
+    }
+
     public boolean checkItemIDEqualTo(int itemId)
     {
         return this.itemId == itemId;

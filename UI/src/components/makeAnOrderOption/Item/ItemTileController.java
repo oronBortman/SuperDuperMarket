@@ -9,4 +9,5 @@ public interface ItemTileController {
     public void setPriceLabelsToUnvisible();
     public void setItemNameLabel(String itemName);
     public void setItemPriceLabel(Integer price);
+
 }

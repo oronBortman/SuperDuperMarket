@@ -31,4 +31,9 @@ public class SuperDuperMarketConstants {
     public static final String ADD_ITEM = "/components/addItem/addNewItem.fxml";
     public static final String CHOOSE_STORE_FOR_ITEM = "/components/addItem/chooseStoresForItem/AddItemControllerBackup.fxml";
 
+    //Discount
+    public static final String ADDING_DISCOUNT = "/components/addingDiscounts/addingDiscounts.fxml";
+    public static final String QUANTITY_ITEM_IN_ADDING_DISCOUNT = "/components/addingDiscounts/Item/QuantityItem/QuantityItem.fxml";
+    public static final String WEIGHT_ITEM_IN_ADDING_DISCOUNT = "/components/addingDiscounts/Item/WeightItem/WeightItem.fxml";
+
 }

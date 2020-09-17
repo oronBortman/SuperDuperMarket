@@ -223,6 +223,11 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
     {
         ItemsSerialIDMap.put(availableItemInStore.getSerialNumber(), availableItemInStore);
     }
+
+    public Map<Integer, AvailableItemInStore> getItemsSerialIDMap() {
+        return ItemsSerialIDMap;
+    }
+
     public void updatePriceOfItem(int itemID, int priceOfItem)
     {
         ItemsSerialIDMap.get(itemID).setPricePerUnit(priceOfItem);
@@ -243,6 +248,10 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
     public List<Discount> getDiscountsList()
     {
         return discountNameDMap.values().stream().collect(Collectors.toCollection(ArrayList::new));
+    }
+
+    public void addDiscountToStore(Discount discount) {
+        discountNameDMap.put(discount.getName(), discount);
     }
 }
 

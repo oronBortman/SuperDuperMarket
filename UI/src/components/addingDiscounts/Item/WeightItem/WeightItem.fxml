@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<FlowPane prefHeight="158.0" prefWidth="128.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.addingDiscounts.Item.WeightItem.WeightItemController">
+   <children>
+      <Pane prefHeight="190.0" prefWidth="181.0" style="-fx-border-color: gray; -fx-border-width: 5;">
+         <children>
+            <Label fx:id="itemNameLabel" layoutX="44.0" layoutY="37.0" text="Item name">
+               <font>
+                  <Font size="18.0" />
+               </font>
+            </Label>
+            <Label fx:id="labelForAdditional" layoutX="13.0" layoutY="85.0" text="For Additional" />
+            <TextField fx:id="textFieldForAdditional" layoutX="99.0" layoutY="80.0" prefHeight="23.0" prefWidth="59.0" />
+            <TextField fx:id="textFieldWeight" layoutX="56.0" layoutY="143.0" prefHeight="23.0" prefWidth="70.0" />
+            <Label layoutX="68.0" layoutY="126.0" text="Weight" />
+         </children>
+         <padding>
+            <Insets left="3.0" />
+         </padding>
+      </Pane>
+   </children>
+   <padding>
+      <Insets bottom="5.0" left="5.0" right="5.0" top="5.0" />
+   </padding>
+</FlowPane>

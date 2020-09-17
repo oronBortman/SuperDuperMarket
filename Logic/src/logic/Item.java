@@ -6,7 +6,7 @@ import javafx.beans.property.SimpleStringProperty;
 public class Item {
     private Integer serialNumber;
     private SimpleStringProperty name;
-    TypeOfMeasure typeToMeasureBy;
+    private TypeOfMeasure typeToMeasureBy;
 
     public enum TypeOfMeasure{
         Quantity("Quantity"),

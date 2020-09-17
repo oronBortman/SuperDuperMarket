@@ -2,6 +2,7 @@ package logic.discount;
 
 import jaxb.schema.generated.SDMOffer;
 import jaxb.schema.generated.ThenYouGet;
+import logic.Store;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,6 +18,11 @@ public class ThenYouGetSDM {
         offerList = new ArrayList<Offer>();
     }
 
+    public ThenYouGetSDM()
+    {
+        offerList = new ArrayList<Offer>();
+    }
+
     public void addOfferToListFromSDMOffer(SDMOffer sdmOffer)
     {
         System.out.println("Inside addOfferToListFromSDMOffer");
@@ -25,11 +31,17 @@ public class ThenYouGetSDM {
         offerList.add(sdmOfferToAdd);
     }
 
-    public List<Offer> getOfferList() {
+    public void addOfferToListFromSDMOffer(Offer offer) {
+        offerList.add(offer);
+    }
+
+
+        public List<Offer> getOfferList() {
         return offerList;
     }
 
     public String getOperator() {
         return operator;
     }
+
 }

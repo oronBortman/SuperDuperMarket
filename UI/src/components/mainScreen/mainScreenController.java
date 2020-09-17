@@ -4,6 +4,7 @@ import components.LoadingXMLFileScreen.LoadingXMLFileController;
 import components.addItem.AddItemController;
 import components.addItem.chooseStoresForItem.ChooseStoresForItemController;
 import components.addStore.AddStoreController;
+import components.addingDiscounts.AddingDiscountsController;
 import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
 import components.makeAnOrderOption.SummeryOfOrder.SummeryOfOrderController;
 import components.makeAnOrderOption.salesScreen.SalesScreenController;
@@ -66,6 +67,7 @@ public class mainScreenController {
     @FXML MenuItem menuOptionAddStore;
     @FXML MenuItem menuOptionAddItemToSDM;
     @FXML MenuItem menuOptionLoadFromXML;
+    @FXML MenuItem menuOptionAddDiscount;
 
 
     private SimpleBooleanProperty loadedXMLFileSuccessfully;
@@ -94,6 +96,7 @@ public class mainScreenController {
 
     public void unbindMenuOptionFromLoadedXMLFile()
     {
+        menuOptionAddDiscount.disableProperty().unbind();
         menuOptionMakeAnOrder.disableProperty().unbind();
         menuOptionShowUsers.disableProperty().unbind();
         menuOptionShowItems.disableProperty().unbind();
@@ -109,6 +112,7 @@ public class mainScreenController {
 
     public void bindMenuOptionsToLoadedXMLFile()
     {
+        menuOptionAddDiscount.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionMakeAnOrder.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionShowUsers.disableProperty().bind(loadedXMLFileSuccessfully.not());
         menuOptionShowItems.disableProperty().bind(loadedXMLFileSuccessfully.not());
@@ -124,6 +128,8 @@ public class mainScreenController {
 
     public void disableOrEnableAllMenuOptions(boolean disable)
     {
+        menuOptionAddDiscount.setDisable(disable);
+        menuOptionAddDiscount.setDisable(disable);
         menuOptionMakeAnOrder.setDisable(disable);
         menuOptionShowUsers.setDisable(disable);
         menuOptionShowItems.setDisable(disable);
@@ -143,6 +149,16 @@ public class mainScreenController {
 
     }
 
+    @FXML
+    void clickedOnOptionAdDiscount(ActionEvent event) throws IOException {
+        FXMLLoader loader = new FXMLLoader();
+        URL LoadXMLFileFXML = getClass().getResource(SuperDuperMarketConstants.ADDING_DISCOUNT);
+        loader.setLocation(LoadXMLFileFXML);
+        ScrollPane scrollPane = loader.load();
+        AddingDiscountsController addingDiscountsController = loader.getController();
+        addingDiscountsController.setBusinessLogic(businessLogic);
+        mainBorderPane.setCenter(scrollPane);
+    }
     @FXML
     void loadFromXml(ActionEvent event) throws IOException {
         FXMLLoader loader = new FXMLLoader();

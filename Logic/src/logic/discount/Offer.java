@@ -18,15 +18,23 @@ public class Offer {
         this.forAdditional = sdmOffer.getForAdditional();
     }
 
-    public double getQuantity() {
+
+    public Offer(int itemId, double quantity, int forAdditional)
+    {
+        this.itemId = itemId;
+        this.quantity = quantity;
+        this.forAdditional = forAdditional;
+    }
+
+    public Double getQuantity() {
         return quantity;
     }
 
-    public int getItemId() {
+    public Integer getItemId() {
         return itemId;
     }
 
-    public int getForAdditional() {
+    public Integer getForAdditional() {
         return forAdditional;
     }
 
