@@ -258,10 +258,11 @@ public class AddingDiscountsController {
         WeightItemController weightItemController = (WeightItemController) currentItemTileControllerThenYouGet;
         if(weightItemController.checkIfWeightFieldIsOK() == false)
         {
-            labelErrorInWeightFieldInThenYouGet.setText(weightItemController.getForAdditionalErrorMessage());
+            labelErrorInWeightFieldInThenYouGet.setText(weightItemController.getWeightErrorMessage());
         }
         else
         {
+            labelErrorInWeightFieldInThenYouGet.setText("");
             isWeightFieldOK = true;
         }
         if(weightItemController.checkIfForAdditionalFieldIsOK() == false)
@@ -270,6 +271,7 @@ public class AddingDiscountsController {
         }
         else
         {
+            labelErrorAdditionalPrice.setText("");
             isForAdditionalOK = true;
         }
         return isForAdditionalOK && isWeightFieldOK;
@@ -291,6 +293,7 @@ public class AddingDiscountsController {
         }
         else
         {
+            labelErrorAdditionalPrice.setText("");
             isForAdditionalOK = true;
         }
         return isForAdditionalOK;
@@ -318,10 +321,11 @@ public class AddingDiscountsController {
         WeightItemController weightItemController = (WeightItemController) currentItemTileControllerIfYouBuy;
         if(weightItemController.checkIfWeightFieldIsOK() == false)
         {
-            labelErrorEnterWeightInIfYouBuy.setText(weightItemController.getForAdditionalErrorMessage());
+            labelErrorEnterWeightInIfYouBuy.setText(weightItemController.getWeightErrorMessage());
         }
         else
         {
+            labelErrorEnterWeightInIfYouBuy.setText("");
             isWeightFieldOK = true;
         }
         return isWeightFieldOK;
@@ -388,6 +392,7 @@ public class AddingDiscountsController {
             }
             else
             {
+                labelErrorDiscountName.setText("");
                 discountNameIsValid = true;
             }
         }
@@ -403,6 +408,7 @@ public class AddingDiscountsController {
         }
         else
         {
+            labelErrorChooseStore.setText("");
             storeIsValid = true;
 
         }
@@ -418,6 +424,7 @@ public class AddingDiscountsController {
         }
         else if(checkIfItemInIfYouBuyIsValid() == true)
         {
+            labelErrorChooseItemInIfYouGet.setText("");
             isIfYouBuyOK=true;
         }
         return isIfYouBuyOK;
