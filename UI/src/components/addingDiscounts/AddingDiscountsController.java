@@ -3,7 +3,6 @@ package components.addingDiscounts;
 import components.addingDiscounts.Item.ItemTileController;
 import components.addingDiscounts.Item.QuantityItem.QuantityItemController;
 import components.addingDiscounts.Item.WeightItem.WeightItemController;
-import javafx.beans.binding.Bindings;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.beans.value.ObservableValue;
@@ -18,11 +17,11 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
-import jaxb.schema.generated.SDMOffer;
 import logic.AvailableItemInStore;
 import logic.BusinessLogic;
 import logic.Item;
 import logic.Store;
+import logic.common.SuperDuperMarketConstants;
 import logic.discount.Discount;
 import logic.discount.IfYouBuySDM;
 import logic.discount.Offer;
@@ -439,16 +438,36 @@ public class AddingDiscountsController {
             AvailableItemInStore availableItemInStore = comboBoxChooseItemIfYouBuy.getValue();
             IfYouBuySDM ifYouBuySDM = new IfYouBuySDM(availableItemInStore.getSerialNumber(), currentItemTileControllerIfYouBuy.getAmount());
             String discountName = textFieldEnterDiscountName.getText();
+            setThenYouGetAfterOperatorIsValid();
             Discount discount = new Discount(discountName, ifYouBuySDM, thenYouGetSDM);
-            ThenYouGetSDM thenYouGetSDM = discount.getThenYouGet();
             for(Offer offer :thenYouGetSDM.getOfferList())
             {
-                System.out.println("Offer id " + offer.getItemId());
+                System.out.println("Offer id !!!!!!!" + offer.getItemId() + offer.getQuantity() + offer.getForAdditional());
             }
             Store store = comboBoxChooseStore.getValue();
             store.addDiscountToStore(discount);
         }
         clearAll();
+    }
+
+    private void setThenYouGetAfterOperatorIsValid()
+    {
+        String operator="";
+        if(isRadioButtonOperatorAllOrNothingSelected.get())
+        {
+            operator= SuperDuperMarketConstants.ALL_OR_NOTHING;
+        }
+        else if(isRadioButtonOperatorIrrelavntSelected.get())
+        {
+            operator=SuperDuperMarketConstants.IRRELEVANT;
+        }
+        else if(isRadioButtonOperatorOneOfSelected.get())
+        {
+            operator=SuperDuperMarketConstants.ONE_OF;
+        }
+
+        thenYouGetSDM.setOperator(operator);
+        System.out.println("Operator$$$$#" + operator);
     }
 
 
@@ -617,6 +636,7 @@ public class AddingDiscountsController {
 
     private void clearAll()
     {
+        thenYouGetSDM=new ThenYouGetSDM();
         comboBoxChooseStore.getSelectionModel().clearSelection();
         comboBoxChooseItemThenYouGet.getItems().clear();
         comboBoxChooseItemIfYouBuy.getItems().clear();

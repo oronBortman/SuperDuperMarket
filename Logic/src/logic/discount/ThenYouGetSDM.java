@@ -18,6 +18,16 @@ public class ThenYouGetSDM {
         offerList = new ArrayList<Offer>();
     }
 
+    public ThenYouGetSDM(ThenYouGetSDM thenYouGet)
+    {
+        this.operator = thenYouGet.getOperator();
+        offerList = new ArrayList<Offer>();
+        for(Offer offer : thenYouGet.getOfferList())
+        {
+            offerList.add(offer);
+        }
+    }
+
     public ThenYouGetSDM()
     {
         offerList = new ArrayList<Offer>();
@@ -44,4 +54,7 @@ public class ThenYouGetSDM {
         return operator;
     }
 
+    public void setOperator(String operator) {
+        this.operator = operator;
+    }
 }

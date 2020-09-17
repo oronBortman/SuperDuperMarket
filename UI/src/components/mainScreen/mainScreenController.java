@@ -166,16 +166,13 @@ public class mainScreenController {
         loader.setLocation(LoadXMLFileFXML);
         ScrollPane borderPane = loader.load();
         LoadingXMLFileController loadingXMLFileController = loader.getController();
-        Consumer<Boolean> loadBusinessLogicSuccessfully = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if (aBoolean == true) {
-                    try {
-                        setBusinessLogic(loadingXMLFileController.getBusinessLogicFromXML());
-                        loadedXMLFileSuccessfully.set(true);
-                    } catch (Exception e) {
+        Consumer<Boolean> loadBusinessLogicSuccessfully = aBoolean -> {
+            if (aBoolean == true) {
+                try {
+                    setBusinessLogic(loadingXMLFileController.getBusinessLogicFromXML());
+                    loadedXMLFileSuccessfully.set(true);
+                } catch (Exception e) {
 
-                    }
                 }
             }
         };
@@ -192,39 +189,36 @@ public class mainScreenController {
         MakeAnOrderController makeAnOrderController = loader.getController();
         makeAnOrderController.setBusinessLogic(businessLogic);
 
-        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
-                {
-                    try {
-                        if(makeAnOrderController == null)
+        Consumer<Boolean> chooseNext = aBoolean -> {
+            if(aBoolean == true)
+            {
+                try {
+                    if(makeAnOrderController == null)
+                    {
+                        System.out.println("NULL!!!!");
+                    }
+                    else
+                    {
+                        Customer customer = makeAnOrderController.getCustomer();
+                        boolean isOrderStatic = makeAnOrderController.getStaticBoolean();
+                        List<Item> itemsList;
+                        if(isOrderStatic)
                         {
-                            System.out.println("NULL!!!!");
+                            Store store = makeAnOrderController.getStore();
+                            LocalDate date = makeAnOrderController.getDate();
+                            itemsList = store.getItemsList();
+                            chooseItemsForStaticOrder(customer, store, date,isOrderStatic, itemsList);
                         }
                         else
                         {
-                            Customer customer = makeAnOrderController.getCustomer();
-                            boolean isOrderStatic = makeAnOrderController.getStaticBoolean();
-                            List<Item> itemsList;
-                            if(isOrderStatic)
-                            {
-                                Store store = makeAnOrderController.getStore();
-                                LocalDate date = makeAnOrderController.getDate();
-                                itemsList = store.getItemsList();
-                                chooseItemsForStaticOrder(customer, store, date,isOrderStatic, itemsList);
-                            }
-                            else
-                            {
-                                itemsList = businessLogic.getItemsList();
-                                LocalDate date = makeAnOrderController.getDate();
-                                chooseItemsForDynamicOrder(customer, date,isOrderStatic, itemsList);
-                            }
+                            itemsList = businessLogic.getItemsList();
+                            LocalDate date = makeAnOrderController.getDate();
+                            chooseItemsForDynamicOrder(customer, date,isOrderStatic, itemsList);
                         }
-
-                    } catch (IOException e) {
-                        e.printStackTrace();
                     }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -250,19 +244,16 @@ public class mainScreenController {
         ScrollPane pane = loader.load();
         AddItemController addItemController = loader.getController();
         addItemController.setBusinessLogic(businessLogic);
-        Consumer<Boolean> addedItem = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
-                {
-                    Item item=addItemController.getItem();
-                    unbindMenuOptionFromLoadedXMLFile();
-                    disableOrEnableAllMenuOptions(true);
-                    try {
-                        chooseStoresForItem(item);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        Consumer<Boolean> addedItem = aBoolean -> {
+            if(aBoolean == true)
+            {
+                Item item=addItemController.getItem();
+                unbindMenuOptionFromLoadedXMLFile();
+                disableOrEnableAllMenuOptions(true);
+                try {
+                    chooseStoresForItem(item);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -280,18 +271,15 @@ public class mainScreenController {
         chooseStoresForItemController.setBusinessLogic(businessLogic);
         chooseStoresForItemController.setAddedItem(item);
 
-        Consumer<Boolean> addedItemToStoreSuccessfully = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
-                {
-                    bindMenuOptionsToLoadedXMLFile();
-                    showMainScreen();
-                    try {
-                        chooseStoresForItem(item);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        Consumer<Boolean> addedItemToStoreSuccessfully = aBoolean -> {
+            if(aBoolean == true)
+            {
+                bindMenuOptionsToLoadedXMLFile();
+                showMainScreen();
+                try {
+                    chooseStoresForItem(item);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -311,34 +299,31 @@ public class mainScreenController {
         chooseItemsForOrderController.setItemsList(itemsList);
         chooseItemsForOrderController.setBusinessLogic(businessLogic);
 
-        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
+        Consumer<Boolean> chooseNext = aBoolean -> {
+            if(aBoolean == true)
+            {
+                if(chooseItemsForOrderController != null)
                 {
-                    if(chooseItemsForOrderController != null)
+                    Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndWeight();
+                    Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndQuantity();
+                    OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(customer, date, store, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
+                    for( OpenedStoreOrder openedStoreOrder : openedCustomerOrder.getListOfOpenedStoreOrder())
                     {
-                        Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndWeight();
-                        Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndQuantity();
-                        OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(customer, date, store, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
-                        for( OpenedStoreOrder openedStoreOrder : openedCustomerOrder.getListOfOpenedStoreOrder())
+                        for(Map.Entry<Integer, OrderedItemFromStore> entry : openedStoreOrder.getOrderedItemsNotFromSale().entrySet())
                         {
-                            for(Map.Entry<Integer, OrderedItemFromStore> entry : openedStoreOrder.getOrderedItemsNotFromSale().entrySet())
-                            {
-                                System.out.println(entry.getValue().getName() + " " + entry.getValue().getPricePerUnit() + " " +  entry.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
-                            }
-                        }
-                        if(openedCustomerOrder != null)
-                        {
-                            try {
-                                showStoresStatusInDynamicOrder(openedCustomerOrder);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                            System.out.println(entry.getValue().getName() + " " + entry.getValue().getPricePerUnit() + " " +  entry.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
                         }
                     }
-
+                    if(openedCustomerOrder != null)
+                    {
+                        try {
+                            showStoresStatusInDynamicOrder(openedCustomerOrder);
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
                 }
+
             }
         };
         chooseItemsForOrderController.setProperties(chooseNext);
@@ -360,24 +345,21 @@ public class mainScreenController {
         chooseItemsForOrderController.setBusinessLogic(businessLogic);
 
         chooseItemsForOrderController.setOrderStatic(isOrderStatic);
-        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
+        Consumer<Boolean> chooseNext = aBoolean -> {
+            if(aBoolean == true)
+            {
+                if(chooseItemsForOrderController != null)
                 {
-                    if(chooseItemsForOrderController != null)
-                    {
-                        Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndWeight();
-                        Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndQuantity();
+                    Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndWeight();
+                    Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndQuantity();
 
-                        OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedDynamicCustomerOrder(customer, date, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
-                        if(openedCustomerOrder != null)
-                        {
-                            try {
-                                showStoresStatusInDynamicOrder(openedCustomerOrder);
-                            } catch (IOException e) {
-                                e.printStackTrace();
-                            }
+                    OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedDynamicCustomerOrder(customer, date, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
+                    if(openedCustomerOrder != null)
+                    {
+                        try {
+                            showStoresStatusInDynamicOrder(openedCustomerOrder);
+                        } catch (IOException e) {
+                            e.printStackTrace();
                         }
                     }
                 }
@@ -399,16 +381,13 @@ public class mainScreenController {
         showStoresStatusInDynamicOrderController.setOpenedCustomerOrder(openedCustomerOrder);
         showStoresStatusInDynamicOrderController.setBusinessLogic(businessLogic);
 
-        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
-                {
-                    try {
-                        salesScreen(openedCustomerOrder);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        Consumer<Boolean> chooseNext = aBoolean -> {
+            if(aBoolean == true)
+            {
+                try {
+                    salesScreen(openedCustomerOrder);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -430,16 +409,13 @@ public class mainScreenController {
         salesScreenController.setBusinessLogic(businessLogic);
         salesScreenController.setOpenedCustomerOrder(openedCustomerOrder);
 
-        Consumer<Boolean> chooseNext = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
-                {
-                    try {
-                        showSummeryOfOrder(openedCustomerOrder);
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    }
+        Consumer<Boolean> chooseNext = aBoolean -> {
+            if(aBoolean == true)
+            {
+                try {
+                    showSummeryOfOrder(openedCustomerOrder);
+                } catch (IOException e) {
+                    e.printStackTrace();
                 }
             }
         };
@@ -457,25 +433,19 @@ public class mainScreenController {
         summeryOfOrderController.setBusinessLogic(businessLogic);
         summeryOfOrderController.setOpenedCustomerOrder(openedCustomerOrder);
 
-        Consumer<Boolean> isYesClickedConsumer = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
-                {
-                    ClosedCustomerOrder closedCustomerOrder = openedCustomerOrder.closeCustomerOrder();
-                    businessLogic.addClosedOrderToHistory(closedCustomerOrder);
-                    showMainScreen();
-                }
+        Consumer<Boolean> isYesClickedConsumer = aBoolean -> {
+            if(aBoolean == true)
+            {
+                ClosedCustomerOrder closedCustomerOrder = openedCustomerOrder.closeCustomerOrder();
+                businessLogic.addClosedOrderToHistory(closedCustomerOrder);
+                showMainScreen();
             }
         };
 
-        Consumer<Boolean> isNoClickedConsumer = new Consumer<Boolean>() {
-            @Override
-            public void accept(Boolean aBoolean) {
-                if(aBoolean == true)
-                {
-                    showMainScreen();
-                }
+        Consumer<Boolean> isNoClickedConsumer = aBoolean -> {
+            if(aBoolean == true)
+            {
+                showMainScreen();
             }
         };
 

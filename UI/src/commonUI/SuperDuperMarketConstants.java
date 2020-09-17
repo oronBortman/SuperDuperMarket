@@ -4,13 +4,15 @@ import java.net.URL;
 
 public class SuperDuperMarketConstants {
    // private static final String BASE_PACKAGE = "/examples/basic/tasks";
-    public static final  String SHOW_ITEMS_FXML_RESOURCE_IDENTIFIER = "/components/showOption/showItemsScreen/showItemsScreen.fxml";
+ public static final String ONE_OF = "ONE-OF";
+ public static final String IRRELEVANT = "IRRELEVANT";
+ public static final String ALL_OR_NOTHING = "ALL-OR-NOTHING";
+ public static final  String SHOW_ITEMS_FXML_RESOURCE_IDENTIFIER = "/components/showOption/showItemsScreen/showItemsScreen.fxml";
     public static final  String SHOW_USERS_FXML_RESOURCE_IDENTIFIER = "/components/showOption/showUsersScreen/showUsersScreen.fxml";
     public static final  String REMOVE_ITEM_FXML_RESOURCE_IDENTIFIER = "/components/updateItemInStoreOption/removeItemFromStoreScreen/RemoveItemFromStoreScreen.fxml";
     public static final  String UPDATE_ITEM_FXML_RESOURCE_IDENTIFIER = "/components/updateItemInStoreOption/updatePriceOfItemInStoreScreen/UpdateItemInStoreScreen.fxml";
     public static final  String ADD_ITEM_FXML_RESOURCE_IDENTIFIER = "/components/updateItemInStoreOption/addItemToStoreScreen/AddItemToStoreScreen.fxml";
     public static final  String LOAD_XML_FXML_RESOURCE_IDENTIFIER = "/components/LoadingXMLFileScreen/LoadingXMLFileScreen.fxml";
-
     public static final  String SHOW_STORES_FXML_RESOURCE_IDENTIFIER = "/components/showOption/showStoresScreen/showStoresScreen.fxml";
 
     //public static final String MAIN_FXML_RESOURCE_IDENTIFIER = BASE_PACKAGE + "/components/mainScreen/UpdateItemInStoreScreen.fxml";

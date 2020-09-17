@@ -17,7 +17,7 @@ public class Discount {
     {
         this.name = name;
         this.ifYouBuySDM = ifYouBuySDM;
-        this.thenYouGet = thenYouGetSDM;
+        this.thenYouGet = new ThenYouGetSDM(thenYouGetSDM);
     }
 
     public Discount(String name)

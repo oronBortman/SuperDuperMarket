@@ -108,8 +108,10 @@ public class SalesOnStoreScreenController {
                 }
 
             }
+            System.out.println("Operator:!!!!" + " " + operator + offer.getQuantity() + " " + offer.getForAdditional());
             allOrNothingOffers = allOrNothingOffers.concat(offer.getQuantity() + " amount of " + businessLogic.getItemBySerialID(offer.getItemId()).getName() + " for " + offer.getForAdditional() + "\n");
         }
+        System.out.println("Ended discount");
         return  allOrNothingOffers;
     }
 }
