@@ -85,7 +85,7 @@ public class ShowUsersController {
                 Customer customer = param.getValue();
                 if(customer.getMapOfClosedCustomerOrders().size() > 0)
                 {
-                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(param.getValue().getAverageOrderPriceCol().toString());
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageOrderPriceCol()));
                 }
                 else
                 {
@@ -102,7 +102,7 @@ public class ShowUsersController {
                 Customer customer = param.getValue();
                 if(customer.getMapOfClosedCustomerOrders().size() > 0)
                 {
-                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(param.getValue().getAverageDeliveryPrice().toString());
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageDeliveryPrice()));
                 }
                 else
                 {

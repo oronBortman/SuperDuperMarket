@@ -60,7 +60,7 @@ public class SalesScreenController {
     BusinessLogic businessLogic;
     OpenedCustomerOrder openedCustomerOrder;
     Consumer<Boolean> isNextClickedConsumer;
-    ListView listView;
+    ListView<Discount> listView;
     SalesOnStoreScreenController salesOnStoreScreenController;
     SimpleBooleanProperty saleChosen;
     SimpleBooleanProperty saleChosenIsOneOf;
@@ -182,6 +182,7 @@ public class SalesScreenController {
     {
         Discount discount = comboBoxChooseSale.getValue();
         System.out.println("Clicked on add action");
+
         if(discount != null)
         {
             String operator = discount.getThenYouGet().getOperator();
@@ -210,6 +211,20 @@ public class SalesScreenController {
         this.salesOnStoreScreenController.setDiscounts(openedCustomerOrder.generateListOfDiscounts());
         setSalesTableData();
         setComboBoxData();
+        if(listView.getItems().isEmpty())
+        {
+
+            buttonAdd.disableProperty().unbind();
+            buttonAdd.setDisable(true);
+            comboBoxChooseSale.disableProperty().unbind();
+            comboBoxChooseSale.setDisable(true);
+            for(Discount discount1 : listView.getItems())
+            {
+                System.out.println(discount.getName());
+            }
+            System.out.println("empty!!!");
+
+        }
     }
 
     void setSalesTableData()

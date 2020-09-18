@@ -25,6 +25,8 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.JavaFXBuilderFactory;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -46,6 +48,8 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
+
+import javafx.geometry.Insets;
 
 public class mainScreenController {
 
@@ -616,6 +620,9 @@ public class mainScreenController {
         hbox.setMinWidth(40);
         hbox.setPrefHeight(40);
         hbox.setFillHeight(true);
+       // hbox.setPadding(new Insets(15, 12, 15, 12));
+       // hbox.setSpacing(10);
+        hbox.setAlignment(Pos.CENTER_LEFT);
         HBox.setHgrow(imageView,Priority.ALWAYS);
 
         imageView.fitWidthProperty().bind(hbox.widthProperty());

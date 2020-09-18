@@ -4,41 +4,92 @@
 <?import javafx.scene.control.ComboBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
 
-
-<ScrollPane hbarPolicy="ALWAYS" minHeight="263.0" minWidth="300.0" prefHeight="263.0" prefWidth="318.0" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.updateItemInStoreOption.updatePriceOfItemInStoreScreen.UpdateItemInStoreController">
+<ScrollPane fitToHeight="true" fitToWidth="true" hbarPolicy="ALWAYS" vbarPolicy="ALWAYS" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="components.updateItemInStoreOption.updatePriceOfItemInStoreScreen.UpdateItemInStoreController">
    <content>
-      <GridPane fx:id="UpdateItemFromStoreGridPane" minHeight="249.0" minWidth="300.0" prefHeight="249.0" prefWidth="300.0" style="-fx-background-color: white;">
-          <columnConstraints>
-              <ColumnConstraints hgrow="SOMETIMES" maxWidth="10.0" minWidth="10.0" prefWidth="20.0" />
-              <ColumnConstraints hgrow="SOMETIMES" maxWidth="277.0" minWidth="10.0" prefWidth="272.0" />
-            <ColumnConstraints hgrow="SOMETIMES" maxWidth="140.0" minWidth="10.0" prefWidth="18.0" />
-          </columnConstraints>
-          <rowConstraints>
-            <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="30.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="30.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="30.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="29.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="30.0" minHeight="40.0" prefHeight="30.0" vgrow="SOMETIMES" />
-              <RowConstraints maxHeight="40.0" minHeight="20.0" prefHeight="30.0" vgrow="SOMETIMES" />
-            <RowConstraints maxHeight="30.0" minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
-          </rowConstraints>
-          <children>
-              <ComboBox fx:id="comboBoxStores" onAction="#chooseStore" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-              <Label text="Choose the store you want to delete item from:" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-              <Label text="Choose Item to update from store:" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-              <Button fx:id="updatePriceButton" mnemonicParsing="false" onAction="#updateItemPrice" text="Update price" GridPane.columnIndex="1" GridPane.rowIndex="7" />
-              <ComboBox fx:id="comboBoxItems" onAction="#chooseItem" GridPane.columnIndex="1" GridPane.rowIndex="4" />
-              <Label text="Enter price of item:" GridPane.columnIndex="1" GridPane.rowIndex="5" />
-              <TextField fx:id="updatePriceTextField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
-            <Label fx:id="statusAfterClickedOnButton" GridPane.columnIndex="1" GridPane.rowIndex="8" />
-          </children>
-      </GridPane>
+      <BorderPane minHeight="534.0" minWidth="490.0" prefHeight="534.0" prefWidth="590.0">
+         <center>
+            <HBox alignment="CENTER" prefHeight="467.0" prefWidth="517.0">
+               <children>
+                  <GridPane fx:id="UpdateItemFromStoreGridPane" minHeight="354.0" minWidth="494.0" prefHeight="448.0" prefWidth="494.0">
+                      <columnConstraints>
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="0.0" prefWidth="0.0" />
+                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="394.0" minWidth="10.0" prefWidth="394.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0" prefWidth="50.0" />
+                      </columnConstraints>
+                      <rowConstraints>
+                        <RowConstraints maxHeight="90.0" minHeight="90.0" prefHeight="90.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="10.0" minHeight="10.0" prefHeight="10.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="30.0" minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="30.0" minHeight="50.0" prefHeight="29.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="30.0" minHeight="30.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="30.0" minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                          <RowConstraints maxHeight="40.0" minHeight="50.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="50.0" minHeight="50.0" prefHeight="50.0" vgrow="SOMETIMES" />
+                      </rowConstraints>
+                      <children>
+                        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <children>
+                                <ComboBox fx:id="comboBoxStores" onAction="#chooseStore" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="3">
+                           <children>
+                                <Label text="Choose the store you want to delete item from:" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                           <children>
+                                <Label text="Choose Item to update from store:" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="9">
+                           <children>
+                                <Button fx:id="updatePriceButton" mnemonicParsing="false" onAction="#updateItemPrice" text="Update price" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="6">
+                           <children>
+                                <ComboBox fx:id="comboBoxItems" onAction="#chooseItem" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                           <children>
+                                <Label text="Enter price of item:" />
+                           </children>
+                        </HBox>
+                          <TextField fx:id="updatePriceTextField" GridPane.columnIndex="1" GridPane.rowIndex="8" />
+                        <HBox alignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="10">
+                           <children>
+                              <Label fx:id="statusAfterClickedOnButton" />
+                           </children>
+                        </HBox>
+                        <HBox alignment="CENTER" prefHeight="89.0" prefWidth="425.0" GridPane.columnIndex="1">
+                           <children>
+                              <Label text=" Update price of item in a store ">
+                                 <font>
+                                    <Font size="24.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </HBox>
+                        <Separator prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                      </children>
+                  </GridPane>
+               </children>
+            </HBox>
+         </center>
+      </BorderPane>
    </content>
 </ScrollPane>
