@@ -28,8 +28,6 @@ public class WeightItemController implements ItemTileController {
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
-        //TODO
-        //Change xml loading
     }
 
     public void setPriceLabelsToUnvisible()

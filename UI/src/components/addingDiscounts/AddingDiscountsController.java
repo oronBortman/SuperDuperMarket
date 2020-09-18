@@ -210,7 +210,6 @@ public class AddingDiscountsController {
     {
         if(comboBoxChooseStore != null)
         {
-            System.out.println("in set comboBox choose item than you get");
             Store store;
             store = comboBoxChooseStore.getValue();
             final ObservableList<AvailableItemInStore> availableItemInStores = FXCollections.observableList(store.getAvailableItemsList());
@@ -232,16 +231,13 @@ public class AddingDiscountsController {
     @FXML
     void clickedOnButtonAddItemToThenYouGet(ActionEvent event)
     {
-        System.out.println("AAAA");
         boolean itemIsOK=false;
         if (currentItemTileControllerThenYouGet instanceof WeightItemController)
         {
-            System.out.println("BBBB");
             itemIsOK=checkWeightItemFieldsAndAddOfferToThenYouGet();
         }
         else if (currentItemTileControllerThenYouGet instanceof QuantityItemController)
         {
-            System.out.println("CCCC");
             itemIsOK=checkQuantityItemFieldsAndAddOfferToThenYouGet();
         }
         if(itemIsOK)
@@ -255,30 +251,25 @@ public class AddingDiscountsController {
 
     private boolean checkWeightItemFieldsAndAddOfferToThenYouGet()
     {
-        System.out.println("In weightt");
         boolean isWeightFieldOK = false;
         boolean isForAdditionalOK = false;
 
         WeightItemController weightItemController = (WeightItemController) currentItemTileControllerThenYouGet;
         if(weightItemController.checkIfWeightFieldIsOK() == false)
         {
-            System.out.println(weightItemController.getWeightErrorMessage());
             labelErrorInWeightFieldInThenYouGet.setText(weightItemController.getWeightErrorMessage());
         }
         else
         {
-            System.out.println("Label weight then you get is empty");
             labelErrorInWeightFieldInThenYouGet.setText("");
             isWeightFieldOK = true;
         }
         if(weightItemController.checkIfForAdditionalFieldIsOK() == false)
         {
-            System.out.println(weightItemController.getForAdditionalErrorMessage());
             labelErrorAdditionalPrice.setText(weightItemController.getForAdditionalErrorMessage());
         }
         else
         {
-            System.out.println("Label additional empty");
             labelErrorAdditionalPrice.setText("");
             isForAdditionalOK = true;
         }
@@ -287,21 +278,16 @@ public class AddingDiscountsController {
 
     private boolean checkQuantityItemFieldsAndAddOfferToThenYouGet()
     {
-        System.out.println("In quantity");
-
         boolean isForAdditionalOK = false;
 
         QuantityItemController quantityItemController = (QuantityItemController) currentItemTileControllerThenYouGet;
 
         if(quantityItemController.checkIfForAdditionalFieldIsOK() == false)
         {
-            System.out.println("Error additional price");
             labelErrorAdditionalPrice.setText(quantityItemController.getForAdditionalErrorMessage());
         }
         else
         {
-            System.out.println("additional price ok");
-
             labelErrorAdditionalPrice.setText("");
             isForAdditionalOK = true;
         }
@@ -342,40 +328,17 @@ public class AddingDiscountsController {
 
     private void addOfferToThenYouGet()
     {
-        System.out.println("A1");
-
         Integer serialID = currentItemTileControllerThenYouGet.getAvailableItemInStore().getSerialNumber();
-        System.out.println("A2");
-
         Double quantity = currentItemTileControllerThenYouGet.getAmount();
-        System.out.println("A3");
-
         Integer forAdditionalAmount = currentItemTileControllerThenYouGet.getAdditionalAmount();
-        System.out.println("A4");
-
         Offer offer = new Offer(serialID, quantity, forAdditionalAmount);
-        System.out.println("A5");
-
         thenYouGetSDM.addOfferToListFromSDMOffer(offer);
-        System.out.println("A6");
-
         mapAvailableItemsInChooseItemComboboxInThenYouGet.remove(serialID);
-        System.out.println("A7");
-
         setOffersTable();
-        System.out.println("A8");
-
         comboBoxChooseItemThenYouGet.getSelectionModel().clearSelection();
-        System.out.println("A9");
-
         hboxItemThenYouGet.getChildren().clear();
-        System.out.println("A10");
-
         ObservableList<AvailableItemInStore> availableItemsInChoosenItemList = FXCollections.observableList(getAvailableItemsInChoosenItemList());
-        System.out.println("A11");
-
         comboBoxChooseItemThenYouGet.setItems(availableItemsInChoosenItemList);
-        System.out.println("A12");
 
     }
 
@@ -447,19 +410,13 @@ public class AddingDiscountsController {
         boolean operatorIsValid = checkIfOperatorSelectedAndUpdateErrorMessage();
         boolean tableOfOffersIsValid = checkIfTableNotEmptyAndUpdateErrorMessage();
 
-        System.out.println(storeIsValid + " " + discountNameIsValid + " " + itemInIfYouBuyIsValid + " " + operatorIsValid + " " + tableOfOffersIsValid);
         if(storeIsValid && discountNameIsValid && itemInIfYouBuyIsValid && operatorIsValid && tableOfOffersIsValid)
         {
-            System.out.println("Succeed!!!");
             AvailableItemInStore availableItemInStore = comboBoxChooseItemIfYouBuy.getValue();
             IfYouBuySDM ifYouBuySDM = new IfYouBuySDM(availableItemInStore.getSerialNumber(), currentItemTileControllerIfYouBuy.getAmount());
             String discountName = textFieldEnterDiscountName.getText();
             setThenYouGetAfterOperatorIsValid();
             Discount discount = new Discount(discountName, ifYouBuySDM, thenYouGetSDM);
-            for(Offer offer :thenYouGetSDM.getOfferList())
-            {
-                System.out.println("Offer id !!!!!!!" + offer.getItemId() + offer.getQuantity() + offer.getForAdditional());
-            }
             Store store = comboBoxChooseStore.getValue();
             store.addDiscountToStore(discount);
             labelAddedDiscountSuccessfully.setVisible(true);
@@ -484,7 +441,6 @@ public class AddingDiscountsController {
         }
 
         thenYouGetSDM.setOperator(operator);
-        System.out.println("Operator$$$$#" + operator);
     }
 
 
@@ -535,20 +491,13 @@ public class AddingDiscountsController {
 
     @FXML
     void chooseItemThenYouGet(ActionEvent event) throws IOException {
-        System.out.println("In choose item");
         if(comboBoxChooseItemThenYouGet.getValue() != null)
         {
             labelErrorAdditionalPrice.setText("");
             labelErrorInWeightFieldInThenYouGet.setText("");
-            System.out.println("Combobox not null");
             AvailableItemInStore availableItemInStore = comboBoxChooseItemThenYouGet.getValue();
             setHboxItemThenYouGet(availableItemInStore);
             isItemInThanYouGetChosen.set(true);
-        }
-        else
-        {
-            System.out.println("Combobox null");
-
         }
     }
 

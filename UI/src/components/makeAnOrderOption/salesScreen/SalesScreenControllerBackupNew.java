@@ -128,7 +128,6 @@ public class SalesScreenControllerBackupNew {
                     ThenYouGetSDM thenYouGetSDM = discount.getThenYouGet();
                     List<Offer> offerList= thenYouGetSDM.getOfferList();
                     String operator = thenYouGetSDM.getOperator();
-                    System.out.println("Operator:" + operator);
                     setText(message(discount.getName(), quantity, itemID, offerList, operator));
                 }
             }
@@ -210,17 +209,14 @@ public class SalesScreenControllerBackupNew {
     void addAction(ActionEvent event)
     {
         Discount discount = comboBoxChooseSale.getValue();
-        System.out.println("Clicked on add action");
         if(discount != null)
         {
             String operator = discount.getThenYouGet().getOperator();
-            System.out.println("discount not null");
             if(operator.equals(SuperDuperMarketConstants.ONE_OF))
             {
                 Offer offer = comboBoxChooseItem.getValue();
                 if(offer != null)
                 {
-                    System.out.println("ONE-OF!!!!!");
                     openedCustomerOrder.applyDiscountOneOf(discount.getName(), offer);
                 }
                 saleChosen.set(false);
@@ -228,12 +224,7 @@ public class SalesScreenControllerBackupNew {
             }
             else if(operator.equals(SuperDuperMarketConstants.ALL_OR_NOTHING) || operator.equals("IRRELEVANT"))
             {
-                System.out.println("ALL-OR-NOTHING!!!!!");
                 openedCustomerOrder.applyDiscountAllOrNothing(discount.getName());
-            }
-            else
-            {
-
             }
         }
         setDiscounts(openedCustomerOrder.generateListOfDiscounts());

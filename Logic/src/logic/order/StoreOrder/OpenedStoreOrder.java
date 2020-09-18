@@ -104,17 +104,13 @@ public class OpenedStoreOrder extends StoreOrder{
 
     public void applyOneOfDiscountOnStore(String discountName, Offer offer)
     {
-        System.out.println("Apply one of discount in store");
         addToOrderedItemsFromSale(discountName, offer);
-        System.out.println("Added one of discount in store");
         applyDiscountInformationWithChangesAfterDiscountApply(discountName);
     }
 
     public void applyAllOrNothingDiscountOnStore(String discountName)
     {
-        System.out.println("Apply All Or Nothing of discount in store");
         addToOrderedItemFromOfferList(discountName);
-        System.out.println("Added All Or Nothing of discount in store");
         applyDiscountInformationWithChangesAfterDiscountApply(discountName);
     }
 
@@ -139,7 +135,6 @@ public class OpenedStoreOrder extends StoreOrder{
         Integer itemSerialID = ifYouBuySDM.getItemId();
         Double currentQuantityFromOrder = itemsAmountLeftToUseInSalesMap.get(itemSerialID);
         Double newQuantity = currentQuantityFromOrder - quantityFromSale;
-        System.out.println("Sale can be applied: " + (newQuantity >=0));
         return newQuantity >= 0;
     }
 
@@ -147,12 +142,9 @@ public class OpenedStoreOrder extends StoreOrder{
     {
         IfYouBuySDM ifYouBuySDM = discount.getIfYouBuySDM();
         Double quantityFromSale = ifYouBuySDM.getQuantity();
-        System.out.println("Quantity from sale:" + quantityFromSale);
         Integer itemSerialID = ifYouBuySDM.getItemId();
         Double currentQuantityFromOrder = itemsAmountLeftToUseInSalesMap.get(itemSerialID);
-        System.out.println("Quantity in store:" + currentQuantityFromOrder);
         Double newQuantity = currentQuantityFromOrder - quantityFromSale;
-        System.out.println("New quantity for sale After decrease:" + newQuantity);
         itemsAmountLeftToUseInSalesMap.put(itemSerialID, newQuantity);
     }
 

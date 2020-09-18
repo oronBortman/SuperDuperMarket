@@ -1,7 +1,7 @@
-package components.makeAnOrderOption.SummeryOfOrder;
+package components.makeAnOrderOption.summeryOfOrder;
 
 import commonUI.SuperDuperMarketConstants;
-import components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
+import components.makeAnOrderOption.showSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.text.DecimalFormat;
 import java.time.format.DateTimeFormatter;
-import java.time.format.FormatStyle;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Optional;
@@ -109,10 +108,8 @@ public class SummeryOfOrderController {
             showSummeryOfOrderedInStoreController.setBusinessLogic(businessLogic);
             showSummeryOfOrderedInStoreController.setStoreOrder(openedStoreOrder);
 
-            System.out.println(openedStoreOrder.getStoreUsed().getName());
             flowPaneStores.getChildren().add(singleStoreTile);
             itemToTileControlleresMap.put(openedStoreOrder, showSummeryOfOrderedInStoreController);
-            System.out.println("Adding item");
 
         } catch (IOException e) {
             e.printStackTrace();

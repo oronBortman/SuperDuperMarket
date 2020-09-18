@@ -90,21 +90,10 @@ public class AddStoreController {
     }
     public void setProperties()
     {
-        //TODO
-        //Change xml loading
+
         TextFieldEnterPrice.disableProperty().bind(isItemChosen.not());
         ButtonAdd.disableProperty().bind(isItemChosen.not());
         buttonAddStore.disableProperty().bind(tableIsEmpty);
-       /* buttonAddStore.disableProperty().bind(Bindings.createBooleanBinding(() -> {
-            for (int i = 0; i < componentsNeedToBeFieldForAddingStore.size(); ++i) {
-                if (componentsNeedToBeFieldForAddingStore.get(i).equals(true)) {
-                    return false;
-                }
-            }
-            return true;
-        }, componentsNeedToBeFieldForAddingStore));*/
-
-
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic)
@@ -231,8 +220,6 @@ public class AddStoreController {
             try
             {
                 int serialID = getEnteredSerialID();
-                //TODO
-                //NEED to check there is no more store with there serial id
                 if(serialID > 0)
                 {
                     if(businessLogic.checkIfStoreExists(serialID))
@@ -282,8 +269,6 @@ public class AddStoreController {
             try
             {
                 int coordinate = Integer.parseInt(textField.getText());
-                //TODO
-                //NEED to check there is no more store with there serial id
                 if(coordinate >= 1 || coordinate <= 50)
                 {
                         coordinateIsOK=true;
@@ -338,7 +323,6 @@ public class AddStoreController {
         }
         if(tableIsOK && ppkIsOK && serialIdIsOK && isNameOK && isCoordinateXOK && isCoordinateYOK)
         {
-            System.out.println("GREAT!!!");
             String nameOfStore = TextFieldStoreName.getText();
             Store newStoreToAdd = new Store(getEnteredSerialID(),nameOfStore, getEnteredPPK(), location, itemsToAddToStore);
             businessLogic.addStore(newStoreToAdd);

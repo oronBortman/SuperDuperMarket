@@ -75,8 +75,6 @@ public class QuantityItemController implements ItemTileController {
 
 
     public Integer getAmount() {
-        //TODO
-        //Check if this is really double
         return Integer.parseInt(amountLabel.getText());
     }
 }

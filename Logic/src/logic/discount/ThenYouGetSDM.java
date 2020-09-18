@@ -35,8 +35,6 @@ public class ThenYouGetSDM {
 
     public void addOfferToListFromSDMOffer(SDMOffer sdmOffer)
     {
-        System.out.println("Inside addOfferToListFromSDMOffer");
-
         Offer sdmOfferToAdd = new Offer(sdmOffer);
         offerList.add(sdmOfferToAdd);
     }

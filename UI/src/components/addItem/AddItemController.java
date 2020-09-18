@@ -131,18 +131,15 @@ public class AddItemController {
         }
 
         if ( serialIdIsOK && isNameOK && isTypeOfMeasureOK) {
-            System.out.println("GREAT!!!");
             String nameOfItem = TextFieldItemName.getText();
             if(isRadioButtonQuantitySelected.getValue())
             {
                 newItemToAdd = new Item(getEnteredSerialID(), nameOfItem, Item.TypeOfMeasure.Quantity);
-                System.out.println("Added quantity!!!");
 
             }
             else if(isRadioButtonWeightSelected.getValue())
             {
                 newItemToAdd = new Item(getEnteredSerialID(), nameOfItem, Item.TypeOfMeasure.Weight);
-                System.out.println("Added Weight!!!");
 
             }
             businessLogic.addItem(newItemToAdd);

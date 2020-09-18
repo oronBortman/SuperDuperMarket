@@ -1,12 +1,12 @@
 package components.mainScreen;
 
-import components.LoadingXMLFileScreen.LoadingXMLFileController;
+import components.loadingXMLFileScreen.LoadingXMLFileController;
 import components.addItem.AddItemController;
 import components.addItem.chooseStoresForItem.ChooseStoresForItemController;
 import components.addStore.AddStoreController;
 import components.addingDiscounts.AddingDiscountsController;
-import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
-import components.makeAnOrderOption.SummeryOfOrder.SummeryOfOrderController;
+import components.makeAnOrderOption.makeAnOrder.MakeAnOrderController;
+import components.makeAnOrderOption.summeryOfOrder.SummeryOfOrderController;
 import components.makeAnOrderOption.salesScreen.SalesScreenController;
 import components.showOption.showOrderesHistory.showOrdersHistoryController;
 import components.updateItemInStoreOption.addItemToStoreScreen.AddItemToStoreContoller;
@@ -25,7 +25,6 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.fxml.JavaFXBuilderFactory;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
@@ -37,8 +36,6 @@ import javafx.stage.Stage;
 import logic.*;
 import logic.order.CustomerOrder.ClosedCustomerOrder;
 import logic.order.CustomerOrder.OpenedCustomerOrder;
-import logic.order.StoreOrder.OpenedStoreOrder;
-import logic.order.itemInOrder.OrderedItemFromStore;
 import javafx.scene.layout.GridPane;
 
 import javax.xml.bind.JAXBException;
@@ -48,8 +45,6 @@ import java.time.LocalDate;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Consumer;
-
-import javafx.geometry.Insets;
 
 public class mainScreenController {
 
@@ -197,11 +192,7 @@ public class mainScreenController {
             if(aBoolean == true)
             {
                 try {
-                    if(makeAnOrderController == null)
-                    {
-                        System.out.println("NULL!!!!");
-                    }
-                    else
+                    if(makeAnOrderController != null)
                     {
                         Customer customer = makeAnOrderController.getCustomer();
                         boolean isOrderStatic = makeAnOrderController.getStaticBoolean();
@@ -311,13 +302,6 @@ public class mainScreenController {
                     Map<Integer, Double> orderedItemsListByItemSerialIDAndWeight = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndWeight();
                     Map<Integer, Integer> orderedItemsListByItemSerialIDAndQuantity = chooseItemsForOrderController.getOrderedItemsListByItemSerialIDAndQuantity();
                     OpenedCustomerOrder openedCustomerOrder = businessLogic.updateItemsWithAmountAndCreateOpenedStaticCustomerOrder(customer, date, store, orderedItemsListByItemSerialIDAndWeight, orderedItemsListByItemSerialIDAndQuantity);
-                    for( OpenedStoreOrder openedStoreOrder : openedCustomerOrder.getListOfOpenedStoreOrder())
-                    {
-                        for(Map.Entry<Integer, OrderedItemFromStore> entry : openedStoreOrder.getOrderedItemsNotFromSale().entrySet())
-                        {
-                            System.out.println(entry.getValue().getName() + " " + entry.getValue().getPricePerUnit() + " " +  entry.getValue().getTotalAmountOfItemOrderedByTypeOfMeasure().toString());
-                        }
-                    }
                     if(openedCustomerOrder != null)
                     {
                         try {
@@ -331,7 +315,6 @@ public class mainScreenController {
             }
         };
         chooseItemsForOrderController.setProperties(chooseNext);
-        System.out.println("Clicked on next");
 
         mainBorderPane.setCenter(pane);
 
@@ -370,7 +353,6 @@ public class mainScreenController {
             }
         };
         chooseItemsForOrderController.setProperties(chooseNext);
-        System.out.println("Clicked on next");
 
         mainBorderPane.setCenter(pane);
     }
@@ -397,8 +379,6 @@ public class mainScreenController {
         };
 
         showStoresStatusInDynamicOrderController.setProperties(chooseNext);
-        System.out.println("Clicked on next");
-
 
         mainBorderPane.setCenter(gridPane);
     }

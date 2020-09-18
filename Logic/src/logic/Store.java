@@ -59,7 +59,6 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
         IfYouBuy ifYouBuy = discountFromXML.getIfYouBuy();
         String discountName = discountFromXML.getName();
         ThenYouGet thanYouGet = discountFromXML.getThenYouGet();
-        System.out.println("inside addDiscountToStoreFromXML");
         if(checkIfDiscountHasUniqueName(discountName) == false)
         {
             throw new DuplicateDiscountNameException(discountName, this);
@@ -72,7 +71,6 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
         {
             IfYouBuySDM ifYouBuySDM = new IfYouBuySDM(ifYouBuy);
             ThenYouGetSDM thenYouGetSDM = addOffersToThenYouGet(thanYouGet, discountName);
-            System.out.println("suceed adding offer to thenYouGet");
             discountNameDMap.put(discountName, new Discount(discountName, ifYouBuySDM, thenYouGetSDM));
         }
     }
@@ -90,20 +88,15 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
     public ThenYouGetSDM addOffersToThenYouGet(ThenYouGet thenYouGet, String discountName) throws ItemIDNotExistInAStoreException, ItemIDInDiscountNotExistInAStoreException {
         ThenYouGetSDM thenYouGetSDM = new ThenYouGetSDM(thenYouGet);
         List<SDMOffer> sdmOfferList = thenYouGet.getSDMOffer();
-        System.out.println("Inside addOffersToThenYouGet method");
         for(SDMOffer sdmOffer : sdmOfferList)
         {
-            System.out.println("Inside sdmOffer");
             if(checkIfItemIdExists(sdmOffer.getItemId()) == false)
             {
-                System.out.println(" fail Inside sdmOffer");
-
                 throw new ItemIDInDiscountNotExistInAStoreException(this, sdmOffer.getItemId(), discountName);
             }
             else
             {
                 thenYouGetSDM.addOfferToListFromSDMOffer(sdmOffer);
-                System.out.println("Succeed Inside sdmOffer");
             }
         }
         return thenYouGetSDM;
@@ -154,7 +147,6 @@ public class Store extends SDMObjectWithUniqueLocationAndUniqueSerialID {
         return ItemsSerialIDMap.containsKey(serialNumber) ;
     }
 
-    //TODO
     public double calcProfitOfDelivers()
     {
         return ordersSerialIDMap.values().stream().mapToDouble(ClosedStoreOrder::calcTotalDeliveryPrice).sum();

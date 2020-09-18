@@ -48,18 +48,12 @@ public class BusinessLogic {
 
     public BusinessLogic()
     {
-        //TODO
-        //Check if it's the right place to allocate the new order
         storesLocationMap = new HashMap<SDMLocation, Store>();
         storesSerialIDMap = new HashMap<Integer, Store>();
         itemsSerialIDMap = new HashMap<Integer, Item>();
         ordersSerialIDMap = new HashMap<Integer, ClosedCustomerOrder>();
         usersSerialIDMap = new HashMap<Integer, Customer>();
         usersLocationMap = new HashMap<SDMLocation, Customer>();
-
-        //TODO
-        //Need to delete this lines after reading users from xml
-        usersSerialIDMap.put(123, new Customer(123, "Oron", new SDMLocation(1,2)));
 
         currentOrderSerialIDInSDK = 1;
     }
@@ -156,9 +150,6 @@ public class BusinessLogic {
         order.setSerialNumber(currentOrderSerialIDInSDK);
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;
-        System.out.println("a"+order.getSerialNumber());
-        //TODO
-        //Check if it's right to create new order after closing the one before
     }
 
     public Integer getHowManyShopsSellesAnItem(Integer itemID)
@@ -210,12 +201,10 @@ public class BusinessLogic {
 
 
 
-    //TODO
     public Double getTotalAmountOfSoledItem(Integer itemID)
     {
         return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.checkIfItemAlreadyExistsInOrder(itemID)).mapToDouble(x -> x.getTotalAmountOfItemTypesOfStoreOrderBySerialIDOfItem(itemID)).sum();
     }
-//        return ordersSerialIDMap.values().stream().filter(closedOrder -> closedOrder.getTotalAmountOfSoledItem(itemID).sum();
     public void setStoresSerialIDMap(Map<Integer, Store> shopsSerialIdMap)
     {
         storesSerialIDMap = shopsSerialIdMap;

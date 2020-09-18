@@ -72,8 +72,6 @@ public class AddItemToStoreContoller {
         this.businessLogic = businessLogic;
         final ObservableList<Item> items = FXCollections.observableList(businessLogic.getItemsList());
         comboBoxItems.setItems(items);
-        //TODO
-        //Change xml loading
     }
 
     public AddItemToStoreContoller()

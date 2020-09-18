@@ -70,9 +70,6 @@ public class UpdateItemInStoreController {
         this.businessLogic = businessLogic;
         final ObservableList<Store> stores = FXCollections.observableList(businessLogic.getStoresList());
         comboBoxStores.setItems(stores);
-
-        //TODO
-        //Change xml loading
     }
 
     public UpdateItemInStoreController()

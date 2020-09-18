@@ -1,13 +1,6 @@
 package logic.order.StoreOrder;
 
 import logic.BusinessLogic;
-import logic.SDMLocation;
-import logic.order.ClosedOrder;
-import logic.order.itemInOrder.OrderedItemFromStore;
-import logic.Store;
-
-import java.util.Date;
-import java.util.Map;
 
 public class ClosedStoreOrder extends StoreOrder{
 

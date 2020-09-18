@@ -1,4 +1,4 @@
-package components.makeAnOrderOption.MakeAnOrder;
+package components.makeAnOrderOption.makeAnOrder;
 import javafx.beans.binding.Bindings;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.collections.FXCollections;
@@ -38,8 +38,6 @@ public class MakeAnOrderController {
     SimpleBooleanProperty isStaticSelected;
     Stage stage;
 
-
-    //TODO
     public void setProperties(Consumer<Boolean> isNextClicked)
     {
         this.isNextClickedConsumer = isNextClicked;
@@ -212,8 +210,6 @@ public class MakeAnOrderController {
 
     public Store getStore()
     {
-        System.out.println("Inside getStore");
-        System.out.println(comboBoxStore.getValue().getName());
         return comboBoxStore.getValue();
     }
 

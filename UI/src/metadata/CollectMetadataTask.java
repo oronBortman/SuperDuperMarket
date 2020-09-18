@@ -37,26 +37,16 @@ public class CollectMetadataTask extends Task<Boolean> {
     private final int SLEEP_TIME = 0;
 
     public CollectMetadataTask(String fileName, Consumer<Runnable> onCancel, BusinessLogic businessLogic) {
-        System.out.println("Instide collect metdata task c'tor");
         this.fileName = fileName;
         this.onCancel = onCancel;
         this.businessLogic = businessLogic;
-        // this.errorMessage = errorMessage;
     }
 
     public void readListsFromXML() throws FileNotFoundException, JAXBException {
-        System.out.println("Read lists from xml");
         InputStream inputStream = new FileInputStream(fileName);
-        System.out.println("a" + fileName);
         SuperDuperMarketDescriptor descriptor = GeneralMethods.deserializeFrom(inputStream);
-        System.out.println("B");
-
         items = descriptor.getSDMItems().getSDMItem();
-        System.out.println("C");
-
         stores = descriptor.getSDMStores().getSDMStore();
-        System.out.println("D");
-
         customers = descriptor.getSDMCustomers().getSDMCustomer();
 
     }
@@ -111,7 +101,6 @@ public class CollectMetadataTask extends Task<Boolean> {
                     System.out.println("is Cancelled");
                     throw new TaskIsCanceledException();
                 }
-                System.out.println(counter);
                 counter++;
                 updateProgress(counter, items.size());
             } catch (Exception exception) {
@@ -135,7 +124,6 @@ public class CollectMetadataTask extends Task<Boolean> {
                     System.out.println("is Cancelled");
                     throw new TaskIsCanceledException();
                 }
-                System.out.println(counter);
                 counter++;
                 updateProgress(counter, customers.size());
             } catch (Exception exception) {
@@ -161,7 +149,6 @@ public class CollectMetadataTask extends Task<Boolean> {
 
                     throw new TaskIsCanceledException();
                 }
-                System.out.println(counter);
                 counter++;
                 updateProgress(counter, stores.size());
             } catch (Exception exception) {
@@ -188,7 +175,6 @@ public class CollectMetadataTask extends Task<Boolean> {
 
                     throw new TaskIsCanceledException();
                 }
-                System.out.println(counter);
             } catch (Exception exception) {
                 cancelled();
                 SuperDuperMarketUtils.log("Task was canceled !");
@@ -212,8 +198,6 @@ public class CollectMetadataTask extends Task<Boolean> {
         SuperDuperMarketUtils.sleepForAWhile(0);
         updateMessage("Reading items to the store " + store.getName() + "...");
         SDMPrices pricesInStore = store.getSDMPrices();
-        //TODO
-        //What to do if price is empty?
         List<SDMSell> sdmSellList = pricesInStore.getSDMSell();
         updateProgress(counter, sdmSellList.size());
         SuperDuperMarketUtils.sleepForAWhile(10);
@@ -225,7 +209,6 @@ public class CollectMetadataTask extends Task<Boolean> {
 
                 throw new TaskIsCanceledException();
             }
-            System.out.println(counter);
             counter++;
             updateProgress(counter, sdmSellList.size());
             SuperDuperMarketUtils.sleepForAWhile(0);
@@ -244,7 +227,6 @@ public class CollectMetadataTask extends Task<Boolean> {
 
                     throw new TaskIsCanceledException();
                 }
-                System.out.println(counter);
                 counter++;
                 updateProgress(counter, stores.size());
                 SuperDuperMarketUtils.sleepForAWhile(0);
@@ -262,13 +244,9 @@ public class CollectMetadataTask extends Task<Boolean> {
     public void readDiscountsToAStoreFromXML(SDMStore store) throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, DuplicateStoreSerialIDException, ItemNotExistInStoresException, DuplicateDiscountNameException, ItemIDNotExistInAStoreException, ItemIDInDiscountNotExistInSDMException, ItemIDInDiscountNotExistInAStoreException {
         int counter = 0;
         SuperDuperMarketUtils.sleepForAWhile(0);
-        System.out.println(("Reading discounts to the store " + store.getName() + "..."));
         updateMessage("Reading discounts to the store " + store.getName() + "...");
-        //TODO
-        //What to do if price is empty?
         SDMDiscounts sdmDiscounts = store.getSDMDiscounts();
         if (sdmDiscounts == null) {
-            System.out.println("There are no discounts at the store " + store.getName());
             updateProgress(counter, 1);
             SuperDuperMarketUtils.sleepForAWhile(0);
 
@@ -277,19 +255,16 @@ public class CollectMetadataTask extends Task<Boolean> {
         {
             List<SDMDiscount> sdmDiscountList = sdmDiscounts.getSDMDiscount();
             if (sdmDiscountList == null) {
-                System.out.println("There are no discounts at the store " + store.getName());
                 updateProgress(counter, 1);
                 SuperDuperMarketUtils.sleepForAWhile(0);
             } else {
                 for (SDMDiscount sdmDiscount : sdmDiscountList) {
-                    System.out.println(sdmDiscount.getName());
                     businessLogic.addDiscountToStoreFromSDMSell(sdmDiscount, store.getId());
                     if (isCancelled()) {
                         System.out.println("is Cancelled");
 
                         throw new TaskIsCanceledException();
                     }
-                    System.out.println("Succeed in reading the discount " + sdmDiscount.getName() + " to the store " + store.getName());
                     counter++;
                     updateProgress(counter, sdmDiscountList.size());
                     SuperDuperMarketUtils.sleepForAWhile(0);
@@ -301,10 +276,7 @@ public class CollectMetadataTask extends Task<Boolean> {
     @Override
     protected void cancelled(){
         updateMessage("Canceled");
-        //TODO
-        //How to make it work without sleep!!!
         SuperDuperMarketUtils.sleepForAWhile(0);
-        System.out.println("AAAAA!!");
         super.cancelled();
 
     }

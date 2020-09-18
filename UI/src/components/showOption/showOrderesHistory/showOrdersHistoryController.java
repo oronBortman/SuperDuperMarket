@@ -1,7 +1,7 @@
 package components.showOption.showOrderesHistory;
 
 import commonUI.SuperDuperMarketConstants;
-import components.makeAnOrderOption.ShowSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
+import components.makeAnOrderOption.showSummeryOfOrderInStore.ShowSummeryOfOrderedInStoreController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -23,7 +23,6 @@ import java.util.Map;
 
 import javafx.scene.control.ComboBox;
 import javafx.scene.control.Label;
-import logic.order.itemInOrder.OrderedItem;
 
 public class showOrdersHistoryController {
     @FXML private FlowPane flowPaneStores;
@@ -102,10 +101,6 @@ public class showOrdersHistoryController {
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
         final ObservableList<ClosedCustomerOrder> dataOfOrders = FXCollections.observableList(businessLogic.getClosedCustomerOrderList());
-        for(ClosedCustomerOrder closedCustomerOrder: businessLogic.getClosedCustomerOrderList())
-        {
-            System.out.println(closedCustomerOrder.getSerialNumber());
-        }
         comboBoxChooseOrder.setItems(dataOfOrders);
     }
 
@@ -135,10 +130,8 @@ public class showOrdersHistoryController {
             showSummeryOfOrderedInStoreController.setBusinessLogic(businessLogic);
             showSummeryOfOrderedInStoreController.setStoreOrder(closedStoreOrder);
 
-            System.out.println(closedStoreOrder.getStoreUsed().getName());
             flowPaneStores.getChildren().add(singleStoreTile);
             itemToTileControlleresMap.put(closedStoreOrder, showSummeryOfOrderedInStoreController);
-            System.out.println("Adding item");
 
         } catch (IOException e) {
             e.printStackTrace();

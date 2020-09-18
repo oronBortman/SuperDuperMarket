@@ -1,4 +1,4 @@
-package components.makeAnOrderOption.ShowSummeryOfOrderInStore;
+package components.makeAnOrderOption.showSummeryOfOrderInStore;
 
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -10,8 +10,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.util.Callback;
 import logic.BusinessLogic;
-import logic.order.CustomerOrder.OpenedCustomerOrder;
-import logic.order.StoreOrder.OpenedStoreOrder;
 import logic.order.StoreOrder.StoreOrder;
 import logic.order.itemInOrder.OrderedItem;
 import logic.order.itemInOrder.OrderedItemFromSale;
@@ -47,14 +45,6 @@ public class ShowSummeryOfOrderedInStoreController {
 
     public void setStoreOrder(StoreOrder storeOrder) {
         this.storeOrder = storeOrder;
-        if(storeOrder == null)
-        {
-            System.out.println("NULLLL!!!!");
-        }
-        if(storeOrder.getStoreUsed() == null)
-        {
-            System.out.println("NUL!!!!!!!");
-        }
         setLabelSerialID();
         setLabelNameOfStore();
         setLabelPPK();
@@ -197,20 +187,6 @@ public class ShowSummeryOfOrderedInStoreController {
     public void setDataOnItemsTable()
     {
         final ObservableList<OrderedItem> dataOfItems = FXCollections.observableList(storeOrder.generateListOfGeneralOrderedItems());
-        System.out.println("In set data on items table");
-        for(OrderedItem orderedItem : storeOrder.generateListOfGeneralOrderedItems())
-        {
-            System.out.println(orderedItem.getClass());
-            if(orderedItem instanceof OrderedItemFromSale)
-            {
-                System.out.println("Inside ordereditemfromsale");
-                System.out.println(((OrderedItemFromSale)orderedItem).getSaleName());
-            }
-            else if (orderedItem instanceof OrderedItemFromStore) {
-                System.out.println("Inside ordereditemfromstore");
-                System.out.println(((OrderedItemFromStore)orderedItem).getName());
-            }
-        }
         tableViewOfItems.setItems(dataOfItems);
     }
 

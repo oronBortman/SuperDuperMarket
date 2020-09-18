@@ -42,10 +42,6 @@ public class SalesOnStoreScreenController {
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
-        if(businessLogic == null)
-        {
-            System.out.println("Busines logic is null!!!!!!!!!!");
-        }
     }
 
     public void setDiscounts(List<Discount> discountList)
@@ -72,7 +68,6 @@ public class SalesOnStoreScreenController {
                     ThenYouGetSDM thenYouGetSDM = discount.getThenYouGet();
                     List<Offer> offerList= thenYouGetSDM.getOfferList();
                     String operator = thenYouGetSDM.getOperator();
-                    System.out.println("Operator:" + operator);
                     setText(message(discount.getName(), quantity, itemID, offerList, operator));
                 }
             }
@@ -81,10 +76,7 @@ public class SalesOnStoreScreenController {
 
     private String message(String nameOfSale, Double quantity, Integer itemID, List<Offer> offerList, String operator)
     {
-        if(businessLogic == null)
-        {
-            System.out.println("Businnes logic nul!!!!");
-        }
+
         String message = "Name of sale: " + nameOfSale + "\n" +
                 "Buy: " + quantity + " of " + businessLogic.getItemBySerialID(itemID).getName() + "\n" +
                 "Get:\n";
@@ -108,10 +100,8 @@ public class SalesOnStoreScreenController {
                 }
 
             }
-            System.out.println("Operator:!!!!" + " " + operator + offer.getQuantity() + " " + offer.getForAdditional());
             allOrNothingOffers = allOrNothingOffers.concat(offer.getQuantity() + " amount of " + businessLogic.getItemBySerialID(offer.getItemId()).getName() + " for " + offer.getForAdditional() + "\n");
         }
-        System.out.println("Ended discount");
         return  allOrNothingOffers;
     }
 }

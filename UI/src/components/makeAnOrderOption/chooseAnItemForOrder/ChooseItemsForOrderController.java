@@ -41,43 +41,18 @@ public class ChooseItemsForOrderController {
     private boolean isOrderStatic;
     ObservableList<Item> items;
     Consumer<Boolean> isNextClickedConsumer;
-
     SimpleBooleanProperty isNextClicked;
-
-
-    //TODO
-
 
     public void chooseItems()
     {
-        System.out.println("Inside chooseItems");
-        if(itemsList == null)
-        {
-            System.out.println("Setting items List Nul!!!!!!");
-
-        }
-        else
-        {
-            System.out.println("Setting items List Not Null");
-            for(Item item : itemsList)
-            {
-                System.out.println(item.getName());
-            }
-
-        }
         for(Item item : itemsList)
         {
-            System.out.println(item.getName() + "!!!!!!");
             if(item.getTypeOfMeasure() == Item.TypeOfMeasure.Quantity)
             {
-                System.out.println("Adding quantity item");
-
                 createItemTile(item, SuperDuperMarketConstants.QUANTITY_ITEM_RESOURCE_IDENTIFEIR);
             }
             else if(item.getTypeOfMeasure() == Item.TypeOfMeasure.Weight)
             {
-                System.out.println("Adding Weight item");
-
                 createItemTile(item, SuperDuperMarketConstants.WEIGHT_ITEM_RESOURCE_IDENTIFEIR);
             }
         }
@@ -104,15 +79,12 @@ public class ChooseItemsForOrderController {
             int itemSerialID = item.getSerialNumber();
             String itemName = item.getName();
 
-            System.out.println("Inside createItemTile");
             if(itemController != null)
             {
                 itemController.setItemNameLabel(itemName);
                 itemController.setSerialID(itemSerialID);
-                System.out.println(itemName);
                 if(isOrderStatic == true)
                 {
-                    System.out.println("Order is static");
                     if(item.getClass() == AvailableItemInStore.class)
                     {
                         AvailableItemInStore availableItemInStore = (AvailableItemInStore)item;
@@ -121,21 +93,12 @@ public class ChooseItemsForOrderController {
                 }
                 else
                 {
-                    System.out.println("Order is dynamic");
-
                     itemController.setPriceLabelsToUnvisible();
                 }
                 itemController.setBusinessLogic(businessLogic);
                 flowPaneItems.getChildren().add(singleItemTile);
                 itemToTileControlleresMap.put(item, itemController);
-                System.out.println("Adding item");
-
             }
-            else
-            {
-                System.out.println("Item controller is null");
-            }
-
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -154,10 +117,8 @@ public class ChooseItemsForOrderController {
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
         items = FXCollections.observableList(businessLogic.getItemsList());
-        System.out.println("In buisnessLogic!!!!");
         chooseItems();
-        //TODO
-        //Change xml loading
+
     }
 
     public ChooseItemsForOrderController()
@@ -231,20 +192,6 @@ public class ChooseItemsForOrderController {
     }
 
     public void setItemsList(List<Item> itemsList) {
-        if(itemsList == null)
-        {
-            System.out.println("Setting items List Nul!!!!!!");
-
-        }
-        else
-        {
-            System.out.println("Setting items List Not Null");
-            for(Item item : itemsList)
-            {
-                System.out.println(item.getName());
-            }
-
-        }
         this.itemsList = itemsList;
     }
 

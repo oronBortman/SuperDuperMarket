@@ -37,9 +37,6 @@ public class ShowUsersController {
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
         setUsersTable();
-        //final ObservableList<Store> stores = FXCollections.observableList(businessLogic.getStoresList());
-        //TODO
-        //Change xml loading
     }
 
     public ShowUsersController()

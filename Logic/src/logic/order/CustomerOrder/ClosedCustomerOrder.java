@@ -40,39 +40,11 @@ public class ClosedCustomerOrder extends Order {
     {
         return closedStoresOrderMapByStoreSerialID.get(serialID).calcTotalDeliveryPrice();
     }
-
-    /*public double getTotalPriceOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
-    {
-
-        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.calcTotalDeliveryPrice()).sum();
-    }
-
-    public Double getTotalAmountOfItemsByUnitOfStoreOrderBySerialIDOfStore(int serialID)
-    {
-        return closedStoresOrderMapByStoreSerialID.get(serialID).calcTotalAmountOfItemsByUnit();
-    }
-
-    public Double getTotalAmountOfItemsByUnitOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
-    {
-        return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.calcTotalAmountOfItemsByUnit()).sum();
-    }*/
-
-
-   /* public int getTotalAmountOfItemTypesOfStoreOrderBySerialIDOfStore(int serialID)
-    {
-        return closedStoresOrderMapByStoreSerialID.get(serialID).getTotalAmountOfItemTypes();
-    }
-*/
     public Double getTotalAmountOfItemTypesOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
     {
         return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.calcTotalAmountOfItemsByUnit()).sum();
     }
-
-    public double getTotalPriceOfItemsOfStoreOrderBySerialIDOfStore(int serialID)
-    {
-        return closedStoresOrderMapByStoreSerialID.get(serialID).calcTotalPriceOfItems();
-    }
-
+    
     public double getTotalPriceOfItemsOfStoreOrderBySerialIDOfItem(int serialIDOfItem)
     {
         return closedStoresOrderMapByStoreSerialID.values().stream().filter(closedStoreOrder -> closedStoreOrder.checkIfItemAlreadyExistsInOrder(serialIDOfItem)).mapToDouble(x->x.calcTotalPriceOfItems()).sum();

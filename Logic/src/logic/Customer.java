@@ -29,31 +29,19 @@ public class Customer extends SDMObjectWithUniqueLocationAndUniqueSerialID {
         return mapOfClosedCustomerOrders;
     }
 
-    //TODO
     public Integer getAmountOfOrdersCol()
     {
         return mapOfClosedCustomerOrders.size();
     }
-    //TODO
     public Double getAverageOrderPriceCol()
     {
         return (mapOfClosedCustomerOrders.values().stream().mapToDouble(x->x.getTotalOrderPrice()).sum()) / getAmountOfOrdersCol();
     }
-    //TODO
     public Double getAverageDeliveryPrice()
     {
         return (mapOfClosedCustomerOrders.values().stream().mapToDouble(x->x.getTotalDeliveryPriceInOrder()).sum()) / getAmountOfOrdersCol();
 
     }
 
-    /*
-    public User(jaxb.schema.generated.SDMItem item)
-    {
-        this.serialNumber = new SimpleIntegerProperty(item.getId());
-        this.name = new SimpleStringProperty(item.getName());
-        String itemPurchaseCategoryStr = item.getPurchaseCategory();
-        Item.TypeOfMeasure itemPurchaseCategory = Item.TypeOfMeasure.convertStringToEnum(itemPurchaseCategoryStr);
-        this.typeToMeasureBy = itemPurchaseCategory;
-    }*/
 
 }

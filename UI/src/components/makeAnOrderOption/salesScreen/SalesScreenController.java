@@ -181,18 +181,15 @@ public class SalesScreenController {
     void addAction(ActionEvent event)
     {
         Discount discount = comboBoxChooseSale.getValue();
-        System.out.println("Clicked on add action");
 
         if(discount != null)
         {
             String operator = discount.getThenYouGet().getOperator();
-            System.out.println("discount not null");
             if(operator.equals(SuperDuperMarketConstants.ONE_OF))
             {
                 Offer offer = comboBoxChooseItem.getValue();
                 if(offer != null)
                 {
-                    System.out.println("ONE-OF!!!!!");
                     openedCustomerOrder.applyDiscountOneOf(discount.getName(), offer);
                 }
                 saleChosen.set(false);
@@ -200,7 +197,6 @@ public class SalesScreenController {
             }
             else if(operator.equals(SuperDuperMarketConstants.ALL_OR_NOTHING) || operator.equals("IRRELEVANT"))
             {
-                System.out.println("ALL-OR-NOTHING!!!!!");
                 openedCustomerOrder.applyDiscountAllOrNothing(discount.getName());
             }
             else
@@ -218,12 +214,6 @@ public class SalesScreenController {
             buttonAdd.setDisable(true);
             comboBoxChooseSale.disableProperty().unbind();
             comboBoxChooseSale.setDisable(true);
-            for(Discount discount1 : listView.getItems())
-            {
-                System.out.println(discount.getName());
-            }
-            System.out.println("empty!!!");
-
         }
     }
 

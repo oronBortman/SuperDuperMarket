@@ -98,8 +98,6 @@ public class QuantityItemController implements ItemTileController {
 
     @Override
     public Double getAmount() {
-        //TODO
-        //Check if this is really double
         return Double.parseDouble(amountLabel.getText());
     }
 

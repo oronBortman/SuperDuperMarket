@@ -58,9 +58,6 @@ public class ShowStoresStatusInDynamicOrderController {
     public void setBusinessLogic(BusinessLogic businessLogic) {
         this.businessLogic = businessLogic;
         setItemsTable();
-        //final ObservableList<Store> stores = FXCollections.observableList(businessLogic.getStoresList());
-        //TODO
-        //Change xml loading
     }
 
     public void setProperties(Consumer<Boolean> isNextClicked)
@@ -79,21 +76,7 @@ public class ShowStoresStatusInDynamicOrderController {
 
     private void setItemsTable()
     {
-        if(openedCustomerOrder.getOpenedStoresOrderMap() == null)
-        {
-            System.out.println("nullll");
-        }
-        else
-        {
-            System.out.println("not nullll");
 
-        }
-        for(OpenedStoreOrder openedStoreOrder : openedCustomerOrder.getOpenedStoresOrderMap().values())
-        {
-            System.out.println("Bbbbb");
-
-            System.out.println(openedStoreOrder.getStoreUsed().getName());
-        }
         final ObservableList<OpenedStoreOrder> dataOfItems = FXCollections.observableList(openedCustomerOrder.getListOfOpenedStoreOrder());
 
         StoreSerialNumberCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<OpenedStoreOrder, String>, ObservableValue<String>>() {

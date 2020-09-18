@@ -1,4 +1,4 @@
-package components.LoadingXMLFileScreen;
+package components.loadingXMLFileScreen;
 
 import commonUI.SuperDuperMarketUtils;
 import exceptions.*;
@@ -50,7 +50,6 @@ public class LoadingXMLFileController {
 
 
     public LoadingXMLFileController() {
-        System.out.println("Inside loading xml c'tor");
         isActive = new SimpleBooleanProperty(false);
         isMetadataCollected = new SimpleBooleanProperty(false);
         selectedFileProperty = new SimpleStringProperty();
@@ -154,7 +153,6 @@ public class LoadingXMLFileController {
 
         aTask.setOnSucceeded(e ->
         {
-            System.out.println("Succeed!!!");
             loadBusinessLogicSuccessfully.accept(true);
         });
         aTask.setOnFailed(e ->
@@ -342,7 +340,6 @@ public class LoadingXMLFileController {
 
     public void collectMetadata( Runnable onFinish) {
 
-        System.out.println("Inside collectMetadata");
         CollectMetadataTask currentRunningTask = new CollectMetadataTask(fileName.get(), (q) -> onTaskFinished(Optional.ofNullable(onFinish)),  businessLogicFromXML);
         setCurrentRunningTask(currentRunningTask);
 
@@ -352,8 +349,6 @@ public class LoadingXMLFileController {
     }
 
     private static void showError(Thread thread, Throwable throwable) {
-        System.out.println("A");
-
     }
 
 

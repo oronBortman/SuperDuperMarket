@@ -1,7 +1,7 @@
 package components.showOption.showStoresScreen;
 
 
-import components.makeAnOrderOption.MakeAnOrder.MakeAnOrderController;
+import components.makeAnOrderOption.makeAnOrder.MakeAnOrderController;
 import components.makeAnOrderOption.salesOnStoreScreen.SalesOnStoreScreenController;
 import javafx.beans.property.ReadOnlyObjectWrapper;
 import javafx.beans.value.ObservableValue;
@@ -118,14 +118,12 @@ public class ShowStoresController {
     {
         setItemsTable();
         setOrdersTable();
-        System.out.println("AAAA");
         this.salesOnStoreScreenController.setDiscounts(comboBoxStores.getValue().getDiscountsList());
 
     }
 
     private void initializeItemsTable()
     {
-        System.out.println("BBBBBBBB");
         ItemSerialNumberCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<AvailableItemInStore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<AvailableItemInStore, String> param) {
@@ -161,8 +159,6 @@ public class ShowStoresController {
 
     private void initializeOrdersTable()
     {
-        //TODO
-        //SetDate
         dateCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
@@ -171,8 +167,6 @@ public class ShowStoresController {
             }
         });
 
-        //TODO
-        //Check if its ok
         totalItemsCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<ClosedStoreOrder, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<ClosedStoreOrder, String> param) {
@@ -205,10 +199,6 @@ public class ShowStoresController {
     private void setItemsTable()
     {
         final ObservableList<AvailableItemInStore> dataOfItems = FXCollections.observableList(comboBoxStores.getValue().getAvailableItemsList());
-        for( AvailableItemInStore availableItemInStore : comboBoxStores.getValue().getAvailableItemsList())
-        {
-            System.out.println(availableItemInStore.getName());
-        }
         listOfItemsTable.setItems(dataOfItems);
     }
 
