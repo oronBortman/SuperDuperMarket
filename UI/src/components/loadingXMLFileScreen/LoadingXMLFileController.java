@@ -63,11 +63,6 @@ public class LoadingXMLFileController {
     }
 
 
-    /*public void setBusinessLogic(BusinessLogic businessLogic) {
-        //this.businessLogicThatExist = businessLogic;
-        //this.businessLogic = businessLogic;
-    }
-*/
     public void setPrimaryStage(Stage primaryStage) {
         this.primaryStage = primaryStage;
     }

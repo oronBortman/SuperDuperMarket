@@ -63,9 +63,11 @@ public class ShowUsersController {
             public ObservableValue<String> call(TableColumn.CellDataFeatures<Customer, String> param) {
                 ReadOnlyObjectWrapper<String> readOnlyObjectWrapper;
                 Customer customer = param.getValue();
-                if(customer.getMapOfClosedCustomerOrders().size() > 0)
+                Integer amountOfOrders = customer.getAmountOfOrders();
+                if(amountOfOrders > 0)
                 {
-                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(param.getValue().getAmountOfOrdersCol().toString());
+                    System.out.println(amountOfOrders);
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(amountOfOrders.toString());
                 }
                 else
                 {
@@ -82,7 +84,7 @@ public class ShowUsersController {
                 Customer customer = param.getValue();
                 if(customer.getMapOfClosedCustomerOrders().size() > 0)
                 {
-                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageOrderPriceCol()));
+                    readOnlyObjectWrapper = new ReadOnlyObjectWrapper<String>(decimalFormat.format(param.getValue().getAverageOrderPrice()));
                 }
                 else
                 {

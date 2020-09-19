@@ -34,7 +34,7 @@ public class CollectMetadataTask extends Task<Boolean> {
     private List<SDMCustomer> customers;
     private Consumer<String> errorMessage;
 
-    private final int SLEEP_TIME = 0;
+    private final int SLEEP_TIME =1000;
 
     public CollectMetadataTask(String fileName, Consumer<Runnable> onCancel, BusinessLogic businessLogic) {
         this.fileName = fileName;
@@ -92,12 +92,12 @@ public class CollectMetadataTask extends Task<Boolean> {
     public void readItemsFromXML() throws JAXBException, FileNotFoundException, TaskIsCanceledException, DuplicateItemSerialIDException {
         int counter = 0;
         updateProgress(counter, items.size());
-        SuperDuperMarketUtils.sleepForAWhile(0);
+        SuperDuperMarketUtils.sleepForAWhile(1000);
         for (SDMItem item : items) {
             try {
                 businessLogic.addItemsSerialIDMapFromXml(item);
                 if (isCancelled()) {
-                    SuperDuperMarketUtils.sleepForAWhile(0);
+                    SuperDuperMarketUtils.sleepForAWhile(1000);
                     System.out.println("is Cancelled");
                     throw new TaskIsCanceledException();
                 }
@@ -166,7 +166,7 @@ public class CollectMetadataTask extends Task<Boolean> {
     public void readItemsToStoresFromXML() throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateStoreSerialIDException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, ItemNotExistInStoresException {
         int counter = 0;
         updateProgress(counter, 1);
-        SuperDuperMarketUtils.sleepForAWhile(0);
+        SuperDuperMarketUtils.sleepForAWhile(1000);
         for (SDMStore store : stores) {
             try {
                 readItemsToAStoreFromXML(store);
@@ -181,7 +181,7 @@ public class CollectMetadataTask extends Task<Boolean> {
                 onCancel.accept(null);
                 throw exception;
             }
-            SuperDuperMarketUtils.sleepForAWhile(0);
+            SuperDuperMarketUtils.sleepForAWhile(1000);
         }
         try {
             businessLogic.checkIfThereIsItemNotInStore();
@@ -195,12 +195,12 @@ public class CollectMetadataTask extends Task<Boolean> {
 
     public void readItemsToAStoreFromXML(SDMStore store) throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, DuplicateStoreSerialIDException {
         int counter = 0;
-        SuperDuperMarketUtils.sleepForAWhile(0);
+        SuperDuperMarketUtils.sleepForAWhile(1000);
         updateMessage("Reading items to the store " + store.getName() + "...");
         SDMPrices pricesInStore = store.getSDMPrices();
         List<SDMSell> sdmSellList = pricesInStore.getSDMSell();
         updateProgress(counter, sdmSellList.size());
-        SuperDuperMarketUtils.sleepForAWhile(10);
+        SuperDuperMarketUtils.sleepForAWhile(1000);
 
         for (SDMSell sdmSell : sdmSellList) {
             businessLogic.addItemToStoreFromSDMSell(sdmSell, store.getId());
@@ -211,7 +211,7 @@ public class CollectMetadataTask extends Task<Boolean> {
             }
             counter++;
             updateProgress(counter, sdmSellList.size());
-            SuperDuperMarketUtils.sleepForAWhile(0);
+            SuperDuperMarketUtils.sleepForAWhile(1000);
         }
     }
 
@@ -229,7 +229,7 @@ public class CollectMetadataTask extends Task<Boolean> {
                 }
                 counter++;
                 updateProgress(counter, stores.size());
-                SuperDuperMarketUtils.sleepForAWhile(0);
+                SuperDuperMarketUtils.sleepForAWhile(1000);
             } catch (Exception exception) {
                 cancelled();
                 SuperDuperMarketUtils.log("Task was canceled !");
@@ -243,12 +243,12 @@ public class CollectMetadataTask extends Task<Boolean> {
 
     public void readDiscountsToAStoreFromXML(SDMStore store) throws FileNotFoundException, TaskIsCanceledException, JAXBException, DuplicateItemSerialIDInStoreException, ItemWithSerialIDNotExistInSDMException, StoreNotExistException, DuplicateStoreSerialIDException, ItemNotExistInStoresException, DuplicateDiscountNameException, ItemIDNotExistInAStoreException, ItemIDInDiscountNotExistInSDMException, ItemIDInDiscountNotExistInAStoreException {
         int counter = 0;
-        SuperDuperMarketUtils.sleepForAWhile(0);
+        SuperDuperMarketUtils.sleepForAWhile(1000);
         updateMessage("Reading discounts to the store " + store.getName() + "...");
         SDMDiscounts sdmDiscounts = store.getSDMDiscounts();
         if (sdmDiscounts == null) {
             updateProgress(counter, 1);
-            SuperDuperMarketUtils.sleepForAWhile(0);
+            SuperDuperMarketUtils.sleepForAWhile(1000);
 
         }
         else
@@ -256,7 +256,7 @@ public class CollectMetadataTask extends Task<Boolean> {
             List<SDMDiscount> sdmDiscountList = sdmDiscounts.getSDMDiscount();
             if (sdmDiscountList == null) {
                 updateProgress(counter, 1);
-                SuperDuperMarketUtils.sleepForAWhile(0);
+                SuperDuperMarketUtils.sleepForAWhile(1000);
             } else {
                 for (SDMDiscount sdmDiscount : sdmDiscountList) {
                     businessLogic.addDiscountToStoreFromSDMSell(sdmDiscount, store.getId());
@@ -267,7 +267,7 @@ public class CollectMetadataTask extends Task<Boolean> {
                     }
                     counter++;
                     updateProgress(counter, sdmDiscountList.size());
-                    SuperDuperMarketUtils.sleepForAWhile(0);
+                    SuperDuperMarketUtils.sleepForAWhile(1000);
                 }
             }
         }
@@ -276,7 +276,7 @@ public class CollectMetadataTask extends Task<Boolean> {
     @Override
     protected void cancelled(){
         updateMessage("Canceled");
-        SuperDuperMarketUtils.sleepForAWhile(0);
+        SuperDuperMarketUtils.sleepForAWhile(1000);
         super.cancelled();
 
     }

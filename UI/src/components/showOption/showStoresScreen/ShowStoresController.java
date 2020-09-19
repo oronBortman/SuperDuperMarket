@@ -145,7 +145,7 @@ public class ShowStoresController {
         TotalItemsSoledInStoreCol.setCellValueFactory(new Callback<TableColumn.CellDataFeatures<AvailableItemInStore, String>, ObservableValue<String>>() {
             @Override
             public ObservableValue<String> call(CellDataFeatures<AvailableItemInStore, String> param) {
-                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(businessLogic.getTotalAmountOfSoledItem(param.getValue().getSerialNumber())));
+                return new ReadOnlyObjectWrapper<String>(decimalFormat.format(comboBoxStores.getValue().getAmountOfItemSoledByTypeOfMeasure(param.getValue().getSerialNumber())));
             }
         });
 

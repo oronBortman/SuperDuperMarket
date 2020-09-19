@@ -148,6 +148,7 @@ public class BusinessLogic {
             closedStoreOrder.setSerialNumber(currentOrderSerialIDInSDK);
         }
         order.setSerialNumber(currentOrderSerialIDInSDK);
+        order.getCustomer().addClosedCustomerOrderToMap(order);
         ordersSerialIDMap.put(currentOrderSerialIDInSDK, order);
         currentOrderSerialIDInSDK++;
     }

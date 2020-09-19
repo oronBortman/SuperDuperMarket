@@ -29,17 +29,17 @@ public class Customer extends SDMObjectWithUniqueLocationAndUniqueSerialID {
         return mapOfClosedCustomerOrders;
     }
 
-    public Integer getAmountOfOrdersCol()
+    public Integer getAmountOfOrders()
     {
         return mapOfClosedCustomerOrders.size();
     }
-    public Double getAverageOrderPriceCol()
+    public Double getAverageOrderPrice()
     {
-        return (mapOfClosedCustomerOrders.values().stream().mapToDouble(x->x.getTotalOrderPrice()).sum()) / getAmountOfOrdersCol();
+        return (mapOfClosedCustomerOrders.values().stream().mapToDouble(x->x.getTotalOrderPrice()).sum()) / getAmountOfOrders();
     }
     public Double getAverageDeliveryPrice()
     {
-        return (mapOfClosedCustomerOrders.values().stream().mapToDouble(x->x.getTotalDeliveryPriceInOrder()).sum()) / getAmountOfOrdersCol();
+        return (mapOfClosedCustomerOrders.values().stream().mapToDouble(x->x.getTotalDeliveryPriceInOrder()).sum()) / getAmountOfOrders();
 
     }
 

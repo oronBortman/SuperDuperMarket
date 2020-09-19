@@ -72,7 +72,7 @@
                               <Label layoutX="96.0" layoutY="107.0" text="Enter price of item" />
                               <Label fx:id="LabelErrorEnterPrice" layoutX="24.0" layoutY="167.0" textFill="RED" />
                               <Separator layoutX="-15.0" layoutY="285.0" prefHeight="3.0" prefWidth="620.0" />
-                              <Label fx:id="LabelErrorOnTable" layoutX="388.0" layoutY="265.0" text="* error" textFill="RED" />
+                              <Label fx:id="LabelErrorOnTable" layoutX="388.0" layoutY="265.0" textFill="RED" />
                            </children>
                         </Pane>
                         <Button fx:id="buttonAddStore" layoutX="224.0" layoutY="566.0" mnemonicParsing="false" onAction="#clickedOnButtonAddStore" text="Add store to Super Duper market" />

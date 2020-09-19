@@ -191,8 +191,7 @@ public class OpenedCustomerOrder extends Order {
             closedStoresOrderMapByStoreSerialID.put(serialNumber, closedStoreOrder);
         }
 
-        ClosedCustomerOrder closedCustomerOrder = new ClosedCustomerOrder(getDate(), closedStoresOrderMapByStoreSerialID, isOrderStatic());
-        customer.addClosedCustomerOrderToMap(closedCustomerOrder);
+        ClosedCustomerOrder closedCustomerOrder = new ClosedCustomerOrder(getDate(), closedStoresOrderMapByStoreSerialID, isOrderStatic(), customer);
         return closedCustomerOrder;
     }
 
