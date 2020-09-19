@@ -243,8 +243,8 @@ public class mainScreenController {
             if(aBoolean == true)
             {
                 Item item=addItemController.getItem();
-                unbindMenuOptionFromLoadedXMLFile();
-                disableOrEnableAllMenuOptions(true);
+                //unbindMenuOptionFromLoadedXMLFile();
+                //disableOrEnableAllMenuOptions(true);
                 try {
                     chooseStoresForItem(item);
                 } catch (IOException e) {
@@ -269,7 +269,7 @@ public class mainScreenController {
         Consumer<Boolean> addedItemToStoreSuccessfully = aBoolean -> {
             if(aBoolean == true)
             {
-                bindMenuOptionsToLoadedXMLFile();
+//                bindMenuOptionsToLoadedXMLFile();
                 showMainScreen();
                 try {
                     chooseStoresForItem(item);

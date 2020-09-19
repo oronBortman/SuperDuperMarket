@@ -60,8 +60,6 @@ public class AddItemToStoreContoller {
                         ap.getName().equals(string)).findFirst().orElse(null);
             }
         });
-        //collectMetadataButton.disableProperty().bind(isFileSelected.not());
-
         updatePriceTextField.disableProperty().bind(isStoreSelected.not());
         addItemButton.disableProperty().bind(isStoreSelected.not());
         comboBoxStores.disableProperty().bind(isItemSelected.not());
@@ -83,15 +81,12 @@ public class AddItemToStoreContoller {
     @FXML
     void chooseStore(ActionEvent event){
         commonUI.GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
-      //  updatePriceTextField.setDisable(false);
-       // addItemButton.setDisable(false);
         isStoreSelected.set(true);
     }
 
     @FXML
     void chooseItem(ActionEvent event){
         commonUI.GeneralUIMethods.initiateStatusAfterClickedOnButtonLabel(statusAfterClickedOnButton);
-        //comboBoxStores.setDisable(false);
         final ObservableList<Store> stores = FXCollections.observableList(businessLogic.getStoresList());
         comboBoxStores.setItems(stores);
         isItemSelected.set(true);
@@ -111,8 +106,8 @@ public class AddItemToStoreContoller {
         {
             int priceInt = Integer.parseInt(updatePriceTextField.getText());
             comboBoxStores.getValue().addItemToStore(comboBoxItems.getValue(), priceInt);
-            statusAfterClickedOnButton.setText("Update price succesfully");
-            statusAfterClickedOnButton.setTextFill(Color.BLACK);
+            statusAfterClickedOnButton.setText("Item added successfully to the store");
+            statusAfterClickedOnButton.setTextFill(Color.GREEN);
         }
     }
 }

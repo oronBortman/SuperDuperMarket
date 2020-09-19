@@ -8,7 +8,6 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
-import javafx.scene.layout.Pane;
 import javafx.util.Callback;
 import javafx.util.StringConverter;
 import logic.*;
@@ -25,7 +24,8 @@ public class ChooseStoresForItemController {
     @FXML private TableView StoresTable;
     @FXML private TableColumn<Store, String> SerialIDCol;
     @FXML private TableColumn<Store, String> nameCol;
-    @FXML private Button ButtonAddStore;
+    @FXML private Button buttonAddStore;
+    @FXML private Button buttonFinish;
     @FXML private ComboBox<Store> ComboBoxChooseStore;
     @FXML private Label LabelErrorOnTable;
     @FXML private Label LabelErrorEnterPrice;
@@ -52,13 +52,14 @@ public class ChooseStoresForItemController {
     //  FXCollections.observableArrayList(tableIsEmpty,textFieldPPKEmpty,textFieldNameEmpty,textFieldSerialIDEmpty);
 
     public void initialize() {
+        buttonFinish.setDisable(true);
         initializeComboBoxChooseStore();
         initializeStoresTable();
     }
 
     public void setProperties(Consumer<Boolean> addedItemToStores) {
         this.addedItemToStores = addedItemToStores;
-        ButtonAddStore.disableProperty().bind(isStoreChosen.not());
+        buttonAddStore.disableProperty().bind(isStoreChosen.not());
     }
 
     public void setBusinessLogic(BusinessLogic businessLogic) {
@@ -141,6 +142,7 @@ public class ChooseStoresForItemController {
         }
         else
         {
+            businessLogic.addItem(addedItem);
             for(Map.Entry<Store, AvailableItemInStore> entry: storesToAddToItem.entrySet())
             {
                 Store store = entry.getKey();
@@ -199,6 +201,11 @@ public class ChooseStoresForItemController {
                     final ObservableList<Store> storesInComboBoxList = FXCollections.observableList(storeInComboBoxMap.values().stream().collect(toCollection(ArrayList::new)));
                     ComboBoxChooseStore.setItems(storesInComboBoxList);
                     final ObservableList<Store> storesToAddToItemList = FXCollections.observableList(storesToAddToItem.keySet().stream().collect(toCollection(ArrayList::new)));
+                    if(storesToAddToItem.size() > 0)
+                    {
+                        buttonFinish.setDisable(false);
+                    }
+                    
                     StoresTable.setItems(storesToAddToItemList);
                     tableIsEmpty.set(false);
                     isStoreChosen.set(false);

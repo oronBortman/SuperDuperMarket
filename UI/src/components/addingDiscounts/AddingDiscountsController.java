@@ -54,7 +54,6 @@ public class AddingDiscountsController {
     @FXML private ComboBox<Store> comboBoxChooseStore;
     @FXML private RadioButton radioButtonOperatorAllOrNothing;
     @FXML private RadioButton radioButtonOperatorOneOf;
-    @FXML private RadioButton radioButtonOperatorIrrelevant;
     @FXML private HBox hboxItemIfYouBuy;
     @FXML private HBox hboxItemThenYouGet;
     @FXML private Label labelErrorInWeightFieldInThenYouGet;
@@ -68,7 +67,6 @@ public class AddingDiscountsController {
     @FXML private Label labelAddedDiscountSuccessfully;
 
     SimpleBooleanProperty isRadioButtonOperatorAllOrNothingSelected;
-    SimpleBooleanProperty isRadioButtonOperatorIrrelavntSelected;
     SimpleBooleanProperty isRadioButtonOperatorOneOfSelected;
     SimpleBooleanProperty isStoreChosen;
     SimpleBooleanProperty isItemInIfYouBuyChosen;
@@ -88,7 +86,6 @@ public class AddingDiscountsController {
         isStoreChosen = new SimpleBooleanProperty(false);
         isItemInIfYouBuyChosen = new SimpleBooleanProperty(false);
         isRadioButtonOperatorAllOrNothingSelected = new SimpleBooleanProperty(false);
-        isRadioButtonOperatorIrrelavntSelected = new SimpleBooleanProperty(false);
         isRadioButtonOperatorOneOfSelected = new SimpleBooleanProperty(false);
         isItemInThanYouGetChosen = new SimpleBooleanProperty(false);
         offerList = new ArrayList<>();
@@ -114,6 +111,8 @@ public class AddingDiscountsController {
     @FXML
     public void initialize()
     {
+        radioButtonOperatorOneOf.setDisable(true);
+        radioButtonOperatorAllOrNothing.setDisable(true);
         initializeComboBoxChooseItemIfYouBuy();
         initializeComboBoxChooseItemThenYouGet();
         initializeComboBoxChooseStore();
@@ -337,6 +336,11 @@ public class AddingDiscountsController {
         setOffersTable();
         comboBoxChooseItemThenYouGet.getSelectionModel().clearSelection();
         hboxItemThenYouGet.getChildren().clear();
+        if(thenYouGetSDM.getOfferList().size() > 1)
+        {
+            radioButtonOperatorAllOrNothing.setDisable(false);
+            radioButtonOperatorOneOf.setDisable(false);
+        }
         ObservableList<AvailableItemInStore> availableItemsInChoosenItemList = FXCollections.observableList(getAvailableItemsInChoosenItemList());
         comboBoxChooseItemThenYouGet.setItems(availableItemsInChoosenItemList);
 
@@ -412,10 +416,13 @@ public class AddingDiscountsController {
 
         if(storeIsValid && discountNameIsValid && itemInIfYouBuyIsValid && operatorIsValid && tableOfOffersIsValid)
         {
+            String operator=null;
+
+            thenYouGetSDM.setOperator(operator);
             AvailableItemInStore availableItemInStore = comboBoxChooseItemIfYouBuy.getValue();
             IfYouBuySDM ifYouBuySDM = new IfYouBuySDM(availableItemInStore.getSerialNumber(), currentItemTileControllerIfYouBuy.getAmount());
             String discountName = textFieldEnterDiscountName.getText();
-            setThenYouGetAfterOperatorIsValid();
+            setThenYouGetWithOperatorAfterOperatorIsValid();
             Discount discount = new Discount(discountName, ifYouBuySDM, thenYouGetSDM);
             Store store = comboBoxChooseStore.getValue();
             store.addDiscountToStore(discount);
@@ -424,20 +431,21 @@ public class AddingDiscountsController {
         clearAll();
     }
 
-    private void setThenYouGetAfterOperatorIsValid()
+    private void setThenYouGetWithOperatorAfterOperatorIsValid()
     {
         String operator="";
         if(isRadioButtonOperatorAllOrNothingSelected.get())
         {
             operator= SuperDuperMarketConstants.ALL_OR_NOTHING;
         }
-        else if(isRadioButtonOperatorIrrelavntSelected.get())
-        {
-            operator=SuperDuperMarketConstants.IRRELEVANT;
-        }
         else if(isRadioButtonOperatorOneOfSelected.get())
         {
             operator=SuperDuperMarketConstants.ONE_OF;
+        }
+
+        else if (thenYouGetSDM.getOfferList().size() == 1)
+        {
+            operator=SuperDuperMarketConstants.IRRELEVANT;
         }
 
         thenYouGetSDM.setOperator(operator);
@@ -461,7 +469,11 @@ public class AddingDiscountsController {
     private boolean checkIfOperatorSelectedAndUpdateErrorMessage()
     {
         boolean operatorIsValid = false;
-        if(isRadioButtonOperatorOneOfSelected.getValue() || isRadioButtonOperatorIrrelavntSelected.getValue() || isRadioButtonOperatorAllOrNothingSelected.getValue())
+        if(radioButtonOperatorOneOf.isDisable() && radioButtonOperatorAllOrNothing.isDisable())
+        {
+            operatorIsValid=true;
+        }
+        else if(isRadioButtonOperatorOneOfSelected.getValue() || isRadioButtonOperatorAllOrNothingSelected.getValue())
         {
             operatorIsValid=true;
         }
@@ -558,32 +570,13 @@ public class AddingDiscountsController {
         if(radioButtonOperatorAllOrNothing.isSelected())
         {
             isRadioButtonOperatorAllOrNothingSelected.set(true);
-            isRadioButtonOperatorIrrelavntSelected.set(false);
             isRadioButtonOperatorOneOfSelected.set(false);
-            radioButtonOperatorIrrelevant.setSelected(false);
             radioButtonOperatorOneOf.setSelected(false);
 
         }
         else
         {
             isRadioButtonOperatorAllOrNothingSelected.set(false);
-        }
-    }
-
-    @FXML
-    void actionOnRadioButtonOperatorIrrelavnt(ActionEvent event) {
-        if(radioButtonOperatorIrrelevant.isSelected())
-        {
-            isRadioButtonOperatorIrrelavntSelected.set(true);
-            isRadioButtonOperatorAllOrNothingSelected.set(false);
-            isRadioButtonOperatorOneOfSelected.set(false);
-            radioButtonOperatorAllOrNothing.setSelected(false);
-            radioButtonOperatorOneOf.setSelected(false);
-
-        }
-        else
-        {
-            isRadioButtonOperatorIrrelavntSelected.set(false);
         }
     }
 
@@ -593,10 +586,8 @@ public class AddingDiscountsController {
         if(radioButtonOperatorOneOf.isSelected())
         {
             isRadioButtonOperatorOneOfSelected.set(true);
-            isRadioButtonOperatorIrrelavntSelected.set(false);
             isRadioButtonOperatorAllOrNothingSelected.set(false);
             radioButtonOperatorAllOrNothing.setSelected(false);
-            radioButtonOperatorIrrelevant.setSelected(false);
         }
         else
         {

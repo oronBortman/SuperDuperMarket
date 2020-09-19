@@ -66,7 +66,6 @@
                         <ComboBox fx:id="comboBoxChooseItemThenYouGet" layoutX="96.0" layoutY="465.0" onAction="#chooseItemThenYouGet" prefWidth="150.0" promptText="Choose item" />
                         <HBox fx:id="hboxItemThenYouGet" layoutX="81.0" layoutY="517.0" prefHeight="190.0" prefWidth="181.0" />
                         <ComboBox fx:id="comboBoxChooseStore" layoutX="406.0" onAction="#chooseStore" prefWidth="150.0" promptText="Choose Store" />
-                        <RadioButton fx:id="radioButtonOperatorIrrelevant" layoutX="341.0" layoutY="410.0" mnemonicParsing="false" onAction="#actionOnRadioButtonOperatorIrrelavnt" text="Irrelevant" />
                         <Label fx:id="labelErrorAdditionalPrice" layoutX="11.0" layoutY="716.0" textFill="RED" />
                         <Label fx:id="labelErrorOperator" layoutX="51.0" layoutY="384.0" textFill="RED" />
                         <Label fx:id="labelErrorInWeightFieldInThenYouGet" layoutX="11.0" layoutY="753.0" textFill="RED" />

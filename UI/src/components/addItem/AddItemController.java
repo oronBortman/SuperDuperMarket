@@ -142,7 +142,6 @@ public class AddItemController {
                 newItemToAdd = new Item(getEnteredSerialID(), nameOfItem, Item.TypeOfMeasure.Weight);
 
             }
-            businessLogic.addItem(newItemToAdd);
             addedItem=newItemToAdd;
             isItemAdded.accept(true);
         }
@@ -166,7 +165,6 @@ public class AddItemController {
     public boolean isTextFieldItemNameEmpty() {
         return TextFieldItemName.getText().equals("");
     }
-
 
 
     public Item getItem()
