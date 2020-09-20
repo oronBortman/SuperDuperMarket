@@ -92,8 +92,6 @@ public class MapGridPane {
 
     }
 
-
-
     public void setBusinessLogic(BusinessLogic businessLogic)
     {
         this.businessLogic = businessLogic;

@@ -1,9 +1,11 @@
 package components.showOption.shopMap;
 
+import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Font;
 
 public class TopBorderPane {
 
@@ -16,6 +18,7 @@ public class TopBorderPane {
         hboxHeadlineOfDetailsOnSDM = new HBox();
         hboxDetailsOnSDM = new HBox();
         topBorderPane = new BorderPane();
+        setHboxDetailsOnSDM();
         settingTopBorderPaneWithHBoxAndUpdateHeadline();
     }
 
@@ -34,19 +37,30 @@ public class TopBorderPane {
     public void settingTopBorderPaneWithHBoxAndUpdateHeadline()
     {
         Label labelDetailsOnSDM = new Label("Details On Super Duper Market Customeres and Stores");
-        setHBoxHeadlineOfDetailsOnSDM(hboxHeadlineOfDetailsOnSDM, labelDetailsOnSDM);
+        labelDetailsOnSDM.setFont(new Font("Arial", 28));
+        setHBoxHeadlineOfDetailsOnSDM(labelDetailsOnSDM);
         topBorderPane.setTop(hboxHeadlineOfDetailsOnSDM);
         topBorderPane.setCenter(hboxDetailsOnSDM);
     }
 
 
-    public void setHBoxHeadlineOfDetailsOnSDM(HBox hbox, Label label)
+    public void setHBoxHeadlineOfDetailsOnSDM(Label label)
     {
-        hbox.setMinWidth(200);
-        hbox.setMinHeight(200);
-        hbox.setPrefHeight(200);
-        hbox.setPrefWidth(200);
-        hbox.setAlignment(Pos.CENTER);
-        hbox.getChildren().setAll(label);
+        hboxHeadlineOfDetailsOnSDM.setPadding(new Insets(20, 0, 0, 0));
+        hboxHeadlineOfDetailsOnSDM.setMinWidth(200);
+        hboxHeadlineOfDetailsOnSDM.setMinHeight(40);
+        hboxHeadlineOfDetailsOnSDM.setPrefHeight(40);
+        hboxHeadlineOfDetailsOnSDM.setPrefWidth(200);
+        hboxHeadlineOfDetailsOnSDM.setAlignment(Pos.CENTER);
+        hboxHeadlineOfDetailsOnSDM.getChildren().setAll(label);
+    }
+
+    public void setHboxDetailsOnSDM()
+    {
+        hboxDetailsOnSDM.setMinWidth(200);
+        hboxDetailsOnSDM.setMinHeight(200);
+        hboxDetailsOnSDM.setPrefHeight(200);
+        hboxDetailsOnSDM.setPrefWidth(200);
+        hboxDetailsOnSDM.setAlignment(Pos.CENTER);
     }
 }

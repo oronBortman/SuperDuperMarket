@@ -29,6 +29,7 @@ public class CellInMap {
         {
             imageView = generateStoreImage();
         }
+
         setHbox();
         updateHboxWithImage();
         setImageTriggerWithLabel(detailsOnSDMHbox, label);
@@ -70,11 +71,12 @@ public class CellInMap {
         hbox.setPrefHeight(40);
         hbox.setFillHeight(true);
         hbox.setAlignment(Pos.CENTER_LEFT);
-        hbox.setHgrow(imageView, Priority.ALWAYS);
     }
 
     public void updateHboxWithImage()
     {
+        hbox.getChildren().setAll(imageView);
+        hbox.setHgrow(imageView, Priority.ALWAYS);
         imageView.fitWidthProperty().bind(hbox.widthProperty());
         imageView.fitHeightProperty().bind(hbox.heightProperty());
 
