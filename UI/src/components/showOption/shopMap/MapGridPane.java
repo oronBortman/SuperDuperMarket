@@ -17,7 +17,7 @@ public class MapGridPane {
 
     public MapGridPane(BusinessLogic businessLogic, HBox detailsOnSDMHbox)
     {
-        GridPane gridPane = new GridPane();
+        gridPane = new GridPane();
         setBusinessLogic(businessLogic);
         setGridPaneColumnsAndRow(detailsOnSDMHbox);
     }

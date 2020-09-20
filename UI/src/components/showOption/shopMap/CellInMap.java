@@ -17,6 +17,7 @@ public class CellInMap {
 
     public CellInMap(Label label, HBox detailsOnSDMHbox, Boolean isCustomer, Boolean isStore)
     {
+        this.hbox = new HBox();
         this.isCustomer = isCustomer;
         this.isStore = isStore;
 
@@ -28,6 +29,7 @@ public class CellInMap {
         {
             imageView = generateStoreImage();
         }
+        setHbox();
         updateHboxWithImage();
         setImageTriggerWithLabel(detailsOnSDMHbox, label);
     }
@@ -61,16 +63,18 @@ public class CellInMap {
         return storeImage;
     }
 
-    public void updateHboxWithImage()
-    {
+    public void setHbox() {
         hbox.setMinHeight(40);
         hbox.setPrefHeight(40);
         hbox.setMinWidth(40);
         hbox.setPrefHeight(40);
         hbox.setFillHeight(true);
         hbox.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(imageView, Priority.ALWAYS);
+        hbox.setHgrow(imageView, Priority.ALWAYS);
+    }
 
+    public void updateHboxWithImage()
+    {
         imageView.fitWidthProperty().bind(hbox.widthProperty());
         imageView.fitHeightProperty().bind(hbox.heightProperty());
 
