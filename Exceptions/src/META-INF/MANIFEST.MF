@@ -1,4 +1,3 @@
 Manifest-Version: 1.0
-Class-Path: lib/Logic.jar
-Main-Class: InterfaceConsole.mainClass
+Class-Path: Logic.jar
 

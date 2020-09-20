@@ -1,7 +1,6 @@
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
-import javafx.scene.control.ScrollPane;
 import javafx.scene.layout.BorderPane;
 import javafx.stage.Stage;
 import commonUI.SuperDuperMarketConstants;
@@ -15,6 +14,11 @@ public class mainClass extends Application {
     all long text files are books downloaded from
     http://www.gutenberg.org/ebooks/search/%3Fsort_order%3Ddownloads
      */
+
+    public static void main(String[] args) {
+
+        launch(args);
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -41,8 +45,5 @@ public class mainClass extends Application {
 
     }
 
-    public static void main(String[] args) {
 
-        launch(args);
-    }
 }

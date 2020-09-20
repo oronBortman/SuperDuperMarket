@@ -22,15 +22,11 @@ import exceptions.duplicateSerialID.DuplicateSerialIDExceptionInSDM;
 import exceptions.notExistException.SerialIDNotExistException;
 import javafx.beans.property.SimpleBooleanProperty;
 import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.stage.Stage;
 import logic.*;
@@ -500,7 +496,7 @@ public class mainScreenController {
         return storeImage;
     }
 
-    ScrollPane createAndSetScrollPane()
+    ScrollPane createAndSetScrollPaneOfMap()
     {
         ScrollPane scrollPane = new ScrollPane();
         scrollPane.setFitToHeight(true);
@@ -510,131 +506,29 @@ public class mainScreenController {
         return scrollPane;
     }
 
-    void settingColumnsScaleMark(GridPane gridPane, int maxCoordinateX)
-    {
-
-        for(Integer i=1;i<=maxCoordinateX;i++)
-        {
-            gridPane.add(new Label(i.toString()),i,0);
-        }
-    }
-
-    void settingRowsScaleMark(GridPane gridPane, int maxCoordinateY)
-    {
-        for(Integer i=1;i<=maxCoordinateY;i++)
-        {
-            gridPane.add(new Label(i.toString()),0,i);
-        }
-
-    }
-
-    void settingCustomersOnMap(GridPane gridPane)
-    {
-        for(Customer customer : businessLogic.getUsersList())
-        {
-            final Tooltip tooltip = new Tooltip();
-            tooltip.setText("Type: customer\n" + "Name: " + customer.getName() +
-                    "\nLocation:" + "(" + customer.getLocation().getX() + "," +
-                    customer.getLocation().getY() + ")");
-            ImageView imageView = generateUserImage();
-            createImageAndSetItWithHboxAndToolTip(tooltip, imageView, gridPane, customer.getLocation().getX(), customer.getLocation().getY());
-        }
-    }
-
-    void settingStoresOnMap(GridPane gridPane)
-    {
-        for(Store store : businessLogic.getStoresList())
-        {
-            final Tooltip tooltip = new Tooltip();
-            tooltip.setText("Type: store\n" + "Serial ID: " + store.getSerialNumber() + "\nName: " + store.getName() +
-                    "\nLocation:" + "(" + store.getLocation().getX() + "," +
-                    store.getLocation().getY() + ")");
-            ImageView imageView = generateStoreImage();
-            createImageAndSetItWithHboxAndToolTip(tooltip, imageView, gridPane, store.getLocation().getX(), store.getLocation().getY());
-        }
-    }
 
     @FXML
-    void showMapOfStoresAndOrders(ActionEvent event)
+    void showMapOfStoresAndCustomers(ActionEvent event)
     {
-        ScrollPane scrollPane = createAndSetScrollPane();
-        int maxCoordinateX = businessLogic.getMaxCoordinateXOfLocationOfUsersAndStores();
-        int maxCoordinateY = businessLogic.getMaxCoordinateYOfLocationOfUsersAndStores();
-        GridPane gridPane = gridPaneForceColsAndRows(maxCoordinateX,maxCoordinateY);
-        settingColumnsScaleMark(gridPane, maxCoordinateX);
-        settingRowsScaleMark(gridPane, maxCoordinateY);
-        settingCustomersOnMap(gridPane);
-        settingStoresOnMap(gridPane);
-        scrollPane.setContent(gridPane);
-        mainBorderPane.setCenter(scrollPane);
+
+        ScrollPane scrollPane = createAndSetScrollPaneOfMap();
+        BorderPane mainBorderPane = new BorderPane();
+        BorderPane topBorderPane = new BorderPane();
+        HBox detailsOnSDMHbox = new HBox();
+
+        settingTopBorderPaneWithHBoxAndUpdateHeadline(topBorderPane);
+        GridPane gridPane = createMapGridPaneAndDetailsOnSDMHboxAndGetMapGridPane(detailsOnSDMHbox);
+        setMainBorderPaneWithComponents(scrollPane, mainBorderPane, topBorderPane, gridPane);
     }
 
-    public void createImageAndSetItWithHboxAndToolTip(Tooltip tooltip, ImageView imageView, GridPane gridPane, int coordinateX, int coordinateY)
+
+    public void setMainBorderPaneWithComponents(ScrollPane scrollPane, BorderPane mainBorderPane, BorderPane topBorderPane, GridPane gridPane)
     {
-        setToolTipOnImage(tooltip, imageView);
-        HBox hbox = new HBox(imageView);
-        updateHboxWithImage(hbox,imageView);
-        gridPane.add(hbox,coordinateX,coordinateY);
-    }
-    public void setToolTipOnImage(Tooltip toolTipOnImage, ImageView imageView)
-    {
-        imageView.setOnMouseEntered(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                Node  node =(Node)t.getSource();
-                toolTipOnImage.show(node, primaryStage.getX()+t.getSceneX(), primaryStage.getY()+t.getSceneY());
-            }
-        });
-
-        imageView.setOnMouseExited(new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent t) {
-                toolTipOnImage.hide();
-            }
-        });
-    }
-    public void updateHboxWithImage(HBox hbox, ImageView imageView)
-    {
-        hbox.setMinHeight(40);
-        hbox.setPrefHeight(40);
-        hbox.setMinWidth(40);
-        hbox.setPrefHeight(40);
-        hbox.setFillHeight(true);
-       // hbox.setPadding(new Insets(15, 12, 15, 12));
-       // hbox.setSpacing(10);
-        hbox.setAlignment(Pos.CENTER_LEFT);
-        HBox.setHgrow(imageView,Priority.ALWAYS);
-
-        imageView.fitWidthProperty().bind(hbox.widthProperty());
-        imageView.fitHeightProperty().bind(hbox.heightProperty());
-
+        mainBorderPane.setTop(topBorderPane);
+        mainBorderPane.setCenter(gridPane);
+        this.mainBorderPane.setCenter(scrollPane);
     }
 
-    public GridPane gridPaneForceColsAndRows(int numCols, int numRows) {
-        GridPane gridPane = new GridPane();
-
-        gridPane.setGridLinesVisible(true);
-        double widht=100.0;
-        double hight=100.0;
-            for (int i = 0; i <= numCols+1; i++)
-            {
-
-                ColumnConstraints colConst = new ColumnConstraints();
-                colConst.setPercentWidth(widht / numCols);
-                if(i==0 || i==numCols+1) {
-                }
-                else {  }
-                gridPane.getColumnConstraints().add(colConst);
-            }
-            for (int i = 0; i <= numRows+1; i++) {
-                if(i==0 || i==numCols+1) {}
-                else {}
-                RowConstraints rowConst = new RowConstraints();
-                rowConst.setPercentHeight(hight / numRows);
-                gridPane.getRowConstraints().add(rowConst);
-            }
-            return gridPane;
-    }
 
     @FXML
     void showOrders(ActionEvent event) {

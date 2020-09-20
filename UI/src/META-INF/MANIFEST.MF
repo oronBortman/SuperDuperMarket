@@ -1,3 +1,4 @@
 Manifest-Version: 1.0
-Main-Class: InterfaceConsole.mainClass
+Class-Path: lib/Logic.jar lib/Exceptions.jar
+Main-Class: mainClass
 
