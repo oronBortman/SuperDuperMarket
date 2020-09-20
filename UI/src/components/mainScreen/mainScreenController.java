@@ -8,6 +8,9 @@ import components.addingDiscounts.AddingDiscountsController;
 import components.makeAnOrderOption.makeAnOrder.MakeAnOrderController;
 import components.makeAnOrderOption.summeryOfOrder.SummeryOfOrderController;
 import components.makeAnOrderOption.salesScreen.SalesScreenController;
+import components.showOption.shopMap.MapGridPane;
+import components.showOption.shopMap.ShowMapMainBorderPane;
+import components.showOption.shopMap.TopBorderPane;
 import components.showOption.showOrderesHistory.showOrdersHistoryController;
 import components.updateItemInStoreOption.addItemToStoreScreen.AddItemToStoreContoller;
 import components.makeAnOrderOption.chooseAnItemForOrder.ChooseItemsForOrderController;
@@ -481,52 +484,15 @@ public class mainScreenController {
         mainBorderPane.setCenter(gridPane);
     }
 
-    ImageView generateUserImage()
-    {
-        ImageView userImage = new ImageView("/components/user.png");
-        userImage.setFitHeight(40);
-        userImage.setFitWidth(40);
-        return userImage;
-    }
-    ImageView generateStoreImage()
-    {
-        ImageView storeImage = new ImageView("/components/shop.png");
-        storeImage.setFitHeight(40);
-        storeImage.setFitWidth(40);
-        return storeImage;
-    }
-
-    ScrollPane createAndSetScrollPaneOfMap()
-    {
-        ScrollPane scrollPane = new ScrollPane();
-        scrollPane.setFitToHeight(true);
-        scrollPane.setFitToWidth(true);
-        scrollPane.setHbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        scrollPane.setVbarPolicy(ScrollPane.ScrollBarPolicy.ALWAYS);
-        return scrollPane;
-    }
-
 
     @FXML
     void showMapOfStoresAndCustomers(ActionEvent event)
     {
-
-        ScrollPane scrollPane = createAndSetScrollPaneOfMap();
-        BorderPane mainBorderPane = new BorderPane();
-        BorderPane topBorderPane = new BorderPane();
-        HBox detailsOnSDMHbox = new HBox();
-
-        settingTopBorderPaneWithHBoxAndUpdateHeadline(topBorderPane);
-        GridPane gridPane = createMapGridPaneAndDetailsOnSDMHboxAndGetMapGridPane(detailsOnSDMHbox);
-        setMainBorderPaneWithComponents(scrollPane, mainBorderPane, topBorderPane, gridPane);
-    }
-
-
-    public void setMainBorderPaneWithComponents(ScrollPane scrollPane, BorderPane mainBorderPane, BorderPane topBorderPane, GridPane gridPane)
-    {
-        mainBorderPane.setTop(topBorderPane);
-        mainBorderPane.setCenter(gridPane);
-        this.mainBorderPane.setCenter(scrollPane);
+        TopBorderPane topBorderPane = new TopBorderPane();
+        ShowMapMainBorderPane showMapMainBorderPane = new ShowMapMainBorderPane();
+        MapGridPane mapGridPane = new MapGridPane(businessLogic, topBorderPane.getHboxDetailsOnSDM());
+        showMapMainBorderPane.setMainBorderPaneWithComponents(topBorderPane.getTopBorderPane(), mapGridPane.getGridPane());
+        mainBorderPane.setCenter(showMapMainBorderPane.getScrollPane());
     }
 
 
